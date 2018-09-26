@@ -4,7 +4,10 @@ ns <- NS(id)
 
 dashboardBody(
 #ColorUI("mode_color"),  
-    
+  tags$head( 
+    tags$style(HTML(".main-sidebar { color: #f4b943; }")) #change the font size to 20
+  ),
+  
 tabItems(
 #### Login ####      
       
@@ -34,22 +37,26 @@ tabItems(
 #### Login ####  
 
 tabItem(tabName = "Summary", M_SummaryUI(ns("summary"))),  
-tabItem(tabName = "C12",M1_ClassUI(ns("c12"))), 
-tabItem(tabName = "C11",M1_ClassUI(ns("c11"))), 
-tabItem(tabName = "C10",M1_ClassUI(ns("c10"))), 
+tabItem(tabName = "Class", M3_ClassUI(ns("cls"))),
+
+# tabItem(tabName = "C12",M1_ClassUI(ns("c12"))), 
+# tabItem(tabName = "C11",M1_ClassUI(ns("c11"))), 
+# tabItem(tabName = "C10",M1_ClassUI(ns("c10"))), 
 tabItem(tabName="Student", M_StudentUI(ns("student"),names_all))
       
        )
     )
 }
 
-Body <- function(input,output,session, outputadrs="RAAVI/RAAVI/DATA/school1"){
+Body <- function(input,output,session, outputadrs="RAAVI/RAAVI-Released/DATA/Test"){
   
   
           callModule(M_Summary,"summary")
-  vals <- callModule(M1_Class,"c12",outputcls = sprintf("%s/12",outputadrs),class="12") 
-          callModule(M1_Class,"c11",outputcls = sprintf("%s/11",outputadrs),class="11")
-          callModule(M1_Class,"c10",outputcls = sprintf("%s/10",outputadrs),class="10")
+          callModule(M3_Class,"cls",outputDir = outputadrs,class="0",level="0",course="0")
+  
+  # vals <- callModule(M1_Class,"c12",outputcls = sprintf("%s/12",outputadrs),class="12") 
+  #         callModule(M1_Class,"c11",outputcls = sprintf("%s/11",outputadrs),class="11")
+  #         callModule(M1_Class,"c10",outputcls = sprintf("%s/10",outputadrs),class="10")
           callModule(M_Student,"student",Vals=vals)    
   
 #### Login ####  

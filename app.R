@@ -1,13 +1,13 @@
-## app.R ##
+## app.R ##f
 library(shiny)
 library(stats)
-library(XLConnect)
-library(xlsx)
-library(readxl)
+#library(XLConnect)
+#library(xlsx)
+#library(readxl)
 library(openxlsx)
 library(ConvCalendar)
 library(shinydashboard)
-library(truncnorm)
+#library(truncnorm)
 library(graphics)
 library(reshape2)
 library(plotly)
@@ -16,8 +16,10 @@ library(rhandsontable)
 library(rdrop2)
 library(rio)
 library(tidyr)
+library(stringr)
+library(extrafont)
 
-
+#font_import()
 Sys.setlocale(category = 'LC_ALL','en_US.UTF-8')
 
 ## modules ##
@@ -45,10 +47,12 @@ source('Module/M_Summary.R')
 
 
 ui <- dashboardPage( skin = "blue", 
-                     
+
+                                          
 HeaderUI("mod_header"),                   
 SidebarUI("mod_sidebar"),
 BodyUI("mod_body")
+
 
 )
 

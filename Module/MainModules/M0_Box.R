@@ -2,7 +2,8 @@ M0_BoxUI <- function(id,date,names){
   
   ns <- NS(id)
   
-  tabPanel(title = "نمودار جعبه ای",
+        
+  tabPanel(title ="نمودار جعبه ای",
            
            fluidRow(
              

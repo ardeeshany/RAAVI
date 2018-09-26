@@ -1,4 +1,3 @@
-library(stringr)
 M0_ProgUI <- function(id){
   
   ns <- NS(id)

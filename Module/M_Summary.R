@@ -4,56 +4,70 @@ M_SummaryUI <- function(id){
   ns <- NS(id)
 
 tagList(    
-  fluidRow(
-  box(
-    title = "Box title", width = 6, status = "primary",
-    "Box content"
-  ),
-  box(
-    status = "warning", width = 6,
-    "Box content"
-  )
-),
+#   fluidRow(
+#   box(
+#     title = "Box title", width = 6, status = "primary",
+#     "Box content"
+#   ),
+#   box(
+#     status = "warning", width = 6,
+#     "Box content"
+#   )
+# ),
 
 
 # layout based on column priority; "column" 
 fluidRow(
-  column(width = 4,
-         box(
-           title = "Title 1", width = NULL, solidHeader = TRUE, status = "primary",
-           "Box content"
-         ),
-         box(
-           width = NULL, background = "black",
-           "A box with a solid black background"
-         )
-  ),
+  # column(width = 4,
+  #        box(
+  #          title = "Title 1", width = NULL, solidHeader = TRUE, status = "primary",
+  #          "Box content"
+  #        ),
+  #        box(
+  #          width = NULL, background = "black",
+  #          "A box with a solid black background"
+  #        )
+  # ),
   
-  column(width = 4,
+  column(width = 8,offset = 2,
+         div(style="margin-top:15%; text-align: center;font-size: 0.5em;",
          box(
-           title = "Title 3", width = NULL, solidHeader = TRUE, status = "warning",
-           "Box content"
-         ),
-         box(
-           title = "Title 5", width = NULL, background = "light-blue",
-           "A box with a solid light-blue background"
-         )
-  ),
-  
-  column(width = 4,
-         box(
-           title = "Title 2", width = NULL, solidHeader = TRUE,
-           "Box content"
-         ),
-         box(
-           title = "Title 6", width = NULL, background = "maroon",
-           "A box with a solid maroon background"
-         )
+           title = "", width = NULL, solidHeader = TRUE, status = "primary",
+           # div(style="font-size: 5em; font-family:'dastnevis';margin-top:5%;padding-bottom: 5%;",
+           # HTML(paste("دیتاهای شما قصه های زیادی برای گفتن دارند",
+           #            div(style="margin-top:1%;"),
+           #            div(style="color:red;","راوی"),
+           #            div(style="display:inline-block;","آن قصه ها را برایتان می خواند"),
+           #            sep="<br/>")))
+           div(style="font-size: 5em; font-family:'dastnevis';margin-top:5%;padding-bottom: 5%;",
+               "دیتاهای شما قصه های زیادی برای گفتن دارند",
+                          div(style="margin-top:1%;"),
+               
+                   HTML(paste0(div(style="color:red;","راوی"),
+                          "آن قصه ها را برایتان می خواند"))
+                          )
+          ))
+         
+         # box(
+         #   title = "Title 5", width = NULL, background = "light-blue",
+         #   "A box with a solid light-blue background"
+         # )
   )
-),
+  
+  # column(width = 4,
+  #        box(
+  #          title = "Title 2", width = NULL, solidHeader = TRUE,
+  #          "Box content"
+  #        ),
+  #        box(
+  #          title = "Title 6", width = NULL, background = "maroon",
+  #          "A box with a solid maroon background"
+  #        )
+  # )
+)
 ## InfoBox and ValueBox         
-infoBoxOutput(ns("progressBox"),width = 3),
-valueBoxOutput(ns("approvalBox"),width = 3)
+#infoBoxOutput(ns("progressBox"),width = 3),
+#valueBoxOutput(ns("approvalBox"),width = 3)
 ##         
 
 )
@@ -65,18 +79,18 @@ valueBoxOutput(ns("approvalBox"),width = 3)
 
 M_Summary <- function(input,output,session){
   # infoBox
-  output$progressBox <- renderInfoBox({
-    infoBox(
-      "Progress", "80%" , icon = icon("list"),
-      color = "purple", fill = FALSE ,width = 1
-    )
-  })
+  # output$progressBox <- renderInfoBox({
+  #   infoBox(
+  #     "Progress", "80%" , icon = icon("list"),
+  #     color = "purple", fill = FALSE ,width = 1
+  #   )
+  # })
   
   # valueBox    
-  output$approvalBox <- renderValueBox({
-    valueBox(
-      "70%", "Approval", icon = icon("thumbs-up", lib = "glyphicon"),
-      color = "yellow",width = 2
-    )
-  }) 
+  # output$approvalBox <- renderValueBox({
+  #   valueBox(
+  #     "70%", "Approval", icon = icon("thumbs-up", lib = "glyphicon"),
+  #     color = "yellow",width = 2
+  #   )
+  # }) 
 }
