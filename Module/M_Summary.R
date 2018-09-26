@@ -39,12 +39,11 @@ fluidRow(
            #            div(style="color:red;","راوی"),
            #            div(style="display:inline-block;","آن قصه ها را برایتان می خواند"),
            #            sep="<br/>")))
-           div(style="font-size: 5em; font-family:'dastnevis';margin-top:5%;padding-bottom: 5%;",
-               "دیتاهای شما قصه های زیادی برای گفتن دارند",
-                          div(style="margin-top:1%;"),
-               
-                   HTML(paste0(div(style="color:red;","راوی"),
-                          "آن قصه ها را برایتان می خواند"))
+            div(style="font-size: 5em;  font-family:'dastnevis';margin-top:5%;padding-bottom: 5%;",
+           "دیتاهای شما قصه های زیادی برای گفتن دارند",
+           div(style="margin-top:1%;"),
+           "آن قصه ها را برایتان می خواند",
+           div(id="DimGray",style="font-size:1.5em;","راوی")
                           )
           ))
          

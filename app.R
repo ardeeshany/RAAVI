@@ -19,6 +19,7 @@ library(tidyr)
 library(stringr)
 library(extrafont)
 
+
 #font_import()
 Sys.setlocale(category = 'LC_ALL','en_US.UTF-8')
 
@@ -48,11 +49,9 @@ source('Module/M_Summary.R')
 
 ui <- dashboardPage( skin = "blue", 
 
-                                          
 HeaderUI("mod_header"),                   
 SidebarUI("mod_sidebar"),
 BodyUI("mod_body")
-
 
 )
 

@@ -2,12 +2,21 @@ BodyUI <- function(id){
   
 ns <- NS(id)
 
+# tags$head(
+#   tags$link(rel = "stylesheet", type = "text/css", href = "custom.css")
+# )
+
+
+
 dashboardBody(
 #ColorUI("mode_color"),  
-  tags$head( 
-    tags$style(HTML(".main-sidebar { color: #f4b943; }")) #change the font size to 20
-  ),
+  # tags$head( 
+  #   tags$style(HTML(".main-sidebar { color: #f4b943; }")) 
+  # ),
+
   
+tags$head(tags$link(href = "custom.css", rel = "stylesheet")), 
+    
 tabItems(
 #### Login ####      
       

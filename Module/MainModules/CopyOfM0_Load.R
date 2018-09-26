@@ -53,8 +53,8 @@ box(width="200%",title = "ویرایش اطلاعات",status="primary",
        div(class='row',
            textInput(inputId = ns("save_name"),label = "",value = Sys.Date(),
                      placeholder = "نام دیتا را وارد کنید"),
-               #actionButton(ns("save"), "ذخیره کردن دیتا"),
-               downloadButton(ns("downloadData"), "ذخیره کردن دیتا"),
+               actionButton(ns("save"), "ذخیره کردن دیتا"),
+
              uiOutput(ns("message"), inline=TRUE)
 
            # div(class="col-sm-6",
@@ -118,9 +118,9 @@ div(style="text-align:center;",
            div(style="margin-top: 3%;",
                box(status="primary",width="200%",collapsible = TRUE,collapsed = FALSE,
                    fluidRow(
-                     # column(width = 4,
-                     #        div(style="display:inline-block;width:90%;",
-                     #            uiOutput(outputId = ns("f_set")))),
+                     column(width = 4,
+                            div(style="display:inline-block;width:90%;",
+                                uiOutput(outputId = ns("f_set")))),
                      column(width = 3,
                             div(style="display:inline-block;width:30%;margin-top:15%;",
                                 actionButton(ns("cancel"), "Cancel last action")))),
@@ -165,59 +165,70 @@ div(style="text-align:center;",
 
 M0_Load <- function(input,output,session,outputDir){
   
+    token <- readRDS("droptoken.rds") 
   
-  # saveData <- function(data,fileName){
-  #   # Create a unique file name
-  #   filePath <- file.path(tempdir(), sprintf("%s.xlsx",fileName)) # Write the data to a temporary file locally
-  #   colnames(data)[1] <- "نام"
-  #   A <- write.xlsx(x = data, file = filePath, row.names = FALSE)
-  #  
-  #   #drop_upload(filePath, path = outputDir, autorename = TRUE,mode = "add",dtoken = token)
-  # }
+    saveData <- function(data,fileName){
+    # Create a unique file name
+    filePath <- file.path(tempdir(), sprintf("%s.xlsx",fileName)) # Write the data to a temporary file locally
+    colnames(data)[1] <- "نام"
+    write.xlsx(x = data, file = filePath, row.names = FALSE)
+    drop_upload(filePath, path = outputDir, autorename = TRUE,mode = "add",dtoken = token)
+  }
 
    observeEvent(input$f_new,{
      D_new <- read.xlsx(input$f_new$datapath)
-     values[["now"]] <- D_new[,-1]
-     values[["names"]] <-D_new[,1]
-     values[["dates"]] <- colnames(D_new)[-1]
-     #saveData(D_new,input$f_name)
+     saveData(D_new,input$f_name)
      })
   
-  # File <- reactive({
-  #   input$save
-  #   input$f_new
-  #   #input$remove_f
-  #   filesInfo <- drop_dir(outputDir,dtoken = token)
-  #   filenames <- unlist(base::strsplit(filesInfo$name,"[.]"))[c(TRUE,FALSE)] # select odd elemnts (no after dot)
-  #   filePaths <- filesInfo$path_display
-  #   return(list(name=filenames,path=filePaths))
-  # }) 
+  File <- reactive({
+    input$save
+    input$f_new
+    input$remove_f
+    filesInfo <- drop_dir(outputDir,dtoken = token)
+    filenames <- unlist(base::strsplit(filesInfo$name,"[.]"))[c(TRUE,FALSE)] # select odd elemnts (no after dot)
+    filePaths <- filesInfo$path_display
+    return(list(name=filenames,path=filePaths))
+  }) 
   
-  #observeEvent(input$remove_f,{
+  observeEvent(input$remove_f,{
     #ind <- which(File()$name==input$f_remove)
     #path <- file.path(outputDir, sprintf("%s.xlsx",input$f_remove))
-    #path2 <- (drop_dir("/RAAVI/RAAVI/Data",dtoken=token)$path_display)
+    path2 <- (drop_dir("/RAAVI/RAAVI/Data",dtoken=token)$path_display)
     # output$message2 <- renderUI({
     #    helpText(sprintf("فایل \"%s\" با موفقیت ذخیره شد", drop_exists(path2,dtoken = token)))
     # })
-
+    A <- rep(TRUE,length(path2))
+    
+    for(i in 1:length(path2)){
+      A[i] <- drop_exists(path2[1],dtoken=token)
+    }
+    
+    
+    output$message2 <- renderUI({
+      a <- toString(path2)
+      b <-toString(A)
+      c <- toString(c(a,b))
+      helpText(c)
+    })
+    drop_delete(path = path2[4],dtoken = token)
+  })
    
-  # output$f_set <- renderUI({
-  #    selectInput(inputId = session$ns("f_set"),label = "دیتا برای آنالیز",choices = File()$name)
-  #    })
+  output$f_set <- renderUI({
+     selectInput(inputId = session$ns("f_set"),label = "دیتا برای آنالیز",choices = File()$name)
+     })
 
    output$f_upload <- renderUI({
-     #if(input$up_rmv=="آپلود"){
-       #Date <- as.OtherDate(Sys.Date(),"persian")[1:3]
-       #A <- textInput(inputId = session$ns("f_name"),label = "نام دیتا",
-       #            value = sprintf("%s-%s-%s",Date[3],Date[2],Date[1]))
+     if(input$up_rmv=="آپلود"){
+       Date <- as.OtherDate(Sys.Date(),"persian")[1:3]
+       A <- textInput(inputId = session$ns("f_name"),label = "نام دیتا",
+                    value = sprintf("%s-%s-%s",Date[3],Date[2],Date[1]))
        B <- fileInput(inputId = session$ns("f_new"),label = "آپلود کردن فایل جدید")
-       return(list(B))
-     # }else{
-     #   A <- selectInput(inputId = session$ns("f_remove"),label = "نام دیتا",choices = File()$name) 
-     #   B <- actionButton(session$ns("remove_f"), "پاک کردن")
-     #   return(list(A,B))
-     # }
+       return(list(A,B))
+     }else{
+       A <- selectInput(inputId = session$ns("f_remove"),label = "نام دیتا",choices = File()$name) 
+       B <- actionButton(session$ns("remove_f"), "پاک کردن")
+       return(list(A,B))
+     }
    })
    
   
@@ -225,15 +236,15 @@ M0_Load <- function(input,output,session,outputDir){
   values <- reactiveValues(tot=NULL)
 
   
-  # observeEvent(input$f_set,{
-  #   ind <- which(File()$name==input$f_set)
-  #   Temp <- file.path(tempdir(),"Test.xlsx")
-  #   drop_download(path = File()$path[ind],local_path = Temp,overwrite = TRUE,dtoken = token)
-  #   D <- read.xlsx(xlsxFile = Temp)
-  #   values[["now"]] <- D[,-1]
-  #   values[["names"]] <-D[,1]
-  #   values[["dates"]] <- colnames(D)[-1]
-  # })
+  observeEvent(input$f_set,{
+    ind <- which(File()$name==input$f_set)
+    Temp <- file.path(tempdir(),"Test.xlsx")
+    drop_download(path = File()$path[ind],local_path = Temp,overwrite = TRUE,dtoken = token)
+    D <- read.xlsx(xlsxFile = Temp)
+    values[["now"]] <- D[,-1]
+    values[["names"]] <-D[,1]
+    values[["dates"]] <- colnames(D)[-1]
+  })
   
   
   # Changing the table, Save previous work Handsontable
@@ -317,24 +328,18 @@ M0_Load <- function(input,output,session,outputDir){
   })
   
 ## Save 
-
-    #observe({
-    output$downloadData <- downloadHandler(
-      filename = function() {
-        paste(input$save_name, ".xlsx", sep = "")
-      },
-      content = function(file) {
-        finalDF <- cbind(values[["names"]],values[["now"]])
-        colnames(finalDF)[1] <- "نام"
-        write.xlsx(finalDF, file, row.names = FALSE)
-        output$message <- renderUI({
-          div(style="text-align:right;",
-              helpText(sprintf("فایل \"%s\" با موفقیت ذخیره شد", input$save_name)))
-          
-        })
-      }
-    )
-    #})
+  observeEvent(input$save, {
+    
+    finalDF <- cbind(values[["names"]],values[["now"]])
+    outfilename <- input$save_name 
+    saveData(finalDF,sprintf("%s", outfilename))
+    
+    output$message <- renderUI({
+        div(style="text-align:right;",
+        helpText(sprintf("فایل \"%s\" با موفقیت ذخیره شد", outfilename)))
+      
+    })
+    })
   
   
   ## Cancel last action    
