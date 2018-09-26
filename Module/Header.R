@@ -18,7 +18,7 @@ HeaderUI <- function(id){
   dashboardHeader(title =  tags$a(href='http://github.com/ardeeshany',
                                 tags$img(src='logo.png',height='60',width='80')),
                 ### long Title
-                #  titleWidth = 450,
+                  titleWidth = 200,
                 
                 
                 ### Messages menus ; not render in server function, a message menu needs values for from and message.
