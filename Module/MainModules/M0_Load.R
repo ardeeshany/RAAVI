@@ -46,10 +46,15 @@ box(width="200%",title = "ویرایش اطلاعات",status="primary",
       #radioButtons(inputId = ns("up_rmv"),label = "",choices = c("آپلود","پاک"),selected = "آپلود",inline = TRUE),
       uiOutput(outputId = ns("f_upload"))),
       #uiOutput(ns("message2"), inline=TRUE),
-      br(),
 
+    wellPanel(
+      #radioButtons(inputId = ns("up_rmv"),label = "",choices = c("آپلود","پاک"),selected = "آپلود",inline = TRUE),
+      uiOutput(outputId = ns("f_make")),
+      div(id="inright30","این فایل را ذخیره کرده، تغییر داده و دوباره آپلود کنید")),
+    #uiOutput(ns("message2"), inline=TRUE),
+    
      wellPanel(
-       h3("ذخیره کردن دیتا"),
+       #h5("ذخیره کردن دیتا"),
        div(class='row',
            textInput(inputId = ns("save_name"),label = "",value = Sys.Date(),
                      placeholder = "نام دیتا را وارد کنید"),
@@ -121,10 +126,11 @@ div(style="text-align:center;",
                      # column(width = 4,
                      #        div(style="display:inline-block;width:90%;",
                      #            uiOutput(outputId = ns("f_set")))),
-                     column(width = 3,
-                            div(style="display:inline-block;width:30%;margin-top:15%;",
-                                actionButton(ns("cancel"), "Cancel last action")))),
-                   rHandsontableOutput(ns("hot")),
+                     column(width = 3,offset = 9,
+                            div(style="display:inline-block;width:40%;margin-top:5%;",
+                                actionButton(ns("cancel"), "برگردان به قبل")))),
+                   div(style="display:inline-block;width:100%;margin-top:1%;",
+                   rHandsontableOutput(ns("hot"))),
                    br(),
                    
                    
@@ -183,6 +189,18 @@ M0_Load <- function(input,output,session,outputDir){
      #saveData(D_new,input$f_name)
      })
   
+  
+  
+  observeEvent(input$f_newzero,{
+    D_new <- read.xlsx("/Users/ardalanmirshani/Dropbox/RAAVI/RAAVI-Released/www/Data.xlsx")
+    values[["now"]] <- D_new[,-1]
+    values[["names"]] <- D_new[,1]
+    values[["dates"]] <-colnames(D_new)[-1]
+    #saveData(D_new,input$f_name)
+  })
+  
+  
+  
   # File <- reactive({
   #   input$save
   #   input$f_new
@@ -218,6 +236,11 @@ M0_Load <- function(input,output,session,outputDir){
      #   B <- actionButton(session$ns("remove_f"), "پاک کردن")
      #   return(list(A,B))
      # }
+   })
+   
+   
+   output$f_make <- renderUI({
+     actionButton(inputId = session$ns("f_newzero"),label = "ساختن فایل جدید")
    })
    
   
@@ -309,7 +332,7 @@ M0_Load <- function(input,output,session,outputDir){
   
 ## Output  
   output$hot <- renderRHandsontable({
-    if (!is.null(values[["now"]]))
+      if (!is.null(values[["now"]]))
       rhandsontable(values[["now"]], useTypes = FALSE, stretchH = "all",rowHeaders = values[["names"]],rowHeaderWidth = 100)
   })
   

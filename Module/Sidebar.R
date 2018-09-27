@@ -18,11 +18,11 @@ SidebarUI <- function(id){
       
       div(style="margin-top:1em;",br()),
       
-      div(style="font-family:'dastnevis'; font-size:1.1em; margin-top:25%; margin-left:5%;text-align:center;",
+      div(style="font-family:'dastnevis'; font-size:1.4em; margin-top:25%; margin-left:5%;text-align:center;",
           menuItem(div(style=" color:AliceBlue; ","معرفی"), tabName= "Summary",icon = icon("list-ul")),
           div(style="margin-top:25%;",
           menuItem(div(style=" color:AliceBlue; ", "کلاس"),  tabName= "Class",icon  =icon("sitemap"))),
-          div(style="margin-top:125%;",
+          div(style="margin-top:120%;",
               menuItem(div(style=" color:AliceBlue; ", "ارتباط با ما"),  tabName= "Summary"))
           ),
       
