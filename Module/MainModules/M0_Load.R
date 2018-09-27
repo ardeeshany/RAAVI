@@ -286,6 +286,7 @@ M0_Load <- function(input,output,session,outputDir){
     A <- DF[,-count]
     colnames(A) <- values[["dates"]][-count]
     values[["now"]] <- A
+    values[["dates"]] <- colnames(A)
     #values[["now"]] <- subset(DF, select=-c(input$removecolnamelist))
   })
    
