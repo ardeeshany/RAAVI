@@ -18,7 +18,8 @@ library(rio)
 library(tidyr)
 library(stringr)
 library(extrafont)
-
+#library(shinyWidgets)
+library(shiny.semantic)
 
 #font_import()
 Sys.setlocale(category = 'LC_ALL','en_US.UTF-8')
@@ -47,7 +48,7 @@ source('Module/M_Student.R')
 source('Module/M_Summary.R')
 
 
-ui <- dashboardPage( skin = "blue", 
+ui <- dashboardPage(
 
 HeaderUI("mod_header"),                   
 SidebarUI("mod_sidebar"),
@@ -66,3 +67,11 @@ callModule(Body,"mod_body")
 
 
 shinyApp(ui, server) #,enableBookmarking = "url")
+
+
+
+
+
+
+
+

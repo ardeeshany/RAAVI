@@ -18,13 +18,20 @@ HeaderUI <- function(id){
   # dashboardHeader(title =  tags$a(href='http://github.com/ardeeshany',
   #                               tags$img(src='logo.png',height='60',width='80')),
   
+ 
   
   dashboardHeader(
+    
+    
     
     # Thick Title
     tags$li(class = "dropdown",
             tags$style(".main-header .logo {height: 4em;}")
             ),
+    
+    #tags$head(tags$link(href = "custom.css", rel = "stylesheet")),
+   
+    
     
     title =  helpText(div(style="margin-top:10%; color : AliceBlue; text-align:center ;font-size: 280%; font-weight: bold;font-family:'dastnevis';",
                                         "راوی")),

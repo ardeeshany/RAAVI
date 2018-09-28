@@ -1,14 +1,14 @@
-#blue { 
+.blue { 
 display:inline-block;
 color:blue ;
 }
 
-#DimGray { 
+.DimGray { 
 display:inline-block;
 color:CornflowerBlue;
 }
 
-#inright30 { 
+.inright30 { 
 display:inline-block;
 text-align:right;
 font-size: 80%;

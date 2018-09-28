@@ -192,7 +192,9 @@ M0_Load <- function(input,output,session,outputDir){
   
   
   observeEvent(input$f_newzero,{
-    D_new <- read.xlsx("/Users/ardalanmirshani/Dropbox/RAAVI/RAAVI-Released/www/Data.xlsx")
+    #D_new <- read.xlsx("/Users/ardalanmirshani/Dropbox/RAAVI/RAAVI-Released/www/Data.xlsx")
+   
+    D_new <- read.xlsx(file.path(getwd(),"www/Data.xlsx"))
     values[["now"]] <- D_new[,-1]
     values[["names"]] <- D_new[,1]
     values[["dates"]] <-colnames(D_new)[-1]

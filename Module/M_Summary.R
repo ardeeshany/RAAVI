@@ -2,8 +2,9 @@
 M_SummaryUI <- function(id){
 
   ns <- NS(id)
-
-tagList(    
+  
+tagList( 
+ 
 #   fluidRow(
 #   box(
 #     title = "Box title", width = 6, status = "primary",
@@ -18,6 +19,7 @@ tagList(
 
 # layout based on column priority; "column" 
 fluidRow(
+  
   # column(width = 4,
   #        box(
   #          title = "Title 1", width = NULL, solidHeader = TRUE, status = "primary",
@@ -28,7 +30,6 @@ fluidRow(
   #          "A box with a solid black background"
   #        )
   # ),
-  
   column(width = 8,offset = 2,
          div(style="margin-top:15%; text-align: center;font-size: 0.5em;",
          box(
@@ -43,7 +44,7 @@ fluidRow(
            "دیتاهای شما قصه های زیادی برای گفتن دارند",
            div(style="margin-top:1%;"),
            "آن قصه ها را برایتان می خواند",
-           div(id="DimGray",style="font-size:1.5em;","راوی")
+           div(class="DimGray",style="font-size:1.5em;","راوی")
                           )
           ))
          

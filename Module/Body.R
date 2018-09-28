@@ -6,17 +6,13 @@ ns <- NS(id)
 #   tags$link(rel = "stylesheet", type = "text/css", href = "custom.css")
 # )
 
-
-
 dashboardBody(
 #ColorUI("mode_color"),  
   # tags$head( 
   #   tags$style(HTML(".main-sidebar { color: #f4b943; }")) 
-  # ),
+  # )
 
-  
 tags$head(tags$link(href = "custom.css", rel = "stylesheet")), 
-    
 tabItems(
 #### Login ####      
       
@@ -45,14 +41,14 @@ tabItems(
 # ),
 #### Login ####  
 
-tabItem(tabName = "Summary", M_SummaryUI(ns("summary"))),  
 tabItem(tabName = "Class", M3_ClassUI(ns("cls"))),
 
 # tabItem(tabName = "C12",M1_ClassUI(ns("c12"))), 
 # tabItem(tabName = "C11",M1_ClassUI(ns("c11"))), 
 # tabItem(tabName = "C10",M1_ClassUI(ns("c10"))), 
-tabItem(tabName="Student", M_StudentUI(ns("student"),names_all))
-      
+tabItem(tabName="Student", M_StudentUI(ns("student"),names_all)),
+tabItem(tabName = "Summary", M_SummaryUI(ns("summary")))
+#tags$head(includeHTML(("www/google-analytics.html"))),
        )
     )
 }

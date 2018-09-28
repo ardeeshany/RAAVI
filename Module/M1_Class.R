@@ -1,7 +1,7 @@
 M1_ClassUI <- function(id){
 
           ns <- NS(id)
-
+          
           box(width = "130%",collapsible = TRUE,status = "primary",
               tabsetPanel(selected = NULL,
 
