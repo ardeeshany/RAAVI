@@ -48,9 +48,9 @@ tabItem(tabName = "Class", M3_ClassUI(ns("cls"))),
 # tabItem(tabName = "C10",M1_ClassUI(ns("c10"))), 
 tabItem(tabName="Student", M_StudentUI(ns("student"),names_all)),
 tabItem(tabName = "Summary", M_SummaryUI(ns("summary")))
-#tags$head(includeHTML(("www/google-analytics.html"))),
-       )
-    )
+       ),
+tags$head(includeHTML(("www/google-analytics.html")))    
+)
 }
 
 Body <- function(input,output,session, outputadrs="RAAVI/RAAVI-Released/DATA/Test"){

@@ -19,7 +19,7 @@ library(tidyr)
 library(stringr)
 library(extrafont)
 #library(shinyWidgets)
-library(shiny.semantic)
+#library(shiny.semantic)
 
 #font_import()
 Sys.setlocale(category = 'LC_ALL','en_US.UTF-8')
@@ -67,11 +67,4 @@ callModule(Body,"mod_body")
 
 
 shinyApp(ui, server) #,enableBookmarking = "url")
-
-
-
-
-
-
-
 
