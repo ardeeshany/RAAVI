@@ -23,7 +23,7 @@ SidebarUI <- function(id){
           div(style="margin-top:25%;",
           menuItem(div(style=" color:AliceBlue; ", "کلاس"),  tabName= "Class",icon  =icon("sitemap"))),
           div(style="margin-top:120%;",
-              menuItem(div(style=" color:AliceBlue; ", "ارتباط با ما"),  tabName= "Summary"))
+              menuItem(div(style=" color:AliceBlue; ", "ارتباط با ما"),  tabName= "Info"))
           ),
       
       div(style="text-align:center;",

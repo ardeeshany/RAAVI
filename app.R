@@ -21,6 +21,7 @@ library(extrafont)
 #library(shinyWidgets)
 #library(shiny.semantic)
 library(shinythemes)
+library(networkD3)
 
 #font_import()
 Sys.setlocale(category = 'LC_ALL','en_US.UTF-8')
@@ -48,6 +49,7 @@ source('Module/M3_Class.R')
 source('Module/M_Student.R')
   source('Module/MainModules/M0_St_Scatter.R')
 source('Module/M_Summary.R')
+source('Module/M_Info.R')
 
 
 ui <- dashboardPage(

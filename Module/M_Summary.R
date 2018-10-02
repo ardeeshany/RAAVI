@@ -30,29 +30,31 @@ fluidRow(
   #          "A box with a solid black background"
   #        )
   # ),
-  column(width = 8,offset = 2,
-         div(style="margin-top:15%; text-align: center;font-size: 0.5em;",
-         box(
-           title = "", width = NULL, solidHeader = TRUE, status = "primary",
+  # column(width = 8,offset = 2,
+  #        div(style="margin-top:0%; text-align: center;font-size: 0.5em;",
+  #        box(
+  #          title = "", width = NULL, solidHeader = TRUE, status = "primary",
            # div(style="font-size: 5em; font-family:'dastnevis';margin-top:5%;padding-bottom: 5%;",
            # HTML(paste("دیتاهای شما قصه های زیادی برای گفتن دارند",
            #            div(style="margin-top:1%;"),
            #            div(style="color:red;","راوی"),
            #            div(style="display:inline-block;","آن قصه ها را برایتان می خواند"),
            #            sep="<br/>")))
-            div(style="font-size: 5em;  font-family:'dastnevis';margin-top:5%;padding-bottom: 5%;",
+            div(style="font-size: 2em; text-align:center; font-family:'dastnevis';margin-top:3%;", #padding-bottom: 5%;",
            "دیتاهای شما قصه های زیادی برای گفتن دارند",
            div(style="margin-top:1%;"),
            "آن قصه ها را برایتان می خواند",
            div(class="DimGray",style="font-size:1.5em;","راوی")
-                          )
-          ))
+          #                 )
+          # ))
          
          # box(
          #   title = "Title 5", width = NULL, background = "light-blue",
          #   "A box with a solid light-blue background"
          # )
-  )
+  ),
+  M_InfoUI(ns("info"))
+  
   
   # column(width = 4,
   #        box(
@@ -78,6 +80,9 @@ fluidRow(
 
 
 M_Summary <- function(input,output,session){
+ 
+  callModule(M_Info,"info")
+  
   # infoBox
   # output$progressBox <- renderInfoBox({
   #   infoBox(
