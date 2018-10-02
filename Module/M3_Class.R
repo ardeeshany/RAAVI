@@ -4,15 +4,13 @@ M3_ClassUI <- function(id){
 
   tabsetPanel(
     
-                  
-     tabPanel(title="تحلیل را انتخاب کنید",icon = icon("mail-forward")),
+     tabPanel(title=div(class="tabPanel--font-size","تحلیل را انتخاب کنید"),icon = icon("mail-forward")),
      M0_BoxUI(ns("Box")),
      M0_HistUI(ns("Hist")),
      M0_ScatterUI(ns("Scatter")),                       
      M0_CatUI(ns("Category")),
      M0_ProgUI(ns("Progress")),
      M0_LoadUI(ns("Load"))
-                
   )}
 
 

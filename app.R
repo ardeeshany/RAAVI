@@ -20,6 +20,7 @@ library(stringr)
 library(extrafont)
 #library(shinyWidgets)
 #library(shiny.semantic)
+library(shinythemes)
 
 #font_import()
 Sys.setlocale(category = 'LC_ALL','en_US.UTF-8')
@@ -30,6 +31,7 @@ source('ui_color.R')
 source('Module/Header.R')
 source('Module/Sidebar.R')
 source('Module/Body.R')
+source('Module/theme.R')
 
 source('Data_Import.R')
 source('ui_outside_functions.R')
@@ -52,7 +54,7 @@ ui <- dashboardPage(
 
 HeaderUI("mod_header"),                   
 SidebarUI("mod_sidebar"),
-BodyUI("mod_body")
+BodyUI("mod_body",theme=theme_blue_gradient)
 
 )
 

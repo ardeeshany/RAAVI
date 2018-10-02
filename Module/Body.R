@@ -1,4 +1,4 @@
-BodyUI <- function(id){
+BodyUI <- function(id,theme){
   
 ns <- NS(id)
 
@@ -7,6 +7,9 @@ ns <- NS(id)
 # )
 
 dashboardBody(
+
+theme,
+  
 #ColorUI("mode_color"),  
   # tags$head( 
   #   tags$style(HTML(".main-sidebar { color: #f4b943; }")) 

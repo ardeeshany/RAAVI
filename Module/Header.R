@@ -22,8 +22,6 @@ HeaderUI <- function(id){
   
   dashboardHeader(
     
-    
-    
     # Thick Title
     tags$li(class = "dropdown",
             tags$style(".main-header .logo {height: 4em;}")
@@ -33,9 +31,10 @@ HeaderUI <- function(id){
    
     
     
-    title =  helpText(div(style="margin-top:10%; color : AliceBlue; text-align:center ;font-size: 280%; font-weight: bold;font-family:'dastnevis';",
-                                        "راوی")),
+    title =  helpText(div(style="margin-top:10%; color : #9C9A40; text-align:center ;font-size: 280%; font-weight: bold;font-family:'dastnevis';",
+                                        "راوی"),logo_blue_gradient,theme = "blue_gradient"),
   
+    
                 ### long Title
                  titleWidth = 180,
                 

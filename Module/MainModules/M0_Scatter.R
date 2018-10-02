@@ -2,7 +2,8 @@ M0_ScatterUI <- function(id){
 
    ns <- NS(id)
 
-  tabPanel(title = "دانش آموزان", icon=icon("user-circle"),
+  tabPanel(title = div(class="tabPanel--font-size","دانش آموزان"),
+           icon=icon("user-circle"),
 
 ### For Error Message
            tags$head(

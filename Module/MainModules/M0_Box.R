@@ -3,8 +3,8 @@ M0_BoxUI <- function(id,date,names){
   ns <- NS(id)
   
         
-  tabPanel(title ="نمودار جعبه ای",
-           
+  tabPanel(title =div(class="tabPanel--font-size","نمودار جعبه ای"),
+           icon=icon("square"),
            fluidRow(
              
              column(1,
@@ -20,7 +20,7 @@ M0_BoxUI <- function(id,date,names){
                         actionButton(inputId = ns("Bx_Ac"),label = "آنالیز"))
              )
            ),
-           plotlyOutput(ns("Bx")),icon=icon("square")
+           plotlyOutput(ns("Bx"))
   )
 }
 
@@ -50,12 +50,16 @@ M0_Box <- function(input,output,session,Vals){
   
   
   output$Bx_SeI1 <- renderUI({
-    selectInput(inputId = ns("Bx_SeI1"),label = "زمان ابتدا",choices = colnames(Data()),selected = tail(colnames(Data()),4)[1])
+    selectInput(inputId = ns("Bx_SeI1"),
+                label = div(class="m-input-box--align-center m-input-box--font-size","زمان ابتدا"),
+                choices = colnames(Data()),selected = tail(colnames(Data()),4)[1])
   })
   
   
   output$Bx_SeI2 <- renderUI({
-    selectInput(inputId = ns("Bx_SeI2"),label = "زمان انتها",choices =  colnames(Data()),selected = tail( colnames(Data()),1))
+    selectInput(inputId = ns("Bx_SeI2"),
+                label = div(class="m-input-box--align-center m-input-box--font-size","زمان انتها"),choices =  colnames(Data()),
+                selected = tail( colnames(Data()),1))
   })
   
   #Mean <- reactive({ apply(Data(),2,mean) })

@@ -6,7 +6,8 @@ M0_HistUI <- function(id){
   ################
   #### Histogram
   ################
-  tabPanel(title = "هیستوگرام",
+  tabPanel(title = div(class="tabPanel--font-size","هیستوگرام"),
+           icon=icon("user-circle"),
            
            fluidRow(            
              

@@ -3,7 +3,8 @@ M0_LoadUI <- function(id){
   
   ns <- NS(id)
   
-  tabPanel(title = "وارد کردن دیتا",
+  tabPanel(title = div(class="tabPanel--font-size","وارد کردن دیتا"),
+           icon=icon("download"),
        
            fluidRow(
 

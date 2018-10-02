@@ -5,6 +5,7 @@ M1_ClassUI <- function(id){
           box(width = "130%",collapsible = TRUE,status = "primary",
               tabsetPanel(selected = NULL,
 
+                          
                           tabPanel(title="گروه را انتخاب کنید",icon = icon("mail-forward")),
                           tabPanel(title="یک",M2_ClassUI(ns("c12_1"))),
                           tabPanel(title="دو",M2_ClassUI(ns("c12_2"))),

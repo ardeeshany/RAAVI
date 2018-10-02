@@ -2,7 +2,8 @@ M0_ProgUI <- function(id){
   
   ns <- NS(id)
   
-  tabPanel(title = "پیشرفت", icon=icon("arrow-circle-up"),
+  tabPanel(title = div(class="tabPanel--font-size","پیشرفت"),
+           icon=icon("arrow-circle-up"),
            
            ### For Error Message          
            tags$head(
