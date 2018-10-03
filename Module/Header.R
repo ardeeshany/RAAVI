@@ -20,23 +20,23 @@ HeaderUI <- function(id){
   
  
   
-  dashboardHeader(
+  dashboardHeader(disable = FALSE,
     
     # Thick Title
     tags$li(class = "dropdown",
-            tags$style(".main-header .logo {height: 4em;}")
+            tags$style(".main-header .logo {height: 2.5em;}")
             ),
     
     #tags$head(tags$link(href = "custom.css", rel = "stylesheet")),
    
     
     
-    title =  helpText(div(style="margin-top:10%; color : #9C9A40; text-align:center ;font-size: 280%; font-weight: bold;font-family:'dastnevis';",
+    title =  helpText(div(style=" color : #9C9A40; text-align:center ;font-size: 180%; font-weight: bold;font-family:'dastnevis';",
                                         "راوی"),logo_blue_gradient,theme = "blue_gradient"),
   
     
                 ### long Title
-                 titleWidth = 180,
+                 titleWidth = 120,
                 
                 
                 ### Messages menus ; not render in server function, a message menu needs values for from and message.

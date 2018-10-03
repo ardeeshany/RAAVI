@@ -10,9 +10,10 @@ M0_ScatterUI <- function(id){
              tags$style(HTML("
                              .shiny-output-error-validation {
                              color: red;
-                             font-size: 16px;
-                             margin-top: 10px;
-                             margin-left: 10px;
+                             font-size: 16%;
+                             margin-top: 10%;
+                             margin-left: 10%;
+                             font-weight:bold;
                              }
                              "))
              ),
@@ -22,38 +23,48 @@ M0_ScatterUI <- function(id){
             fluidRow(
 
              column(1,
+                    div(class="dropdown--margin-top",
                     dropdownButton(
-
-                      label = "دانش آموزان مورد نظر را انتخاب کنید", status = "primary", width = 80,
-
-
-                      div(style="display:inline-block; margin-top: 20px; ",
-                          checkboxInput(ns('St_all'), 'تمام / هیچ')),
-                      uiOutput(ns("St_ChG")))
+                      label = div(class="dropdown__title","دانش آموزان مورد نظر را انتخاب کنید"), 
+                      status = "primary", width = 80,
+                          checkboxInput(ns('St_all'), 
+                           div(class="dropdown__text",style="color:red;",'تمام / هیچ')),
+                      div(class="dropdown__text",
+                      uiOutput(ns("St_ChG"))
+                               )))
 
              ),
-
-             column(1,offset=2,
-                    div(style="display:inline-block; margin-top:20px;",
-                        actionButton(inputId = ns("St_Ac"),label = "آنالیز"))
+             
+             
+             column(1,offset = 2,
+                    div(class="action-button--mtop__scatter action-button--mleft__scatter",
+                        actionButton(inputId = ns("St_Ac"),
+                                     label = div(class="action-button--font-size","آنالیز"),
+                                     width="180%")
+                        )
+             ),
+             
+             column(1,offset=1,
+                    div(class="check-box--general check-box--mleft check-box--mtop",
+                        checkboxInput(ns('St_Mean'),
+                                      div(class="check-box--font-size","میانگین")))
              ),
 
-
-             column(1,
-                    div(style="display:inline-block;margin-top:20px; ",
-                        checkboxInput(ns('St_Mean'), 'میانگین'))
+             column(1,offset=1,
+                    div(class="check-box--general check-box--mleft check-box--mtop",
+                        checkboxInput(inputId = ns("St_chbI"),
+                          label =  div(class="check-box--font-size","تجمیع نمودارها"),
+                           value = FALSE))
              ),
 
-             column(1,
-                    div(style="display:inline-block;margin-top:20px;",
-                        checkboxInput(inputId = ns("St_chbI"),label = "تجمیع نمودارها",value = FALSE))
-             ),
-
-             column(1,
-                    div(style="display:inline-block; margin-top:5px; margin-left:50px  ",
-                        radioButtons(ns('St_rb'), "نوع تخمین" ,
-                                     choices = c("خطی"="lm","غیرخطی"="loess")))
+             column(1,offset=1,
+                    div(class="check-box--general check-box--mtop radio-button--mleft",
+                        radioButtons(ns('St_rb'), inline = FALSE,
+                                 div(class="check-box--font-size","نوع تخمین"),
+                       choices = c("خطی"="lm","غیرخطی"="loess")))
              )
+             
+
 
            ),
 

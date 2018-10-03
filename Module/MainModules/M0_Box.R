@@ -8,16 +8,18 @@ M0_BoxUI <- function(id,date,names){
            fluidRow(
              
              column(1,
-                    div(style="display:inline-block; width: 150px; margin-top: 15px;",
+                    div(class="input-box--general",
                         uiOutput(ns("Bx_SeI1")))
              ),
-             column(1, offset=1,
-                    div(style="display:inline-block; width: 150px; margin-top: 15px;",
+             column(1, 
+                    div(class="input-box--general",style="margin-left:50%",
                         uiOutput(ns("Bx_SeI2")))
              ),
-             column(1, offset=1,
-                    div(style="display:inline-block; margin-top: 40px;",
-                        actionButton(inputId = ns("Bx_Ac"),label = "آنالیز"))
+             column(1,
+                    div(class="action-button--general action-button--mleft action-button--mtop",
+                        actionButton(inputId = ns("Bx_Ac"),
+                                     label = div(class="action-button--font-size","آنالیز"),
+                                     width="130%"))
              )
            ),
            plotlyOutput(ns("Bx"))

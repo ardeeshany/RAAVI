@@ -1,4 +1,4 @@
-theme_blue_gradient <- shinyDashboardThemeDIY(
+theme_RAAVI <- shinyDashboardThemeDIY(
   
   ### general
   appFontFamily = "dastnevis"
@@ -7,7 +7,7 @@ theme_blue_gradient <- shinyDashboardThemeDIY(
   ,bodyBackColor = "white"
   
   ### header
-  ,logoBackColor = "#485167"
+  ,logoBackColor = "#2E4A62"
   
   ,headerButtonBackColor = "#485167"
   ,headerButtonIconColor = "white"
@@ -45,11 +45,11 @@ theme_blue_gradient <- shinyDashboardThemeDIY(
   ,sidebarSearchIconColor = "rgb(153,153,153)"
   ,sidebarSearchBorderColor = "rgb(55,72,80)"
   
-  ,sidebarTabTextColor = "rgb(255,255,255)"
+  ,sidebarTabTextColor = "white"
   ,sidebarTabTextSize = 20
   ,sidebarTabBorderStyle =  "none none solid none"
   ,sidebarTabBorderColor = "rgb(35,106,135)"
-  ,sidebarTabBorderWidth = 5
+  ,sidebarTabBorderWidth = 2
   
   ,sidebarTabBackColorSelected = "#485167"
   
@@ -67,7 +67,7 @@ theme_blue_gradient <- shinyDashboardThemeDIY(
   ,sidebarTabRadiusSelected = "0px 10px 10px 0px"
   
   
-  ,sidebarTabBackColorHover = "#485167"
+  ,sidebarTabBackColorHover = "#2E4A62"
   # ,sidebarTabBackColorHover = cssGradientThreeColors(
   #   direction = "right"
   #   ,colorStart = "rgba(44,222,235,1)"
@@ -77,11 +77,11 @@ theme_blue_gradient <- shinyDashboardThemeDIY(
   #   ,colorMiddlePos = 30
   #   ,colorEndPos = 100
   # )
-  ,sidebarTabTextColorHover = "rgb(50,50,50)"
+  ,sidebarTabTextColorHover = "white"
   ,sidebarTabBorderStyleHover = "none none solid none"
   ,sidebarTabBorderColorHover = "rgb(75,126,151)"
-  ,sidebarTabBorderWidthHover = 1
-  ,sidebarTabRadiusHover = "0px 20px 20px 0px"
+  ,sidebarTabBorderWidthHover = 4
+  ,sidebarTabRadiusHover = "0px 0px 0px 0px"
   
   ### boxes
   ,boxBackColor = "rgb(255,255,255)"

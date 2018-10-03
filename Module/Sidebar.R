@@ -4,7 +4,7 @@ SidebarUI <- function(id){
   ns <- NS(id)
 
   dashboardSidebar(
-    width = 180,
+    width = 120,
     
     # helpText(div(style="margin-top:10%; color : AliceBlue; text-align:center ;font-size: 380%; font-weight: bold;font-family:'dastnevis';",
     #              "راوی")),
@@ -22,7 +22,7 @@ SidebarUI <- function(id){
           menuItem(div(style=" color:AliceBlue; ","معرفی"), tabName= "Summary",icon = icon("list-ul")),
           div(style="margin-top:25%;",
           menuItem(div(style=" color:AliceBlue; ", "کلاس"),  tabName= "Class",icon  =icon("sitemap"))),
-          div(style="margin-top:120%;",
+          div(style="margin-top:220%;",
               menuItem(div(style=" color:AliceBlue; ", "ارتباط با ما"),  tabName= "Info"))
           ),
       

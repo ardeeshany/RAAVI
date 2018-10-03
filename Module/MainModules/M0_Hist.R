@@ -12,18 +12,19 @@ M0_HistUI <- function(id){
            fluidRow(            
              
              column(1,
-                    div(style="display:inline-block; width: 150px; margin-top: 15px; text-align:center;",
+                    div(class="input-box--general",
                         uiOutput(ns("Hg_SeI")))
              ),
              
-             column(1,offset=1,
-                    div(style="display:inline-block; width: 150px; margin-top: 15px;text-align:center;",
-                        numericInput(inputId = ns("Hg_bin"),label = "بین",min = 1,max = 100,value = 5))
+             column(1,
+                    div(class="input-box--general",style="margin-left:50%",
+                        uiOutput(ns("Hg_bin")))
              ),
-             column(1,offset=1,
-                    
-                    div(style="display:inline-block;margin-top: 40px;text-align:center;",
-                        actionButton(inputId = ns("Hg_Ac"),label = "آنالیز"))
+             column(1,
+                    div(class="action-button--general action-button--mleft action-button--mtop",
+                        actionButton(inputId = ns("Hg_Ac"),
+                        label = div(class="action-button--font-size","آنالیز"),
+                        width="130%"))
              )
            ),
            
@@ -49,14 +50,20 @@ M0_Hist <- function(input,output,session,Vals){
       colnames(M) <- Vals[["dates"]]
       return(M)
     })
-      
-  
-  
+    
     
     output$Hg_SeI <- renderUI({
       selectInput(inputId = ns("Hg_SeI"),label = "زمان",choices = colnames(Data()),selected =tail(colnames(Data()),n=1))
     })
     
+    # output$Hg_bin <- renderUI({
+    #   div(style="font-size=220% ;",
+    #   numericInput(inputId = ns("Hg_bin"),label = "بین",min = 1,max =100,value = 5))
+    # })
+    
+    output$Hg_bin <- renderUI({
+      selectInput(inputId = ns("Hg_bin"),label = "دسته",choices = 1:20,selected = 5)
+    })
     
     
     melt_Data_Hg <- reactive({

@@ -22,6 +22,7 @@ library(extrafont)
 #library(shiny.semantic)
 library(shinythemes)
 library(networkD3)
+library(dashboardthemes)
 
 #font_import()
 Sys.setlocale(category = 'LC_ALL','en_US.UTF-8')
@@ -56,7 +57,7 @@ ui <- dashboardPage(
 
 HeaderUI("mod_header"),                   
 SidebarUI("mod_sidebar"),
-BodyUI("mod_body",theme=theme_blue_gradient)
+BodyUI("mod_body",theme=theme_RAAVI)
 
 )
 

@@ -20,7 +20,7 @@ output$network3d <- renderForceNetwork({
   forceNetwork(Links = MisLinks, Nodes = MisNodes,
                Source = "source", Target = "target",
                Value = "value", NodeID = "name",
-               Group = "group", opacity = 0.8,height = "1em")
+               Group = "group", opacity = 1)
 })
   
 }
