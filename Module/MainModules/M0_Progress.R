@@ -20,25 +20,41 @@ M0_ProgUI <- function(id){
            
            
            fluidRow(                   
-             
-             
-             column(2, offset=1,
-                    div(style="display:inline-block; margin-top:40px;",
-                        actionButton(inputId = ns("Pr_AC1"),label = "پیشرفت دانش آموزان"))
-             ),  
-             
-             #######################       
+            
              column(1,
-                    div(style="display:inline-block; margin-top: 33px; margin-left: 530px",
-                        uiOutput(ns("Pr_numI"))),
-                    div(style="margin-top: 9.5px;margin-left: 545px",
-                        actionButton(inputId = ns("Pr_AC2"),label = "پیشرفت زیرگروه ها",width = "150px",icon=icon("arrow-right")))
-             ),
+                    div(class="input-box--general",
+                        uiOutput(ns("Pr_numI")))),
              
              column(1,
-                    div(style="display:inline-block; margin-top: 33px;margin-left: 540px",
-                        numericInput(ns("Pr_bin2"),label = "تعداد گروه",min = 1,value = 1,width = "85px"))
-             )
+                    div(class="input-box--general",
+                        uiOutput(ns("Pr_bin2")))),
+             
+             column(1,
+                    div(class="action-button--general--left action-button--mtop__Pr action-button--mleft__Pr",
+                        actionButton(inputId = ns("DT_AC3"),
+                            label = div(class="action-button--font-size", "گروه بندی میانگین وزنی"),
+                            class="action-button--color--yellow"
+                        ))),
+                            #icon=icon("arrow-right")))),
+             column(1,offset = 1,
+                    div(class="action-button--general--left action-button--mtop__Pr action-button--mleft__Pr",
+                        actionButton(inputId = ns("Pr_AC2"),
+                            label = div(class="action-button--font-size","پیشرفت گروهی"),
+                              class="action-button--color--yellow"
+                        ))),
+                            #icon=icon("arrow-right")))),
+             
+             
+             ########################################
+ 
+             column(1,offset = 2,
+                    div(class="action-button--general--left action-button--mtop action-button--mleft",
+                        style="margin-left:30%;",
+                        actionButton(inputId = ns("Pr_AC1"),
+                            label = div(class="action-button--font-size","پیشرفت تکی"),
+                            class="action-button--color--yellow"))
+                    )
+
              
            ),
            
@@ -73,20 +89,39 @@ M0_Prog <- function(input,output,session,Vals){
   })
   
   
-   output$Pr_numI <- renderUI({
-    numericInput(ns("Pr_numI"),label = "میانگین وزنی",min = 1,max=length(colnames(Data())),value = 1,width = "85px")
+  output$Pr_numI <- renderUI({
+    ch <- max(length(colnames(Data())),1)
+    numericInput(ns("Pr_numI"),label = "میانگین وزنی",min = 1,max = ch,value = 1,width = "85px")
   })
   
+  output$Pr_bin2 <- renderUI({
+    ch <- max(length(rownames(Data())),1)
+    #selectInput(ns("Pr_bin2"),label = "تعداد گروه",choices=1:5,selected = 1,width = "85px")
+    numericInput(ns("Pr_bin2"),label = "تعداد گروه",min = 1,max = ch,value = 1,width = "85px")
+  })
+  
+  
+  
   ## Variable (like trigger) for selecting which React_DT want to show in output
-  var = reactiveValues(a = TRUE)
+  var = reactiveValues(a = 1)
   
   observeEvent(input$Pr_AC1, {
-    var$a = TRUE
+    var$a = 1
   })
   
   observeEvent(input$Pr_AC2, {
-    var$a = FALSE
+    var$a = 2
   })
+  
+  observeEvent(input$DT_AC3, {
+    var$a = 3
+  })
+  
+  
+  
+  
+  
+  
   ##
 
  
@@ -242,7 +277,9 @@ M0_Prog <- function(input,output,session,Vals){
         col <- c("#F8766D","#00BFC4")
       }
        
-      
+    
+   slope <- slope[order(slope$sl,decreasing = F),]    
+        
    s <- ggplot(slope,aes(x=reorder(names,1:input$Pr_bin2), y = sl))+
         geom_bar(stat="identity",aes(fill=factor(clr,labels = lab)),color="black")+
         scale_fill_manual(values=col)+    # filling geom_bar with colors
@@ -264,15 +301,57 @@ M0_Prog <- function(input,output,session,Vals){
   })  
   
   
+  
+  #########
+  
+  React_DT3 <-eventReactive(input$DT_AC3, {
+    
+    if(input$Pr_numI==1)
+      gr <- rep(1,dim(Data())[2])
+    else
+      gr <- as.numeric(cut(1:dim(Data())[2],breaks = input$Pr_numI,labels = 1:input$Pr_numI))
+    
+    
+    d <- as.data.frame(apply(Data(),1,function(x){weighted.mean(x,gr)}))
+    d$names <- rownames(Data())
+    colnames(d) <- c("mean.w","names")
+    d <- d[order(d$mean.w,decreasing = T),]
+    
+    cc1 <- colorRampPalette(c("sienna3","khaki3","turquoise3"))(input$Pr_bin2)
+    
+    if(input$Pr_bin2==1)
+      d$clr <-cc1
+    else
+      d$clr <- as.vector(cut(1:dim(Data())[1],breaks = input$Pr_bin2,labels = cc1))
+    
+    p <- ggplot(d,aes(x = reorder(names,mean.w),y = mean.w))+
+      geom_bar(stat="identity",aes(fill = clr),color="black")+
+      geom_text(data=d,aes(x = names,y = mean.w,label=round(mean.w,2)),vjust=0)+
+      labs(title ="میانگین وزنی", x = "", y = "میانگین وزنی")+
+      scale_fill_manual(values=cc1)
+    
+    gg <- ggplotly(p)
+    
+    gg  
+    
+  })
+  
+  
+  
+  
   ### selecting which React_DT want to show in output
   React_out <- reactive({
     
-    if(var$a==TRUE){        # Does not need have () for input$x .... I mean, input$x() is wrong.
+    if(var$a==1){        # Does not need have () for input$x .... I mean, input$x() is wrong.
       return(React_Pr1())   # return is important here. Without it does not work
     }
     
-    if(var$a==FALSE){
+    if(var$a==2){
       return(React_Pr2())
+    }
+    
+    if(var$a==3){
+      return(React_DT3())
     }
     
   })

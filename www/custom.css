@@ -23,20 +23,111 @@ margin-top:30%;
 }
 
 
+.numeric-box--general__cat{
+display:inline-block;
+text-align:center;
+font-size:140%;
+width:290%;
+margin-top:48%; 
+}
+
 .action-button--general{
   text-align:center;
   width:130%;
 }
 
+
+.action-button--general__cat{
+  text-align:center;
+  width:200%;
+}
+
+.slider--general{
+  text-align:center;
+  width:1000%;
+  font-size:150%;
+  font-weight:bold;
+  margin-top:30%;
+  margin-left:50%;
+}
+
+.action-button--color--green1{
+  color: #fff; 
+  background-color: #006E6D; 
+  border-color: #2e6da4
+}
+
+
+.action-button--color--green1:hover{
+  color: #fff; 
+  background-color: #B93A32; 
+  border-color: #2e6da4
+}
+
+.action-button--color--green1:focus{
+  color: #fff; 
+  background-color: #006E6D; 
+  border-color: #2e6da4
+}
+
+.action-button--color--green2{
+  color: #fff; 
+  background-color: #009B77; 
+  border-color: #2e6da4
+}
+
+.action-button--color--green2:hover{
+  color: #fff; 
+  background-color: #B93A32; 
+  border-color: #2e6da4
+}
+
+.action-button--color--green2:focus{
+  color: #fff; 
+  background-color: #009B77; 
+  border-color: #2e6da4
+}
+
+
+.action-button--color--yellow{
+  color: black; 
+  background-color: #EFC050; 
+  border-color: #2e6da4
+}
+.action-button--color--yellow:hover{
+  color: #fff; 
+  background-color: #B93A32; 
+  border-color: #2e6da4
+}
+.action-button--color--yellow:focus{
+  color: black; 
+  background-color: #EFC050; 
+  border-color: #2e6da4
+}
+
+.action-button--general--left{
+  text-align:left;
+  width = "250%";
+}
+
 .action-button--mleft{
   margin-left:100%;
 }
+
+.action-button--mleft__Pr{
+  margin-left:30%;
+}
+
 .action-button--mleft__scatter{
   margin-left:1%;
 }
 
 
 .action-button--mtop{
+  margin-top:77%;
+}
+
+.action-button--mtop__Pr{
   margin-top:77%;
 }
 
@@ -53,12 +144,24 @@ margin-top:30%;
  font-size:150%; 
 }
 
+.check-box--font-size__cat{
+ font-size:120%; 
+}
+
 .check-box--mtop{
    margin-top:42%;
 }
 
+.check-box--mtop__cat{
+   margin-top:182%;
+}
+
 .check-box--mleft{
-   margin-left:62%;
+   margin-left:82%;
+}
+
+.check-box--mleft__cat{
+   margin-left:32%;
 }
 
 .radio-button--mleft{
@@ -75,13 +178,13 @@ margin-top:30%;
 .dropdown__title{
   display:inline-block;
   text-align:center;
-  font-size:110%;
+  font-size:130%;
 }
 
 .dropdown__text{
   display:inline-block;
   text-align:left;
-  font-size:110%;
+  font-size:125%;
 }
 
 
@@ -120,6 +223,7 @@ margin-top:40%;
 .action-button--font-size{
   font-size:130%;
 }
+
 
 .action-button--width{
   width:130%;

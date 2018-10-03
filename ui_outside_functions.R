@@ -25,7 +25,7 @@ dropdownButton <- function(label = "", status = c("default", "primary", "success
   html_button <- c(html_button, list(tags$span(class = "caret")))
   # final result
   tags$div(
-    style = "display:inline-block; margin-top:20% ;width: 150%;",
+    style = "display:inline-block; margin-top:20% ;width: 250%;",
     class = "dropdown",
     do.call(tags$button, html_button),
     do.call(tags$ul, html_ul),

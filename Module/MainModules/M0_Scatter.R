@@ -26,7 +26,7 @@ M0_ScatterUI <- function(id){
                     div(class="dropdown--margin-top",
                     dropdownButton(
                       label = div(class="dropdown__title","دانش آموزان مورد نظر را انتخاب کنید"), 
-                      status = "primary", width = 80,
+                      status = "default", width = "130%",
                           checkboxInput(ns('St_all'), 
                            div(class="dropdown__text",style="color:red;",'تمام / هیچ')),
                       div(class="dropdown__text",
@@ -40,6 +40,7 @@ M0_ScatterUI <- function(id){
                     div(class="action-button--mtop__scatter action-button--mleft__scatter",
                         actionButton(inputId = ns("St_Ac"),
                                      label = div(class="action-button--font-size","آنالیز"),
+                                     class="action-button--color--yellow",
                                      width="180%")
                         )
              ),

@@ -24,6 +24,7 @@ M0_HistUI <- function(id){
                     div(class="action-button--general action-button--mleft action-button--mtop",
                         actionButton(inputId = ns("Hg_Ac"),
                         label = div(class="action-button--font-size","آنالیز"),
+                        class="action-button--color--yellow",
                         width="130%"))
              )
            ),

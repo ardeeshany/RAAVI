@@ -19,6 +19,7 @@ M0_BoxUI <- function(id,date,names){
                     div(class="action-button--general action-button--mleft action-button--mtop",
                         actionButton(inputId = ns("Bx_Ac"),
                                      label = div(class="action-button--font-size","آنالیز"),
+                                     class="action-button--color--yellow",
                                      width="130%"))
              )
            ),
