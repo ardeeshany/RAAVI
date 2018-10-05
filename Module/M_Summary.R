@@ -44,7 +44,7 @@ fluidRow(
            "داده های شما قصه های زیادی برای گفتن دارند",
            div(style="margin-top:1%;"),
            "آن قصه ها را برایتان می خواند",
-           div(class="DimGray",style="font-size:1.5em;","راوی")
+           div(class="name","راوی")
           #                 )
           # ))
          

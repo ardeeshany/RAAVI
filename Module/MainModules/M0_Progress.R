@@ -51,7 +51,7 @@ M0_ProgUI <- function(id){
                     div(class="action-button--general--left action-button--mtop action-button--mleft",
                         style="margin-left:30%;",
                         actionButton(inputId = ns("Pr_AC1"),
-                            label = div(class="action-button--font-size","پیشرفت تکی"),
+                            label = div(class="action-button--font-size","پیشرفت فردی"),
                             class="action-button--color--yellow"))
                     )
 

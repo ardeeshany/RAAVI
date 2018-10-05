@@ -3,6 +3,7 @@ M0_LoadUI <- function(id){
   
   ns <- NS(id)
   
+  
   tabPanel(title = div(class="tabPanel--font-size","وارد کردن دیتا"),
            icon=icon("download"),
        
@@ -38,35 +39,39 @@ M0_LoadUI <- function(id){
              
 ### Left Panel   ----     
 
+
 div(style="text-align:center;",
 column(width = 3,
 br(),
-box(width="200%",title = "ویرایش اطلاعات",status="primary",
+box(width="200%",
+    title = div(class="load__title--font-size","ویرایش اطلاعات"),
+    status="primary",
 
       wellPanel(
-      #radioButtons(inputId = ns("up_rmv"),label = "",choices = c("آپلود","پاک"),selected = "آپلود",inline = TRUE),
-      uiOutput(outputId = ns("f_upload"))),
-      #uiOutput(ns("message2"), inline=TRUE),
+        #radioButtons(inputId = ns("up_rmv"),label = "",choices = c("آپلود","پاک"),selected = "آپلود",inline = TRUE),
+        uiOutput(outputId = ns("f_upload"))),
+        #uiOutput(ns("message2"), inline=TRUE),
 
-    wellPanel(
-      #radioButtons(inputId = ns("up_rmv"),label = "",choices = c("آپلود","پاک"),selected = "آپلود",inline = TRUE),
-      uiOutput(outputId = ns("f_make")),
-      div(id="inright30","این فایل را ذخیره کرده، تغییر داده و دوباره آپلود کنید")),
-    #uiOutput(ns("message2"), inline=TRUE),
+      wellPanel(
+        #radioButtons(inputId = ns("up_rmv"),label = "",choices = c("آپلود","پاک"),selected = "آپلود",inline = TRUE),
+        uiOutput(outputId = ns("f_make")),
+        div(id="inright30","این فایل را ذخیره کرده، تغییر داده و دوباره آپلود کنید")),
+        #uiOutput(ns("message2"), inline=TRUE),
     
-     wellPanel(
-       #h5("ذخیره کردن دیتا"),
-       div(class='row',
-           textInput(inputId = ns("save_name"),label = "",value = Sys.Date(),
-                     placeholder = "نام دیتا را وارد کنید"),
-               #actionButton(ns("save"), "ذخیره کردن دیتا"),
-               downloadButton(ns("downloadData"), "ذخیره کردن دیتا"),
-             uiOutput(ns("message"), inline=TRUE)
-
-           # div(class="col-sm-6",
-           #     radioButtons(ns("fileType"), "File type", c("R", "xlsx")))
-       )
-     )
+      wellPanel(
+        #h5("ذخیره کردن دیتا"),
+        div(class='row',
+        uiOutput(ns("save_name")),
+        #actionButton(ns("save"), "ذخیره کردن دیتا"),
+        div(style="height:150%;",
+        downloadButton(ns("downloadData"),
+                       div(class="action-button--font-size","ذخیره کردن دیتا"),
+                       class="downlaod-button--general action-button--color--yellow")),
+        uiOutput(ns("message"), inline=TRUE)
+        #div(class="col-sm-6",
+        #radioButtons(ns("fileType"), "File type", c("R", "xlsx")))
+           )
+           )
 
    ))),
 
@@ -119,6 +124,8 @@ box(width="200%",title = "ویرایش اطلاعات",status="primary",
 
 ### Right Panel   ----       
 
+
+
 div(style="text-align:center;",         
     column(width = 9,
            div(style="margin-top: 3%;",
@@ -130,7 +137,7 @@ div(style="text-align:center;",
                      column(width = 3,offset = 9,
                             div(style="display:inline-block;width:40%;margin-top:5%;",
                                 actionButton(ns("cancel"), "برگردان به قبل")))),
-                   div(style="display:inline-block;width:100%;margin-top:1%;",
+                   div(class="data-table--general",
                    rHandsontableOutput(ns("hot"))),
                    br(),
                    
@@ -172,6 +179,9 @@ div(style="text-align:center;",
 
 M0_Load <- function(input,output,session,outputDir){
   
+  Date_US <- as.OtherDate(Sys.Date(),"persian")[1:3]
+  Date_Persian = sprintf("%s-%s-%s",Date_US[3],Date_US[2],Date_US[1])
+  
   
   # saveData <- function(data,fileName){
   #   # Create a unique file name
@@ -202,6 +212,7 @@ M0_Load <- function(input,output,session,outputDir){
     #saveData(D_new,input$f_name)
   })
   
+
   
   
   # File <- reactive({
@@ -232,7 +243,12 @@ M0_Load <- function(input,output,session,outputDir){
        #Date <- as.OtherDate(Sys.Date(),"persian")[1:3]
        #A <- textInput(inputId = session$ns("f_name"),label = "نام دیتا",
        #            value = sprintf("%s-%s-%s",Date[3],Date[2],Date[1]))
-       B <- fileInput(inputId = session$ns("f_new"),label = "آپلود کردن فایل جدید")
+     #includeScript("progress.js")
+     B <- fileInput(inputId = session$ns("f_new"),
+                      label = div(class="load__subtitle--font-size","آپلود کردن فایل جدید"),
+                      buttonLabel = div(style="font-size:130%;","جستجو"),
+                      placeholder = "فایلی موجود نیست",
+                      width = "100%")
        return(list(B))
      # }else{
      #   A <- selectInput(inputId = session$ns("f_remove"),label = "نام دیتا",choices = File()$name) 
@@ -243,7 +259,9 @@ M0_Load <- function(input,output,session,outputDir){
    
    
    output$f_make <- renderUI({
-     actionButton(inputId = session$ns("f_newzero"),label = "ساختن فایل جدید")
+     actionButton(inputId = session$ns("f_newzero"),
+                  label = div(class="action-button--font-size","فایل جهت تست"),
+                  class="action-button--color--yellow")
    })
    
   
@@ -264,29 +282,33 @@ M0_Load <- function(input,output,session,outputDir){
   
   # Changing the table, Save previous work Handsontable
   observe({
-    if (!is.null(input$hot)) {
+      if(!is.null(input$hot)){
       #values[["previous"]] <- isolate(values[["now"]]) # current table values
-      values[["now"]] = hot_to_r(input$hot)   # DF is the r format of the table value
-    }
+        hot_data = hot_to_r(input$hot)
+        values[["now"]] <- data.matrix(hot_data[-1,-1])
+        values[["names"]] <- hot_data[-1,1]
+        values[["dates"]] <- t(hot_data[1,-1])
+        }  # DF is the r format of the table value
   })
-  
-  
+
   ## Add column
   output$ui_newcolname <- renderUI({
-    textInput(session$ns("newcolumnname"), "", format(Sys.Date(),format="%d-%m"))   # sprintf("newcol%s", 1+ncol(values[["now"]]))
+    textInput(session$ns("newcolumnname"), "", value = Date_Persian)   # sprintf("newcol%s", 1+ncol(values[["now"]]))
   })
   
   observeEvent(input$addcolumn, {
     DF <- values[["now"]]
     values[["previous"]] <- DF
     newcolumn <- 0 #eval(parse(text=sprintf('%s(nrow(as.data.frame(DF)))', "integer" ))) #isolate(input$newcolumntype))))
-    values[["now"]] <- setNames(cbind(DF, newcolumn), c(names(DF), isolate(input$newcolumnname)))
-  })
+    values[["now"]] <- setNames(cbind(DF, newcolumn), c(values[["dates"]], isolate(input$newcolumnname)))
+    #values[["now"]] <- cbind(DF,0)
+    values[["dates"]] <- c(values[["dates"]], isolate(input$newcolumnname))
+    })
 
   
   ## Add row
   output$ui_newrowname <- renderUI({
-    textInput(session$ns("newrowname"), "", sprintf("newrow%s", 1+nrow(values[["now"]])))
+    textInput(session$ns("newrowname"), "", placeholder = "نام دانش آموز")#sprintf("newrow%s", 1+nrow(values[["now"]])) )
   })
   
   observeEvent(input$addrow, {
@@ -301,18 +323,16 @@ M0_Load <- function(input,output,session,outputDir){
   
   ## remove column
   output$ui_removecolname <- renderUI({
-    selectInput(session$ns("removecolnamelist"), "",choices = colnames(values[["now"]]))
+    selectInput(session$ns("removecolnamelist"), "",choices = values[["dates"]] )
   })
   
   observeEvent(input$removecolumn, {
     DF <- values[["now"]]
     values[["previous"]] <- DF
-    values[["dates"]] <- colnames(DF)
     count <- which(values[["dates"]]==input$removecolnamelist)
     A <- DF[,-count]
-    colnames(A) <- values[["dates"]][-count]
+    values[["dates"]] <- values[["dates"]][-count]
     values[["now"]] <- A
-    values[["dates"]] <- colnames(A)
     #values[["now"]] <- subset(DF, select=-c(input$removecolnamelist))
   })
    
@@ -335,9 +355,61 @@ M0_Load <- function(input,output,session,outputDir){
   
 ## Output  
   output$hot <- renderRHandsontable({
-      if (!is.null(values[["now"]]))
-      rhandsontable(values[["now"]], useTypes = FALSE, stretchH = "all",rowHeaders = values[["names"]],rowHeaderWidth = 100)
+      if (!is.null(values[["now"]])){
+      r1 <- data.frame(cbind("تاریخ آزمون",t(values[["dates"]])),stringsAsFactors = FALSE)
+      r2 <- data.frame(cbind(values[["names"]],values[["now"]]),stringsAsFactors = FALSE)
+      names(r2) <- names(r1)
+      Tot <- rbind(r1,r2)
+      rhandsontable(Tot, useTypes = TRUE, stretchH = "all",
+       colHeaders = 1:dim(Tot)[2]  ,rowHeaders = NULL,search = TRUE) %>%
+       #colHeaders = NULL  ,rowHeaders = NULL) %>%
+       hot_cols(colWidths = 120, fixedColumnsLeft = 1,manualColumnMove = FALSE,manualColumnResize = FALSE) %>%
+       hot_cols(renderer = "function(instance, td, row, col, prop, value, cellProperties) {
+          Handsontable.renderers.TextRenderer.apply(this, arguments);
+                 if (col==0) {td.style.background = '#DCDCDC'; td.style.color = 'black';}
+                 if (row==0) {td.style.background = '#DCDCDC'; td.style.color = '#B93A32';}}") %>%        
+        # renderer = "function(instance, td, row, col, prop, value, cellProperties) {
+                # Handsontable.renderers.TextRenderer.apply(this, arguments);
+                # td.style.color = 'white';
+                # td.style.background = 'grey';}
+                # " )  %>%
+       #manualColumnMove and manualColumnResize works when colHeaders is not NULL!
+       hot_rows(rowHeights = 40, fixedRowsTop = 1) %>%
+       hot_col(col = 1:dim(Tot)[2] , valign = "htMiddle") %>%
+      # valign works when colHeaders is not NULL!
+       hot_cell(1,1,readOnly=TRUE)
+      
+      
+      
+      }
   })
+  
+  # D_new <- read.xlsx(file.path(getwd(),"www/Data.xlsx"))
+  # now <- D_new[,-1]
+  # names <- D_new[,1]
+  # dates <-colnames(D_new)[-1]
+  # 
+  # r1 <- data.frame(cbind("نام",t(dates)),stringsAsFactors = FALSE)
+  # r2 <- cbind(names,now)
+  # names(r2) <-  
+  # names(r1) <-
+  # Tot <- rbind(r1,r2)
+  # 
+  # colname <- "sssss"
+  # DF <- now
+  # pre <- DF
+  # newcolumn <- 0 #eval(parse(text=sprintf('%s(nrow(as.data.frame(DF)))', "integer" ))) #isolate(input$newcolumntype))))
+  # now <- setNames(cbind(DF, newcolumn), c(dates, colname))
+  # #values[["now"]] <- cbind(DF,0)
+  # dates <- c(dates, colname)
+  # 
+  # 
+  # 
+  
+  
+  
+  
+  
   
   output$message <- renderUI({
       helpText(sprintf(""))
@@ -345,6 +417,12 @@ M0_Load <- function(input,output,session,outputDir){
   
 ## Save 
 
+  
+   output$save_name <- renderUI({
+     textInput(inputId = session$ns("save_name"),label = "",value = Date_Persian,
+               placeholder = "نام دیتا را وارد کنید")
+   })
+  
     #observe({
     output$downloadData <- downloadHandler(
       filename = function() {
@@ -352,7 +430,8 @@ M0_Load <- function(input,output,session,outputDir){
       },
       content = function(file) {
         finalDF <- cbind(values[["names"]],values[["now"]])
-        colnames(finalDF)[1] <- "نام"
+        colnames(finalDF)[1] <- "تاریخ آزمون"
+        colnames(finalDF)[-1] <- values[["dates"]]
         write.xlsx(finalDF, file, row.names = FALSE)
         output$message <- renderUI({
           div(style="text-align:right;",

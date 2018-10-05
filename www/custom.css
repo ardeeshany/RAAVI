@@ -1,17 +1,45 @@
-.blue { 
-display:inline-block;
-color:blue ;
+.handsontable .right{
+  text-align:center;
+  color:red;
 }
 
-.DimGray { 
-display:inline-block;
-color:#9C9A40;
+.name{
+  display:inline-block;
+  color:#9C9A40;
+  font-size:160%;
 }
 
-.inright30 { 
-display:inline-block;
-text-align:right;
-font-size: 80%;
+.data-table--general{
+  display:inline-block;
+  text-align:center;
+  width:100%;
+  margin-top:1%;
+  font-size:125%;
+  color:navy;
+  align-items: center;
+}
+
+.progress-bar{
+  background-color:#EFC050;
+}
+
+
+.load__subtitle--font-size{
+text-align:center;
+font-size:130%; 
+font-weight:bold;
+}
+
+.load__title--font-size{
+text-align:center;
+font-size:190%; 
+font-weight:bold;
+}
+
+.downlaod-button--general{
+    height:15%;
+    width:65%;
+    padding-top: 3%
 }
 
 .input-box--general{
