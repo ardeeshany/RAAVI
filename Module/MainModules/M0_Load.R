@@ -221,12 +221,12 @@ M0_Load <- function(input,output,session,outputDir){
     values[["now"]] <- D_new[,-1]
     values[["names"]] <- D_new[,1]
     values[["dates"]] <-colnames(D_new)[-1]
+    #values[["now_numeric"]] <- D_new[,-1]
     #saveData(D_new,input$f_name)
   })
-  
 
   output$Table <- renderUI({
-div(class="data-table--general",
+  div(class="data-table--general",
             rHandsontableOutput(session$ns("hot"))) 
     })
   
@@ -259,10 +259,10 @@ div(class="data-table--general",
     }
     # D_new <- data.frame("تاریخ آزمون"="",matrix("",nrow = 1,ncol = 2),stringsAsFactors = FALSE)
     # colnames(D_new)[1] <- "تاریخ آزمون"
-    # for(i in 1:2) { 
+    # for(i in 1:2) {
     #   colnames(D_new)[i+1] <- paste("تاریخ ", i, sep = "")
     # }
-    # for(i in 1:1) { 
+    # for(i in 1:1) {
     #   D_new[i,1] <- paste("نام ", i, sep = "")
     # }
     if(input$num_col==1){
@@ -337,19 +337,64 @@ div(class="data-table--general",
   #   values[["names"]] <-D[,1]
   #   values[["dates"]] <- colnames(D)[-1]
   # })
+  # D_new <- read.xlsx(file.path(getwd(),"www/Data.xlsx"))
+  # now <- D_new[,-1]
+  # dates <- colnames(D_new)[-1]
+  # names <- D_new[,1]
+  # 
+  # r1 <- data.frame(cbind("تاریخ آزمون",t(dates)),stringsAsFactors = FALSE)
+  # r2 <- data.frame(cbind(names,now),stringsAsFactors = FALSE)
+  # names(r2) <- names(r1)
+  # Tot <- rbind(r1,r2)
+  # A <- rhandsontable(Tot, useTypes = TRUE, stretchH = "all",
+  #               colHeaders = 1:dim(Tot)[2]  ,rowHeaders = NULL,search = TRUE) %>%
+  #   #colHeaders = NULL  ,rowHeaders = NULL) %>%
+  #   hot_cols(colWidths = 120, fixedColumnsLeft = 1,manualColumnMove = FALSE,manualColumnResize = FALSE) %>%
+  #   hot_cols(renderer = "function(instance, td, row, col, prop, value, cellProperties) {
+  #            Handsontable.renderers.TextRenderer.apply(this, arguments);
+  #            if (col==0) {td.style.background = '#DCDCDC'; td.style.color = 'black';}
+  #            if (row==0) {td.style.background = '#DCDCDC'; td.style.color = '#B93A32';}}") %>%        
+  #   #manualColumnMove and manualColumnResize works when colHeaders is not NULL!
+  #   hot_rows(rowHeights = 40, fixedRowsTop = 1) %>%
+  #   hot_col(col = 1:dim(Tot)[2] , valign = "htMiddle") %>%
+  #   hot_validate_numeric( cols = 2:dim(Tot)[2] , min = 0, max = 20, 
+  #                         allowInvalid = TRUE) %>%
+  #   # valign works when colHeaders is not NULL!
+  #   hot_cell(1,1,readOnly=TRUE)
+  # 
   
+  
+  persian <- "\u0660\u0661\u0662\u0663\u0664\u0665\u0666\u0667\u0668\u0669\u06F0\u06F1\u06F2\u06F3\u06F4\u06F5\u06F6\u06F7\u06F8\u06F9"
+  english <- "01234567890123456789"
+  persian.tonumber <- function(s) as.character(chartr(persian,english,s))
   
   # Changing the table, Save previous work Handsontable
   observe({
       if(!is.null(input$hot)){
       #values[["previous"]] <- isolate(values[["now"]]) # current table values
         hot_data = hot_to_r(input$hot)
-        values[["now"]] <- data.matrix(hot_data[-1,-1])
+        A <- hot_data[-1,-1]
+        
+        if(!is.null(A)){
+        for(i in 1:dim(A)[1]){
+          for(j in 1:dim(A)[2]){
+            A[i,j] <- persian.tonumber(A[i,j])
+          }
+        }}
+        
+        if(input$num_col==1){
+          values[["now"]] <- cbind(rep(NA,dim(A)[1]))
+        }else{
+        values[["now"]] <- data.matrix(A)}
+        
         values[["names"]] <- hot_data[-1,1]
         values[["dates"]] <- t(hot_data[1,-1])
         }  # DF is the r format of the table value
   })
 
+  
+  # D_new[,-1] <- data.matrix(D_new[,-1])
+  # sapply(D_new,class)
   ## Add column
   output$ui_newcolname <- renderUI({
     div(class="load--font-size_add",
@@ -418,10 +463,19 @@ div(class="data-table--general",
     values[["now"]] <- A
   })
    
-  
+
+#        class(D_new)
+#   sapply(D_new,class)
+#        B <- D_new[-1,-1]
+# class(B)  
+# sapply(B,class)  
+# C <- data.frame(lapply(C, as.character), stringsAsFactors=FALSE)
+# class(C)
+# sapply(C,class)
 ## Output  
   output$hot <- renderRHandsontable({
       if (!is.null(values[["now"]])){
+      #values[["now"]] <- data.frame(lapply(values[["now"]], as.character), stringsAsFactors=FALSE)
       r1 <- data.frame(cbind("تاریخ آزمون",t(values[["dates"]])),stringsAsFactors = FALSE)
       r2 <- data.frame(cbind(values[["names"]],values[["now"]]),stringsAsFactors = FALSE)
       names(r2) <- names(r1)
@@ -437,6 +491,8 @@ div(class="data-table--general",
        #manualColumnMove and manualColumnResize works when colHeaders is not NULL!
        hot_rows(rowHeights = 40, fixedRowsTop = 1) %>%
        hot_col(col = 1:dim(Tot)[2] , valign = "htMiddle") %>%
+        hot_validate_numeric( cols = 2:dim(Tot)[2] , min = 0, max = 20, 
+                              allowInvalid = TRUE) %>%
       # valign works when colHeaders is not NULL!
        hot_cell(1,1,readOnly=TRUE)
       

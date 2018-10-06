@@ -91,13 +91,22 @@ M0_Scatter <- function(input,output,session,Vals){
 
   ns <- session$ns
 
-  Data <- reactive({
+
+
+  
+    Data <- reactive({
+
+      
     M <- Vals[["now"]]
+    # print(class(M[1,1]))
+    # print(M[1,1])
+    # print(persian.tonumber(M[1,1]))
+    # M[1,1] <- persian.tonumber(M[1,1])
+    #print("########### Scat")
     rownames(M) <- Vals[["names"]]
     colnames(M) <- Vals[["dates"]]
     return(M)
   })
-
 
   output$St_ChG <- renderUI({
     checkboxGroupInput(inputId = ns("St_ChG"), label = "", choices = c(rownames(Data())))
