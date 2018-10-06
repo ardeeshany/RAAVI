@@ -139,13 +139,18 @@ margin-top:48%;
   border-color: #2e6da4
 }
 
+.action-button--font-size__make{
+  font-size:105downlaod-button--general%;
+  font-weight:bold;
+}
+
 .action-button--general--left{
   text-align:left;
   width = "250%";
 }
 
 .action-button--mleft{
-  margin-left:100%;
+  margin-left:130%;
 }
 
 .action-button--mleft__Pr{

@@ -51,35 +51,45 @@ box(width="200%",
         #radioButtons(inputId = ns("up_rmv"),label = "",choices = c("آپلود","پاک"),selected = "آپلود",inline = TRUE),
         uiOutput(outputId = ns("f_upload"))),
         #uiOutput(ns("message2"), inline=TRUE),
-
     wellPanel(
       #radioButtons(inputId = ns("up_rmv"),label = "",choices = c("آپلود","پاک"),selected = "آپلود",inline = TRUE),
+      fluidRow(
+      column(6,
+             div(class="inline action-button--font-size__make",
+                 numericInput(inputId = ns("num_row"),
+                  label =  "تعداد دانش آموز",min = 1,value = 1,step = 1))),
+      
+      column(6,
+             div(class="inline action-button--font-size__make", 
+                 numericInput(inputId = ns("num_col"),
+                  label = "تعداد امتحان",min = 1,value = 1,step = 1)))),
+      
       uiOutput(outputId = ns("f_make"))
       #"این فایل را ذخیره کرده، تغییر داده و دوباره آپلود کنید"
     ),
     
     
+    wellPanel(
+      #h5("ذخیره کردن دیتا"),
+      div(class='row',
+          uiOutput(ns("save_name")),
+          #actionButton(ns("save"), "ذخیره کردن دیتا"),
+          div(style="height:150%;",
+              downloadButton(ns("downloadData"),
+                             div(class="action-button--font-size","ذخیره کردن دیتا"),
+                             class="downlaod-button--general action-button--color--yellow")),
+          uiOutput(ns("message"), inline=TRUE)
+          #div(class="col-sm-6",
+          #radioButtons(ns("fileType"), "File type", c("R", "xlsx")))
+      )
+    ),
+    
       wellPanel(
         #radioButtons(inputId = ns("up_rmv"),label = "",choices = c("آپلود","پاک"),selected = "آپلود",inline = TRUE),
         uiOutput(outputId = ns("f_test"))
         #"این فایل را ذخیره کرده، تغییر داده و دوباره آپلود کنید"
-        ),
+        )
         #uiOutput(ns("message2"), inline=TRUE),
-    
-      wellPanel(
-        #h5("ذخیره کردن دیتا"),
-        div(class='row',
-        uiOutput(ns("save_name")),
-        #actionButton(ns("save"), "ذخیره کردن دیتا"),
-        div(style="height:150%;",
-        downloadButton(ns("downloadData"),
-                       div(class="action-button--font-size","ذخیره کردن دیتا"),
-                       class="downlaod-button--general action-button--color--yellow")),
-        uiOutput(ns("message"), inline=TRUE)
-        #div(class="col-sm-6",
-        #radioButtons(ns("fileType"), "File type", c("R", "xlsx")))
-           )
-           )
 
    ))),
 
@@ -148,7 +158,13 @@ div(style="text-align:center;",
                    #              actionButton(ns("cancel"), "برگردان به قبل")))
                    #   
                    #   ),
+                   
                    uiOutput(ns("Table")),
+                   # conditionalPanel(condition="is.null(input.Table)==TRUE",
+                   #                  h2("هنوز فایلی وارد نشده است")),
+                   # conditionalPanel(condition="is.null(input.Table)==FALSE",
+                   # uiOutput(ns("Table"))),
+                   
                    br(),
                    
                    
@@ -225,26 +241,67 @@ M0_Load <- function(input,output,session,outputDir){
     #saveData(D_new,input$f_name)
   })
 
-  output$Table <- renderUI({
-  div(class="data-table--general",
-            rHandsontableOutput(session$ns("hot"))) 
-    })
+  # outvar <- reactiveValues(a=1)
+  # 
+  # observeEvent(input$hot,{
+  #   outvar$a=2
+  # })
+  # 
+  # 
+  # React_out <- reactive({
+  #   input$hot
+  #   if(outvar$a==1){        # Does not need have () for input$x .... I mean, input$x() is wrong.
+  #     return("هنوز فایلی وارد نشده است")  # return is important here. Without it does not work
+  #   }
+  #   
+  #   if(outvar$a==2){
+  #     return(
+  #       div(class="data-table--general",
+  #       rHandsontableOutput(session$ns("hot"))))
+  #   }
+  #   
+  # }) 
+  #output$Table <- renderUI({React_out()})
   
+  
+  output$Table <- renderUI({
+    print(is.null(input$hot))
+    if(is.null(input$hot)){
+      A <- h2("هنوز فایلی وارد نشده است")
+    }
+    else{
+      A <- ""
+    }
+    
+    B <-  div(class="data-table--general",
+              rHandsontableOutput(session$ns("hot")))
+    
+    return(list(A,B))
+    
+  })
+  
+  
+  
+    
+    # if(outvar$a==1){        # Does not need have () for input$x .... I mean, input$x() is wrong.
+    #   return(h2("هنوز فایلی وارد نشده است"))   # return is important here. Without it does not work
+    # }
+    # 
+    # if(outvar$a==2){
+    #   return(div(class="data-table--general",
+    #              rHandsontableOutput(session$ns("hot"))))
+    # }
+    
+  
+
+
   
   
   output$f_make <- renderUI({
     
-    A <-numericInput(inputId = session$ns("num_row"),
-        label =  "تعداد دانش آموز",min = 1,value = 1,step = 1)
-    
-    B <- numericInput(inputId = session$ns("num_col"),
-                 label = "تعداد امتحان",min = 1,value = 1,step = 1)
-    
-    C <- actionButton(inputId = session$ns("f_make"),
+    actionButton(inputId = session$ns("f_make"),
                  label = div(class="action-button--font-size","ساختن فایل جدید"),
                  class="action-button--color--yellow")
-    
-    return(list(A,B,C))
     
   })
 
@@ -296,12 +353,14 @@ M0_Load <- function(input,output,session,outputDir){
        #A <- textInput(inputId = session$ns("f_name"),label = "نام دیتا",
        #            value = sprintf("%s-%s-%s",Date[3],Date[2],Date[1]))
      #includeScript("progress.js")
-     B <- fileInput(inputId = session$ns("f_new"),
+     div(style="padding-top:1%;",
+     fileInput(inputId = session$ns("f_new"),
                       label = div(class="load__subtitle--font-size","آپلود کردن فایل جدید"),
-                      buttonLabel = div(style="font-size:130%;","جستجو"),
-                      placeholder = "فایلی موجود نیست",
-                      width = "100%")
-       return(list(B))
+                      #buttonLabel = list(div(style="font-size:130%;","جستجو",icon("folder"))),
+                      buttonLabel = list(icon("folder")),
+                      placeholder = "هنوز فایلی وارد نشده است",
+                      width = "100%",
+                      accept=".xlsx"))
      # }else{
      #   A <- selectInput(inputId = session$ns("f_remove"),label = "نام دیتا",choices = File()$name) 
      #   B <- actionButton(session$ns("remove_f"), "پاک کردن")
@@ -503,7 +562,7 @@ M0_Load <- function(input,output,session,outputDir){
      div(class="load--font-size_add",
      textAreaInput(inputId = session$ns("save_name"),label = "", value ="",
                height = "2.4em",resize = "none",width = "100%",
-               placeholder = "نام فایل ذخیره شده"))
+               placeholder = "نام فایل ذخیره شده را وارد کنید"))
    })
    
    # observeEvent(save_name,{
