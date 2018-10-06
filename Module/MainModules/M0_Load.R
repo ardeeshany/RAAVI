@@ -257,14 +257,7 @@ M0_Load <- function(input,output,session,outputDir){
     for(i in 1:input$num_row) { 
       D_new[i,1] <- paste("نام ", i, sep = "")
     }
-    # D_new <- data.frame("تاریخ آزمون"="",matrix("",nrow = 1,ncol = 2),stringsAsFactors = FALSE)
-    # colnames(D_new)[1] <- "تاریخ آزمون"
-    # for(i in 1:2) {
-    #   colnames(D_new)[i+1] <- paste("تاریخ ", i, sep = "")
-    # }
-    # for(i in 1:1) {
-    #   D_new[i,1] <- paste("نام ", i, sep = "")
-    # }
+
     if(input$num_col==1){
     values[["now"]] <-   cbind(rep(NA,input$num_row))
     }else{
@@ -375,17 +368,15 @@ M0_Load <- function(input,output,session,outputDir){
         hot_data = hot_to_r(input$hot)
         A <- hot_data[-1,-1]
         
-        if(!is.null(A)){
+        if(!is.null(dim(A))){
         for(i in 1:dim(A)[1]){
           for(j in 1:dim(A)[2]){
             A[i,j] <- persian.tonumber(A[i,j])
           }
-        }}
+        }
+          }
         
-        if(input$num_col==1){
-          values[["now"]] <- cbind(rep(NA,dim(A)[1]))
-        }else{
-        values[["now"]] <- data.matrix(A)}
+        values[["now"]] <- data.matrix(A)
         
         values[["names"]] <- hot_data[-1,1]
         values[["dates"]] <- t(hot_data[1,-1])
