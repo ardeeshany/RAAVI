@@ -23,6 +23,8 @@ library(extrafont)
 library(shinythemes)
 library(networkD3)
 library(dashboardthemes)
+library(shinydashboardPlus)
+library(visNetwork)
 
 #font_import()
 Sys.setlocale(category = 'LC_ALL','en_US.UTF-8')
@@ -72,4 +74,5 @@ callModule(Body,"mod_body")
 
 
 shinyApp(ui, server) #,enableBookmarking = "url")
+
 

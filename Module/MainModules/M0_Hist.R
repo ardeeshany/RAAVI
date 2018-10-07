@@ -17,7 +17,7 @@ M0_HistUI <- function(id){
              ),
              
              column(1,
-                    div(class="input-box--general",style="margin-left:50%",
+                    div(class="input-box--general",style="margin-left:90%",
                         uiOutput(ns("Hg_bin")))
              ),
              column(1,

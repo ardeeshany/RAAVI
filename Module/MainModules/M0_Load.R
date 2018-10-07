@@ -267,7 +267,7 @@ M0_Load <- function(input,output,session,outputDir){
   output$Table <- renderUI({
     print(is.null(input$hot))
     if(is.null(input$hot)){
-      A <- h2("هنوز فایلی وارد نشده است")
+      A <- div(style="color:grey; font-size:150%;",br(), br(), "هنوز فایلی وارد نشده است",br(),br(),br())
     }
     else{
       A <- ""

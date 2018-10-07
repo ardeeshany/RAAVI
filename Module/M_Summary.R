@@ -52,8 +52,10 @@ fluidRow(
          #   title = "Title 5", width = NULL, background = "light-blue",
          #   "A box with a solid light-blue background"
          # )
-  ),
-  M_InfoUI(ns("info"))
+  )
+  
+  
+  #M_InfoUI(ns("info"))
   
   
   # column(width = 4,
@@ -81,7 +83,7 @@ fluidRow(
 
 M_Summary <- function(input,output,session){
  
-  callModule(M_Info,"info")
+  #callModule(M_Info,"info")
   
   # infoBox
   # output$progressBox <- renderInfoBox({

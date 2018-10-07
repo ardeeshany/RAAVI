@@ -12,7 +12,7 @@ M0_BoxUI <- function(id,date,names){
                         uiOutput(ns("Bx_SeI1")))
              ),
              column(1, 
-                    div(class="input-box--general",style="margin-left:50%",
+                    div(class="input-box--general",style="margin-left:90%",
                         uiOutput(ns("Bx_SeI2")))
              ),
              column(1,
