@@ -71,15 +71,15 @@ class_label <- c("M","P","C")
 ##  assign every grade dates to its label (date_P2)
 for(i in 2:num_CP){
   nam <- paste("class_P", i, sep = "")
-  Data_num <- paste("Data_P", i, ".xlsx", sep = "")
+  Data_num <- paste("Module/Extra/Data_P", i, ".xlsx", sep = "")
   assign(nam, r_excel_names(Data_num)$class)
   
   nam <- paste("names_P", i, sep = "")
-  Data_num <- paste("Data_P", i, ".xlsx", sep = "")
+  Data_num <- paste("Module/Extra/Data_P", i, ".xlsx", sep = "")
   assign(nam, r_excel_names(Data_num)$student)
   
   nam <- paste("date_P", i, sep = "")
-  Data_num <- paste("Data_P", i, ".xlsx", sep = "")
+  Data_num <- paste("Module/Extra/Data_P", i, ".xlsx", sep = "")
   assign(nam, r_excel_names(Data_num)$date)
 }
 
@@ -89,7 +89,7 @@ for(i in 2:num_CP){
 for(i in 2:num_CP){
   for(j in 1:length(class_P3)){
     nam <- paste("DP", i,  class_label[j],  sep = "")
-    Data_num <- paste("Data_P", i, ".xlsx", sep = "")
+    Data_num <- paste("Module/Extra/Data_P", i, ".xlsx", sep = "")
     assign(nam, r_excel_class(Data_num,j))
   }
 }

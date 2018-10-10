@@ -30,7 +30,7 @@ library(shinydashboardPlus)
 Sys.setlocale(category = 'LC_ALL','en_US.UTF-8')
 
 ## modules ##
-source('ui_color.R')
+source('Module/Extra/ui_color.R')
 
 source('Module/Header.R')
 source('Module/Sidebar.R')
@@ -38,8 +38,8 @@ source('Module/RightSidebar.R')
 source('Module/Body.R')
 source('Module/theme.R')
 
-source('Data_Import.R')
-source('ui_outside_functions.R')
+source('Module/Extra/Data_Import.R')
+source('Module/Extra/ui_outside_functions.R')
 
 source('Module/M1_Class.R')
 source('Module/M2_Class.R')
