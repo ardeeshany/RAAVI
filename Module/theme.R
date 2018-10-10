@@ -46,7 +46,7 @@ theme_RAAVI <- shinyDashboardThemeDIY(
   ,sidebarSearchBorderColor = "rgb(55,72,80)"
   
   ,sidebarTabTextColor = "white"
-  ,sidebarTabTextSize = 20
+  ,sidebarTabTextSize = 18
   ,sidebarTabBorderStyle =  "none none solid none"
   ,sidebarTabBorderColor = "rgb(35,106,135)"
   ,sidebarTabBorderWidth = 2
@@ -64,7 +64,7 @@ theme_RAAVI <- shinyDashboardThemeDIY(
   # )
   #,sidebarTabTextColorSelected = "rgb(0,0,0)"
   ,sidebarTabTextColorSelected = "#9C9A40"
-  ,sidebarTabRadiusSelected = "0px 10px 10px 0px"
+  ,sidebarTabRadiusSelected = "0px 0px 0px 0px"
   
   
   ,sidebarTabBackColorHover = "#2E4A62"

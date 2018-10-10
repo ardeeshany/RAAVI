@@ -34,6 +34,7 @@ source('ui_color.R')
 
 source('Module/Header.R')
 source('Module/Sidebar.R')
+source('Module/RightSidebar.R')
 source('Module/Body.R')
 source('Module/theme.R')
 
@@ -53,6 +54,10 @@ source('Module/M_Student.R')
   source('Module/MainModules/M0_St_Scatter.R')
 source('Module/M_Summary.R')
 source('Module/M_Info.R')
+  source('Module/MainModules/I0_NetInfo.R')
+  source('Module/MainModules/I0_CardInfo.R')
+
+
 
 
 ui <- dashboardPage(
@@ -60,6 +65,7 @@ ui <- dashboardPage(
 HeaderUI("mod_header"),                   
 SidebarUI("mod_sidebar"),
 BodyUI("mod_body",theme=theme_RAAVI)
+#rightsidebar = RightSidebarUI("mod_rightsidebar")
 
 )
 
@@ -68,11 +74,10 @@ server <- function(input, output,session) {
 
 callModule(Header,"mod_header")
 callModule(Sidebar,"mod_sidebar")
+# callModule(RightSidebar,"mod_rightsidebar")
 callModule(Body,"mod_body")
   
 }
 
 
 shinyApp(ui, server) #,enableBookmarking = "url")
-
-

@@ -4,7 +4,8 @@ M3_ClassUI <- function(id){
 
   tabsetPanel(
     
-     tabPanel(title=div(class="tabPanel--font-size","تحلیل را انتخاب کنید"),icon = icon("mail-forward")),
+    
+     tabPanel(title=div(class="tabPanel--font-size center","تحلیل را انتخاب کنید"),icon = icon("hand-o-right",class="tabPanel-icon")),
      M0_BoxUI(ns("Box")),
      M0_HistUI(ns("Hist")),
      M0_ScatterUI(ns("Scatter")),                       

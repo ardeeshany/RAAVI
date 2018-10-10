@@ -1,34 +1,39 @@
 ## Sidebar ##
+
+
 SidebarUI <- function(id){
   
   ns <- NS(id)
 
   dashboardSidebar(
-    width = 120,
+    width =  85,
     
     # helpText(div(style="margin-top:10%; color : AliceBlue; text-align:center ;font-size: 380%; font-weight: bold;font-family:'dastnevis';",
     #              "راوی")),
 
-    sidebarMenu(id = ns("menu1"),          
+    sidebarMenu(id = ns("menu1"),       
               
               
       #sidebarSearchForm(textId = "searchText", buttonId = "searchButton",label = "Search..."),
 
       #menuItem("ورود", tabName="Login", icon = icon("sign-in")),
       
+      
       div(style="margin-top:1em;",br()),
       
-      div(style="font-family:'dastnevis'; font-size:1.4em; margin-top:25%; margin-left:5%;text-align:center;",
-          menuItem(div(style=" color:AliceBlue; ","معرفی"), tabName= "Summary",icon = icon("list-ul")),
+      div(style="font-family:'dastnevis'; text-align:center; margin-left:10%;",
           div(style="margin-top:25%;",
-          menuItem(div(style=" color:AliceBlue; ", "کلاس"),  tabName= "Class",icon  =icon("sitemap"))),
-          div(style="margin-top:220%;",
-              menuItem(div(style=" color:AliceBlue; ", "ارتباط با ما"),  tabName= "Info"))
+          menuItem(div(class="sidebar--font","معرفی"), tabName= "Summary",icon = icon("home",class="sidebar-icon"))),
+          div(style="margin-top:72%;",
+          menuItem(div(class="sidebar--font", "تحلیل"),  tabName= "Class",icon  =icon("database",class="sidebar-icon"))),
+          div(style="margin-top:72%;",
+              menuItem(div(class="sidebar--font", style="font-size:90%;", "تیم راوی"),  tabName= "Info",icon=icon("users",class="sidebar-icon")))
           ),
       
-      div(style="text-align:center;",
+      div(style="text-align:center; margin-top:242%;",
       tags$img(src='logogrey.svg')
       )
+      
       # div(style="font-family:'dastnevis'; font-size:1.5em; margin-top:5%; margin-left:5%;",
       #     menuItem("معرفی", tabName= "Summary",icon = icon("list-ul")),
       #     div(style="margin-top:5%;",

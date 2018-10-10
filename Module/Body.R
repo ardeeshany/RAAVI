@@ -7,9 +7,9 @@ ns <- NS(id)
 # )
 
 dashboardBody(
-
+#tags$head(tags$script(HTML("$('body').addClass('sidebar-mini');"))),
 theme,
-  
+
 #ColorUI("mode_color"),  
   # tags$head( 
   #   tags$style(HTML(".main-sidebar { color: #f4b943; }")) 

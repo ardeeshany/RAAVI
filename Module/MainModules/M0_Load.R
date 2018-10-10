@@ -4,8 +4,8 @@ M0_LoadUI <- function(id){
   ns <- NS(id)
   
   
-  tabPanel(title = div(class="tabPanel--font-size","وارد کردن دیتا"),
-           icon=icon("download"),
+  tabPanel(title = div(class="tabPanel--font-size center","وارد کردن دیتا"),
+           icon=icon("download",class="tabPanel-icon"),
        
            fluidRow(
 
@@ -44,7 +44,7 @@ div(style="text-align:center;",
 column(width = 3,
 br(),
 box(width="200%",
-    title = div(class="load__title--font-size","ویرایش اطلاعات"),
+    #title = div(class="load__title--font-size",""),
     status="primary",
 
       wellPanel(

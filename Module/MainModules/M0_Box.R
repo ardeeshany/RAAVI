@@ -3,8 +3,8 @@ M0_BoxUI <- function(id,date,names){
   ns <- NS(id)
   
         
-  tabPanel(title =div(class="tabPanel--font-size","نمودار جعبه ای"),
-           icon=icon("square"),
+  tabPanel(title =div(class="tabPanel--font-size center","نمودار جعبه ای"),
+           icon=icon("archive",class="tabPanel-icon"),
            fluidRow(
              
              column(1,

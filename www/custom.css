@@ -1,3 +1,30 @@
+.sidebar-icon {
+    font-size: 150%;
+}
+
+.tabPanel-icon {
+    font-size: 125%;
+}
+
+.center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    display:inline-block;
+}
+
+
+.sidebar--font{
+  font-size:105%; 
+  color:AliceBlue;
+  /*display:inline-block;*/
+  /*margin-left:30%;*/
+}
+
+.color__raavi{
+  color : #9C9A40;
+}
+
 .load--font-size_add{
   font-size:100%;
   font-weight:bold;
@@ -32,13 +59,13 @@
 
 .load__subtitle--font-size{
 text-align:center;
-font-size:130%; 
+font-size:110%; 
 font-weight:bold;
 }
 
 .load__title--font-size{
 text-align:center;
-font-size:190%; 
+font-size:158%; 
 font-weight:bold;
 }
 
@@ -51,7 +78,7 @@ font-weight:bold;
 .input-box--general{
 display:inline-block;
 text-align:center;
-font-size:140%;
+font-size:130%;
 width:220%;
 margin-top:30%; 
 }
@@ -163,7 +190,7 @@ margin-top:48%;
 
 
 .action-button--mtop{
-  margin-top:77%;
+  margin-top:72%;
 }
 
 .action-button--mtop__Pr{
@@ -237,14 +264,19 @@ display:inline-block;
 text-align:center;
 }
 
+.tabPanel--color{
+    color : black;
+}
+
 .tabPanel--font-size{
-  font-size: 140%;
+  font-size: 130%;
+  color: #485167;
 }
 
 
 
 .input-box--font-size{
-font-size:150%;
+font-size:130%;
 }
 
 .input-box--width{

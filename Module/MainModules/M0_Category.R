@@ -3,8 +3,8 @@ M0_CatUI <- function(id){
   
   ns <- NS(id)
   
-  tabPanel(title = div(class="tabPanel--font-size","گروه بندی"),
-           icon = icon("align-justify"),
+  tabPanel(title = div(class="tabPanel--font-size center","گروه بندی"),
+           icon = icon("group",class="tabPanel-icon"),
            
            
            fluidRow(                
