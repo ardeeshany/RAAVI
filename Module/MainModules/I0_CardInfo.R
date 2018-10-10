@@ -5,9 +5,13 @@ CardInfoUI <- function(id) {
   tabPanel(title =div(class="tabPanel--font-size","اطلاعات فردی"),
   column(12,offset = 3,
            uiOutput(ns("card_ardalan"))
-  )
+  ),
+  actionButton("sendSignal", "Press 3x to Send"),
+  textOutput("my_button"),
+  textInput("subject", "Subject:", value="")
   
            )
+
   
 }
 
@@ -28,14 +32,23 @@ CardInfo <- function(input,output,session){
         "دکتری آمار و تحلیل داده"
     ),
     footer = div(style="text-align:right;",
-                 list(socialButton(
+                 list(
+                   socialButton(
                    url = "https://github.com/ardeeshany",
                    type = "github"
                  ),
                  socialButton(
                    url = " https://www.linkedin.com/in/ardalan-mirshani-ab7b5476/",
                    type = "linkedin"
-                 )))
+                 ),
+                 
+                 appButton(
+                   url = "http://google.com",
+                   label = "Inbox",
+                   icon = "fa fa-envelope",
+                   enable_badge = FALSE
+                 )
+                 ))
     
   )
   })

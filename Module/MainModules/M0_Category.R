@@ -34,15 +34,15 @@ M0_CatUI <- function(id){
      #######################        
              column(1,offset = 2,
                     div(class="slider--general",
-                    sliderInput(inputId = ns("DT_sl"),label = "بازه ی مورد علاقه تان را انتخاب کنید",
+                    sliderInput(inputId = ns("DT_sl"),label = "",
                       min = 0,max = 20,value = c(0,20),step = 0.5,width = "72%")),
                     div(class="action-button--general",    
                     style="margin-left:210%;",
                     actionButton(inputId = ns("DT_AC2"),
-                    label = div(class="action-button--font-size","فیلتر"),
+                    label = div(class="action-button--font-size inline action-button--text-mleft", "بازه ی مورد نظر"),
                     class="action-button--color--yellow",
-                    width = "250px"))
-                    #,icon=icon("arrow-right")))
+                    width = "320%",
+                    icon=icon("hand-o-up")))
              )
 
      #######################       

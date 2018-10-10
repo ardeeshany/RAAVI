@@ -22,11 +22,11 @@ M0_ProgUI <- function(id){
            fluidRow(                   
             
              column(1,
-                    div(class="input-box--general",
+                    div(class="numeric-box--general__Pr",
                         uiOutput(ns("Pr_numI")))),
              
              column(1,
-                    div(class="input-box--general",
+                    div(class="numeric-box--general__Pr",
                         uiOutput(ns("Pr_bin2")))),
              
              column(1,
@@ -47,9 +47,9 @@ M0_ProgUI <- function(id){
              
              ########################################
  
-             column(1,offset = 2,
-                    div(class="action-button--general--left action-button--mtop action-button--mleft",
-                        style="margin-left:30%;",
+             column(1,offset = 5,
+                    div(class="action-button--general--left",
+                        style="margin-left:30%; margin-top:80%;",
                         actionButton(inputId = ns("Pr_AC1"),
                             label = div(class="action-button--font-size","پیشرفت فردی"),
                             class="action-button--color--yellow"))
@@ -91,13 +91,13 @@ M0_Prog <- function(input,output,session,Vals){
   
   output$Pr_numI <- renderUI({
     ch <- max(length(colnames(Data())),1)
-    numericInput(ns("Pr_numI"),label = "میانگین وزنی",min = 1,max = ch,value = 1,width = "85px")
+    numericInput(ns("Pr_numI"),label = "میانگین وزنی",min = 1,max = ch,value = 1)
   })
   
   output$Pr_bin2 <- renderUI({
     ch <- max(length(rownames(Data())),1)
     #selectInput(ns("Pr_bin2"),label = "تعداد گروه",choices=1:5,selected = 1,width = "85px")
-    numericInput(ns("Pr_bin2"),label = "تعداد گروه",min = 1,max = ch,value = 1,width = "85px")
+    numericInput(ns("Pr_bin2"),label = "تعداد گروه",min = 1,max = ch,value = 1)
   })
   
   

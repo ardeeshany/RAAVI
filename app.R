@@ -25,6 +25,7 @@ library(networkD3)
 library(dashboardthemes)
 library(visNetwork)
 library(shinydashboardPlus)
+library(sendmailR)
 
 #font_import()
 Sys.setlocale(category = 'LC_ALL','en_US.UTF-8')

@@ -78,18 +78,26 @@ font-weight:bold;
 .input-box--general{
 display:inline-block;
 text-align:center;
-font-size:130%;
+font-size:125%;
 width:220%;
 margin-top:30%; 
+}
+
+.numeric-box--general__Pr{
+display:inline-block;
+text-align:center;
+font-size:125%;
+width:140%;
+margin-top:35%; 
 }
 
 
 .numeric-box--general__cat{
 display:inline-block;
 text-align:center;
-font-size:140%;
-width:290%;
-margin-top:48%; 
+font-size:125%;
+width:250%;
+margin-top:28%; 
 }
 
 .action-button--general{
@@ -97,6 +105,9 @@ margin-top:48%;
   width:130%;
 }
 
+.action-button--text-mleft{
+  margin-left:10%;
+}
 
 .action-button--general__cat{
   text-align:center;
@@ -108,7 +119,7 @@ margin-top:48%;
   width:1000%;
   font-size:150%;
   font-weight:bold;
-  margin-top:30%;
+  margin-top:5%;
   margin-left:50%;
 }
 
@@ -190,7 +201,7 @@ margin-top:48%;
 
 
 .action-button--mtop{
-  margin-top:72%;
+  margin-top:73%;
 }
 
 .action-button--mtop__Pr{
@@ -207,7 +218,7 @@ margin-top:48%;
 }
 
 .check-box--font-size{
- font-size:150%; 
+ font-size:135%; 
 }
 
 .check-box--font-size__cat{
@@ -219,7 +230,7 @@ margin-top:48%;
 }
 
 .check-box--mtop__cat{
-   margin-top:182%;
+   margin-top:155%;
 }
 
 .check-box--mleft{
@@ -227,7 +238,7 @@ margin-top:48%;
 }
 
 .check-box--mleft__cat{
-   margin-left:32%;
+   margin-left:12%;
 }
 
 .radio-button--mleft{
@@ -292,7 +303,7 @@ margin-top:40%;
 }
 
 .action-button--font-size{
-  font-size:130%;
+  font-size:120%;
 }
 
 
