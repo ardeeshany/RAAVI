@@ -25,7 +25,7 @@ library(networkD3)
 library(dashboardthemes)
 library(visNetwork)
 library(shinydashboardPlus)
-library(sendmailR)
+library(mailR)
 
 #font_import()
 Sys.setlocale(category = 'LC_ALL','en_US.UTF-8')
@@ -54,12 +54,14 @@ source('Module/M3_Class.R')
 source('Module/M_Student.R')
   source('Module/MainModules/M0_St_Scatter.R')
 source('Module/M_Summary.R')
-source('Module/M_Info.R')
-  source('Module/MainModules/I0_NetInfo.R')
-  source('Module/MainModules/I0_CardInfo.R')
+source('Module/I1_Info.R')
+  source('Module/MainModules/I0_Net.R')
+  source('Module/MainModules/I0_Card.R')
+  source('Module/MainModules/I0_Contact.R')
 
 
-
+A <- Sys.chmod("Module/Infomail.R", use_umask = FALSE)
+str(A)
 
 ui <- dashboardPage(
 
@@ -82,3 +84,4 @@ callModule(Body,"mod_body")
 
 
 shinyApp(ui, server) #,enableBookmarking = "url")
+

@@ -1,3 +1,58 @@
+.box__contact--general{
+  margin-top:3%;
+  margin-left:20%;
+}
+
+.right{
+text-align:right; 
+}
+
+.bold{
+font-weight:bold;
+}
+
+.green2{
+  color: #006E6D;
+}
+
+.red{
+  color : #B93A32;
+}
+
+.error__size{
+  font-size : 110%;
+}
+
+.error--mleft{
+  margin-left:82.5%;
+}
+
+.error--mleft__message{
+  margin-left:84%;
+}
+
+.error--mleft__name{
+  margin-left:72.5%;
+}
+
+.info-card{
+  margin-left:25%; 
+  margin-top:2%;
+}
+
+.mailR{
+  margin-left:40%; 
+  margin-top:1%; 
+}
+
+textarea{
+text-align:right;   
+}
+
+.Broya{
+font-family: B Roya ;
+}
+
 .sidebar-icon {
     font-size: 150%;
 }

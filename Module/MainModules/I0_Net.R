@@ -1,4 +1,4 @@
-NetInfoUI <- function(id) {
+I0_NetUI <- function(id) {
   
   ns <- NS(id)
   tabPanel(title =div(class="tabPanel--font-size","ساختار تیمی"),
@@ -9,7 +9,7 @@ NetInfoUI <- function(id) {
 }
 
 
-NetInfo <- function(input,output,session){
+I0_Net<- function(input,output,session){
   
   
   ardalan <- "ardalan.jpg"

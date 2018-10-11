@@ -51,7 +51,7 @@ tabItem(tabName = "Class", M3_ClassUI(ns("cls"))),
 # tabItem(tabName = "C10",M1_ClassUI(ns("c10"))), 
 tabItem(tabName="Student", M_StudentUI(ns("student"),names_all)),
 tabItem(tabName = "Summary", M_SummaryUI(ns("summary"))),
-tabItem(tabName = "Info", M_InfoUI(ns("info")))
+tabItem(tabName = "Info", I1_InfoUI(ns("info")))
        ),
 tags$head(includeHTML(("www/google-analytics.html")))    
 )
@@ -61,7 +61,7 @@ Body <- function(input,output,session, outputadrs="RAAVI/RAAVI-Released/DATA/Tes
   
   
           callModule(M_Summary,"summary")
-          callModule(M_Info,"info")
+          callModule(I1_Info,"info")
           callModule(M3_Class,"cls",outputDir = outputadrs,class="0",level="0",course="0")
   
   # vals <- callModule(M1_Class,"c12",outputcls = sprintf("%s/12",outputadrs),class="12") 

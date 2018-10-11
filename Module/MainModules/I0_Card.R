@@ -1,26 +1,21 @@
-CardInfoUI <- function(id) {
+I0_CardUI <- function(id) {
   
   ns <- NS(id)
-  
-  tabPanel(title =div(class="tabPanel--font-size","اطلاعات فردی"),
-  column(12,offset = 3,
-           uiOutput(ns("card_ardalan"))
-  ),
-  actionButton("sendSignal", "Press 3x to Send"),
-  textOutput("my_button"),
-  textInput("subject", "Subject:", value="")
-  
-           )
+
+  tabPanel(title =div(class="tabPanel--font-size center","تیم راوی"),
+           icon = icon("vcard",class="tabPanel-icon"),
+           div(class="info-card",
+           uiOutput(ns("card_ardalan"))))
 
   
 }
 
 
-CardInfo <- function(input,output,session){
+I0_Card <- function(input,output,session){
   
   
   output$card_ardalan <- renderUI({
-    widgetUserBox(
+    widgetUserBox(width = 8,
     title = div(style="font-size:130%; color: white; text-align:left;","اردلان میرشانی"),
     subtitle = div(style="font-size:130%; color: white; text-align:left;","موسس راوی"),
     type = NULL,
@@ -52,6 +47,10 @@ CardInfo <- function(input,output,session){
     
   )
   })
+
+
+  
+  
   
   
 }
