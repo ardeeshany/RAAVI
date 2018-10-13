@@ -1,3 +1,7 @@
+#    159.65.170.96
+#  sudo su - -c "R -e \"install.packages('devtools', repos='http://cran.rstudio.com/')\""
+#  sudo su - -c "R -e \"devtools::install_github('daattali/shinyjs')\""
+
 
 ## app.R ##f
 library(shiny)
@@ -85,8 +89,4 @@ source('Module/I1_Info.R')
     
   shinyApp(ui=ui,server=server)
 
-  library(shiny)
-  profvis({
-    runExample("06_tabsets")  
-  })
   
