@@ -1,3 +1,5 @@
+
+
 BodyUI <- function(id,theme){
   
 ns <- NS(id)
@@ -49,7 +51,7 @@ tabItem(tabName = "Class", M3_ClassUI(ns("cls"))),
 # tabItem(tabName = "C12",M1_ClassUI(ns("c12"))), 
 # tabItem(tabName = "C11",M1_ClassUI(ns("c11"))), 
 # tabItem(tabName = "C10",M1_ClassUI(ns("c10"))), 
-tabItem(tabName="Student", M_StudentUI(ns("student"),names_all)),
+#tabItem(tabName="Student", M_StudentUI(ns("student"),names_all)),
 tabItem(tabName = "Summary", M_SummaryUI(ns("summary"))),
 tabItem(tabName = "Info", I1_InfoUI(ns("info")))
        ),
@@ -59,7 +61,7 @@ tags$head(includeHTML(("www/google-analytics.html")))
 
 Body <- function(input,output,session, outputadrs="RAAVI/RAAVI-Released/DATA/Test"){
   
-  
+  profvis({
           callModule(M_Summary,"summary")
           callModule(I1_Info,"info")
           callModule(M3_Class,"cls",outputDir = outputadrs,class="0",level="0",course="0")
@@ -67,8 +69,8 @@ Body <- function(input,output,session, outputadrs="RAAVI/RAAVI-Released/DATA/Tes
   # vals <- callModule(M1_Class,"c12",outputcls = sprintf("%s/12",outputadrs),class="12") 
   #         callModule(M1_Class,"c11",outputcls = sprintf("%s/11",outputadrs),class="11")
   #         callModule(M1_Class,"c10",outputcls = sprintf("%s/10",outputadrs),class="10")
-          callModule(M_Student,"student",Vals=vals)    
-  
+  #        callModule(M_Student,"student",Vals=vals)    
+  })
 #### Login ####  
   #USER1 <- callModule(Pass,"mod_pass")
   #source('Module/Module_Pass.R',local = TRUE)

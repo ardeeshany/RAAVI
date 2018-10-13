@@ -1,17 +1,22 @@
+
 I0_CardUI <- function(id) {
   
   ns <- NS(id)
 
+
   tabPanel(title =div(class="tabPanel--font-size center","تیم راوی"),
            icon = icon("vcard",class="tabPanel-icon"),
            div(class="info-card",
-           uiOutput(ns("card_ardalan"))))
-
+          uiOutput(ns("card_ardalan"))
+          
+          ))
+  
   
 }
 
 
 I0_Card <- function(input,output,session){
+  
   
   
   output$card_ardalan <- renderUI({
@@ -47,7 +52,6 @@ I0_Card <- function(input,output,session){
     
   )
   })
-
 
   
   

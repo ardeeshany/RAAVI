@@ -6,7 +6,7 @@ I0_ContactUI <- function(id){
            icon = icon("envelope",class="tabPanel-icon"),
     div(class="box__contact--general",
     box(status = "primary",collapsible = FALSE, width=9,
-    div(style="margin-top:5%",uiOutput(ns("error"))),
+    uiOutput(ns("error")),
     div(class="mailR right",
         textAreaInput(ns("name"), "نام و نام خانوادگی", value=""), 
         textAreaInput(ns("from"), "آدرس ایمیل", value=""),
@@ -20,8 +20,8 @@ I0_ContactUI <- function(id){
 
 I0_Contact <- function(input,output,server){
   
-  info <- utils::read.table("Module/.gmail_private", header=FALSE, stringsAsFactors=FALSE)
-  info <- as.list(info[,2])
+  info1 <- utils::read.table("Module/.gmail_private", header=FALSE, stringsAsFactors=FALSE)
+  info <- as.list(info1[,2])
   
   output$error <- renderUI({""})
   
@@ -55,9 +55,9 @@ I0_Contact <- function(input,output,server){
                 authenticate = TRUE,
                 send = TRUE)
       
-      output$error <- renderUI({ div(class="green2 error__size error--mleft__message", "پیام شما ارسال شد") })
+      output$error <- renderUI({ div(class="green2 error__size error--mleft__message",
+                                     "پیام شما ارسال شد")})
     }
-    
     
   })
   
