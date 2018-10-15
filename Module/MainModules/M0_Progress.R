@@ -90,14 +90,11 @@ M0_Prog <- function(input,output,session,Vals){
   
   
   output$Pr_numI <- renderUI({
-    ch <- max(length(colnames(Data())),1)
-    numericInput(ns("Pr_numI"),label = "میانگین وزنی",min = 1,max = ch,value = 1)
+    selectInput(ns("Pr_numI"),label = "میانگین وزنی",choices = 1:ncol(Data()),selected = 1)
   })
   
   output$Pr_bin2 <- renderUI({
-    ch <- max(length(rownames(Data())),1)
-    #selectInput(ns("Pr_bin2"),label = "تعداد گروه",choices=1:5,selected = 1,width = "85px")
-    numericInput(ns("Pr_bin2"),label = "تعداد گروه",min = 1,max = ch,value = 1)
+    selectInput(ns("Pr_bin2"),label = "تعداد گروه",choices = 1:nrow(Data()),selected = 1)
   })
   
   
@@ -117,54 +114,65 @@ M0_Prog <- function(input,output,session,Vals){
     var$a = 3
   })
   
-  
-  
-  
-  
-  
-  ##
-
  
-  
-  ##  
+##  
   
   
   React_Pr1 <- eventReactive(input$Pr_AC1, {
-    
+
     Mean <- apply(Data(),2,mean)
-    
     Data_tot1 <- rbind(Data(),Mean)
     rownames(Data_tot1) <- c(rownames(Data()),"میانگین")
+    
     fit_tot1 <- rep(list("NA"),dim(Data_tot1)[1])
     slope1 <- rep(NA,dim(Data_tot1)[1])
     colnames(Data_tot1) <- 1:dim(Data_tot1)[2]
-    for(i in 1:dim(Data_tot1)[1]){
+    
+    for(i in 1:(dim(Data_tot1)[1])){
       d1 <- Data_tot1[i,]
-      d1 <- melt(as.matrix(d1))
+      d1 <- reshape2::melt(as.matrix(d1))
+      d1[,1] <- rownames(Data_tot1)[i]
+      d1[,2] <- 1:dim(Data_tot1)[2]
       colnames(d1) <- c("Student","Day","value")
       fit_tot1[[i]] <- lm(value~Day, data=d1)
       slope1[i] <- coef(fit_tot1[[i]])[2]
     }
+    
     slope1 <- as.data.frame(slope1)
     slope1$names <- rownames(Data_tot1)
     slope1$clr <- "green"
     colnames(slope1) <- c("sl","names","clr")
     slope1[which(slope1$sl>0),3] <- "red" 
+
     
     slope1$ann <- "black"
     slope1$ann[dim(slope1)[1]] <- "violetred"
     colnames(slope1) <- c("sl","names","clr","ann")
-    slope1 <- slope1[order(slope1$sl,decreasing = T),]
+    #slope1 <- slope1[order(slope1$sl,decreasing = T),]
+    
+    
+    if(length(unique(slope1[,3]))==1){
+      if(slope1[,3]=="red"){
+        lab="پیشرفت"
+        col="#00BFC4"
+      }
+      else{
+        lab="پسرفت"
+        col="#F8766D"
+      }
+    }else{
+      lab <- c("پسرفت","پیشرفت")
+      col <- c("#F8766D","#00BFC4")
+    }
+    
     
     
     s1 <- ggplot(slope1,aes(x = reorder(names,sl),y = sl))+
-      geom_bar(stat="identity",aes(fill = factor(clr, labels = c("پسرفت","پیشرفت"))),color="black")+
+      geom_bar(data = slope1,stat="identity",aes(fill=factor(clr,labels = lab)),colour="black")+
       labs(fill="")+
       geom_text(data=slope1,aes(x = names,y = sl,label=round(sl,3)),vjust=0)+
       ylab("شیب پیشرفت خطی") + xlab("")
-      coord_flip()
-    
-    
+      #coord_flip()
     
     gg1 <- ggplotly(s1)
     gg1
@@ -175,47 +183,19 @@ M0_Prog <- function(input,output,session,Vals){
   
   React_Pr2 <-eventReactive(input$Pr_AC2, {
     
-    ## For input$Pr_bin2==1  
-    # Mean <- apply(Data(),2,mean)
-    # Mean2 <- Mean
-    # Mean2 <- melt(as.matrix(Mean2))[,-2]
-    # colnames(Mean2) <- c("Day","value")
-    # Mean2$Day <- 1:length(colnames(Data()))
-    # fit_tot2 <- lm(value~Day, data=Mean2)
-    # slope2 <- coef(fit_tot2)[2]
-    # 
-    # slope2 <- as.data.frame(slope2)
-    # slope2$names <- 1
-    # slope2$clr <- "green"
-    # colnames(slope2) <- c("sl","names","clr")
-    
-    
-    # if(slope2$sl>=0){
-    #   leg.lab="پیشرفت"
-    #   leg.col="#00BFC4"
-    # }
-    # else{
-    #   leg.lab="پسرفت" 
-    #   leg.col="#F8766D"
-    # }
-    # s2 <-ggplot(slope2,aes(x=names, y = sl))+
-    #   geom_bar(stat="identity",fill=leg.col,color="black")+
-    #   labs(fill="")+  # legend title
-    #   geom_text(data=slope2,aes(x = names,y = sl,label=round(sl,3)),vjust=0)+
-    #   ylab("شیب پیشرفت خطی") + xlab("")+
-    #   theme(axis.text.x=element_text(face = "bold.italic", color = "blue", size = 8),
-    #         axis.text.y=element_text(colour="blue", size=10, face="bold"))
-      #coord_flip()  
-    
-    
+   
+    bin2 <- as.numeric(input$Pr_bin2)
+    numI <- as.numeric(input$Pr_numI)
+ 
     # generated weights   
-    if(input$Pr_numI==1){
+    if(numI==1){
       gr <- rep(1,dim(Data())[2])
       }
     else{
-      gr <- as.numeric(cut(1:dim(Data())[2],breaks = input$Pr_numI,labels = 1:input$Pr_numI))
+      gr <- as.numeric(cut(1:dim(Data())[2],breaks = numI,labels = 1:numI))
       }
-    #   
+    #
+    
     d <- as.data.frame(apply(Data(),1,function(x){weighted.mean(x,gr)}))
     d$names <- rownames(Data())
     colnames(d) <- c("mean.w","names")
@@ -226,72 +206,77 @@ M0_Prog <- function(input,output,session,Vals){
     #   #gg<-s2
     # }
     # else{
-      names_ch <- rep(list("NA"),input$Pr_bin2)
-      Data_T <- rep(list("NA"),input$Pr_bin2)
-      ind <- split(1:dim(d)[1], ceiling(seq_along(1:dim(d)[1])/(dim(d)[1]/input$Pr_bin2)))
+      names_ch <- rep(list("NA"),bin2)
+      Data_T <- rep(list("NA"),bin2)
+      ind <- split(1:nrow(Data()), ceiling(seq_along(1:nrow(Data()))/(nrow(Data())/bin2)))
       
-      for(i in 1:input$Pr_bin2){
+      for(i in 1:bin2){
         names_ch[[i]] <- d$names[ind[[i]]]
         Data_T[[i]] <- Data()[rownames(Data()) %in% names_ch[[i]],]
-      }
+        if(length(names_ch[[i]])==1){
+          Data_T[[i]] <- t(Data_T[[i]])
+        }
+        }
       
       
       fit_tot <- rep(list("NA"),length(Data_T))
       slope <- rep(NA,length(Data_T))  
       
+
       for(i in 1:length(Data_T)){  
         Mean <- apply(Data_T[[i]],2,mean)
         Mean <- melt(as.matrix(Mean))[,-2]
         colnames(Mean) <- c("Day","value")
-        Mean$Day <- 1:length(colnames(Data()))
+        Mean$Day <- 1:ncol(Data())
         fit_tot[[i]] <- lm(value~Day, data=Mean)
         slope[i] <- coef(fit_tot[[i]])[2]
       }
       
       slope <- as.data.frame(slope)
-      slope$names <- 1:input$Pr_bin2
+      slope$names <- 1:bin2
       slope$clr <- "green"
       colnames(slope) <- c("sl","names","clr")
       slope[which(slope$sl>0),3] <- "red"
-      slope <- slope[dim(slope)[1]:1,] 
+      #slope <- slope[dim(slope)[1]:1,] 
       
       
-      ylab_names <- rep(list("NA"),input$Pr_bin2)
+      ylab_names <- rep(list("NA"),bin2)
       
-      for(i in 1:input$Pr_bin2){
+      for(i in 1:bin2){
         ylab_names[[i]] <- paste(names_ch[[i]],sep = "\n")
       }
     
-     
-      if(input$Pr_bin2==1){
-       if(slope$sl>=0){
-         lab="پیشرفت"
-         col="#00BFC4"
-       }
-       else{
-         lab="پسرفت"
-         col="#F8766D"
-       }
+       
+      if(length(unique(slope[,3]))==1){
+        if(slope[,3]=="red"){
+          lab="پیشرفت"
+          col="#00BFC4"
+        }
+        else{
+          lab="پسرفت"
+          col="#F8766D"
+        }
       }else{
         lab <- c("پسرفت","پیشرفت")
         col <- c("#F8766D","#00BFC4")
       }
-       
-    
+      
+      
+      
+      
    slope <- slope[order(slope$sl,decreasing = F),]    
         
-   s <- ggplot(slope,aes(x=reorder(names,1:input$Pr_bin2), y = sl))+
+   s <- ggplot(slope,aes(x=reorder(names,1:bin2), y = sl))+
         geom_bar(stat="identity",aes(fill=factor(clr,labels = lab)),color="black")+
         scale_fill_manual(values=col)+    # filling geom_bar with colors
         labs(fill="")+  # legend title
-        geom_text(data=slope,aes(x = reorder(names,1:input$Pr_bin2),y = sl,label=round(sl,3)),vjust=0)+
+        geom_text(data=slope,aes(x = reorder(names,1:bin2),y = sl,label=round(sl,3)),vjust=0)+
         ylab("شیب پیشرفت خطی") + xlab("")+
-        scale_x_discrete(labels= ylab_names[input$Pr_bin2:1])+
+        scale_x_discrete(labels= ylab_names[bin2:1])+
         theme(axis.text.x=element_text(face = "bold.italic", color = "blue", size = 8),
               axis.text.y=element_text(colour="blue", size=8, face="bold"))
         #coord_flip()  
       
-  
       gg <- ggplotly(s)
       #gg <- s
     #}
@@ -306,10 +291,14 @@ M0_Prog <- function(input,output,session,Vals){
   
   React_DT3 <-eventReactive(input$DT_AC3, {
     
-    if(input$Pr_numI==1)
+    
+    bin2 <- as.numeric(input$Pr_bin2)
+    numI <- as.numeric(input$Pr_numI)
+    
+    if(numI==1)
       gr <- rep(1,dim(Data())[2])
     else
-      gr <- as.numeric(cut(1:dim(Data())[2],breaks = input$Pr_numI,labels = 1:input$Pr_numI))
+      gr <- as.numeric(cut(1:dim(Data())[2],breaks = numI,labels = 1:numI))
     
     
     d <- as.data.frame(apply(Data(),1,function(x){weighted.mean(x,gr)}))
@@ -317,12 +306,12 @@ M0_Prog <- function(input,output,session,Vals){
     colnames(d) <- c("mean.w","names")
     d <- d[order(d$mean.w,decreasing = T),]
     
-    cc1 <- colorRampPalette(c("sienna3","khaki3","turquoise3"))(input$Pr_bin2)
+    cc1 <- colorRampPalette(c("sienna3","khaki3","turquoise3"))(bin2)
     
-    if(input$Pr_bin2==1)
+    if(bin2==1)
       d$clr <-cc1
     else
-      d$clr <- as.vector(cut(1:dim(Data())[1],breaks = input$Pr_bin2,labels = cc1))
+      d$clr <- as.vector(cut(1:dim(Data())[1],breaks = bin2,labels = cc1))
     
     p <- ggplot(d,aes(x = reorder(names,mean.w),y = mean.w))+
       geom_bar(stat="identity",aes(fill = clr),color="black")+
