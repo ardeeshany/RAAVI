@@ -61,7 +61,6 @@ tags$head(includeHTML(("www/google-analytics.html")))
 
 Body <- function(input,output,session, outputadrs="RAAVI/RAAVI-Released/DATA/Test"){
   
-  profvis({
           callModule(M_Summary,"summary")
           callModule(I1_Info,"info")
           callModule(M3_Class,"cls",outputDir = outputadrs,class="0",level="0",course="0")
@@ -70,7 +69,7 @@ Body <- function(input,output,session, outputadrs="RAAVI/RAAVI-Released/DATA/Tes
   #         callModule(M1_Class,"c11",outputcls = sprintf("%s/11",outputadrs),class="11")
   #         callModule(M1_Class,"c10",outputcls = sprintf("%s/10",outputadrs),class="10")
   #        callModule(M_Student,"student",Vals=vals)    
-  })
+
 #### Login ####  
   #USER1 <- callModule(Pass,"mod_pass")
   #source('Module/Module_Pass.R',local = TRUE)

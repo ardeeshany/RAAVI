@@ -3,8 +3,9 @@ M0_CatUI <- function(id){
   
   ns <- NS(id)
   
-  tabPanel(title = div(class="tabPanel--font-size center","گروه بندی"),
-           icon = icon("group",class="tabPanel-icon"),
+  tabPanel(title = div(class="tabPanel--font-size center",
+                       "فیلتر"),
+           icon = icon("filter",class="tabPanel-icon"),
            
            
            fluidRow(                
@@ -146,6 +147,10 @@ observeEvent(input$DT_AC2, {
 React_DT1 <-eventReactive(input$DT_AC1, {
 
  
+  validate(
+    need(!is.null(Data()),"هنوز داده ای وارد نشده است")
+  )
+  
   if(input$DT_chb1==TRUE){
     lab_m <- reactive(melt_Data_DT()$Group)
   }
@@ -184,7 +189,9 @@ React_DT1 <-eventReactive(input$DT_AC1, {
 
 React_DT2 <-eventReactive(input$DT_AC2, {
 
-
+  validate(
+    need(!is.null(Data()),"هنوز داده ای وارد نشده است")
+  )
   
   if((input$DT_sl[2] <min(melt_Data_DT()$value)) || (input$DT_sl[1] > max(melt_Data_DT()$value))){
     lab <- reactive(paste("[",input$DT_sl[1],",",input$DT_sl[2],"]",sep=""))

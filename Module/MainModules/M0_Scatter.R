@@ -2,7 +2,8 @@ M0_ScatterUI <- function(id){
 
    ns <- NS(id)
 
-  tabPanel(title = div(class="tabPanel--font-size center","دانش آموزان"),
+  tabPanel(title = div(class="tabPanel--font-size center",
+                       "روند دانش آموزان"),
            icon=icon("line-chart",class="tabPanel-icon"),
 
 ### For Error Message
@@ -47,22 +48,22 @@ M0_ScatterUI <- function(id){
              
              column(1,offset=1,
                     div(class="check-box--general check-box--mleft check-box--mtop",
-                        checkboxInput(ns('St_Mean'),
-                                      div(class="check-box--font-size","میانگین")))
+                        checkboxInput(inputId = ns("St_Mean"),
+                                      label=div(class="check-box--font-size","میانگین"),value = TRUE))
              ),
 
              column(1,offset=1,
                     div(class="check-box--general check-box--mleft check-box--mtop",
                         checkboxInput(inputId = ns("St_chbI"),
-                          label =  div(class="check-box--font-size","تجمیع نمودارها"),
-                           value = FALSE))
+                          label = div(class="check-box--font-size","تجمیع نمودارها"),value = TRUE))
              ),
 
              column(1,offset=1,
                     div(class="check-box--general check-box--mtop radio-button--mleft",
                         radioButtons(ns('St_rb'), inline = FALSE,
                                  div(class="check-box--font-size","نوع تخمین"),
-                       choices = c("خطی"="lm","غیرخطی"="loess")))
+                       choices = c("خطی"="lm","غیرخطی"="loess"),selected = "loess"
+                       ))
              )
              
 
@@ -155,6 +156,10 @@ M0_Scatter <- function(input,output,session,Vals){
 
   Reac_CP2_Sc <- eventReactive(input$St_Ac, {
 
+    validate(
+      need(!is.null(Data()),"هنوز داده ای وارد نشده است")
+    )
+    
     m <- reactive({lm(value ~ Day, melt_Data_St())})
 
     text <- reactive({ coef(m())[1] })
@@ -167,7 +172,7 @@ M0_Scatter <- function(input,output,session,Vals){
               axis.text.x  = element_text(face="bold",angle=45, vjust=0.5, size=5)) +
         labs(title="تحلیل زمانی دانش آموزان",color="دانش آموزان") +
         scale_x_discrete(name ="تاریخ امتحان", limits=colnames(Data())) +
-        annotate('text',x = 9,y = 18,label= text())+
+        #annotate('text',x = 9,y = 18,label= text())+
         xlab("زمان") + ylab("نمره")
     }
     else{
@@ -177,7 +182,7 @@ M0_Scatter <- function(input,output,session,Vals){
               axis.text.x  = element_text(face="bold",angle=45, vjust=0.5, size=5)) +
         labs(title="تحلیل زمانی دانش آموزان",color="دانش آموزان") +
         scale_x_discrete(name ="تاریخ امتحان", limits=colnames(Data())) +
-        annotate('text',x = 9,y = 18,label= text())+
+        #annotate('text',x = 9,y = 18,label= text())+
         #geom_text(aes(color=Student),position = position_dodge(width = 1),label = text(), parse = TRUE)+
         xlab("زمان") + ylab("نمره")
     }

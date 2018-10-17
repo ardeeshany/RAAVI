@@ -7,10 +7,9 @@ M0_HistUI <- function(id){
   #### Histogram
   ################
    
-  tabPanel(title = div(class="tabPanel--font-size center","هیستوگرام"),
-           
-           
-            icon = icon("bar-chart",class="tabPanel-icon"),
+  tabPanel(title = div(class="tabPanel--font-size center",
+                      "گروه بندی"),
+            icon = icon("group",class="tabPanel-icon"),
            
            fluidRow(            
              
@@ -83,6 +82,10 @@ M0_Hist <- function(input,output,session,Vals){
   
   Reac_Hg <- eventReactive(input$Hg_Ac, {
    
+    validate(
+      need(!is.null(Data()),"هنوز داده ای وارد نشده است")
+    )
+    
     p <- ggplot(melt_Data_Hg(),aes(value)) + geom_histogram(aes(y=..density..),bins=input$Hg_bin,colour="black", fill="forestgreen",alpha=0.9)+
     geom_density(aes(y=..density..),alpha=0.4, fill="#FF6666",colour="firebrick2",lwd=1.5)+
     labs(title ="هیستوگرام", x = "نمره", y = "فرکانس")

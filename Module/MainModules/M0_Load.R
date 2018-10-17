@@ -3,8 +3,10 @@ M0_LoadUI <- function(id){
   
   ns <- NS(id)
   
+
   
-  tabPanel(title = div(class="tabPanel--font-size center","وارد کردن دیتا"),
+  tabPanel(title = div(class="tabPanel--font-size center",
+                       "وارد کردن داده"),
            icon=icon("download",class="tabPanel-icon"),
        
            fluidRow(
@@ -47,7 +49,7 @@ box(width="200%",
     #title = div(class="load__title--font-size",""),
     status="primary",
 
-      wellPanel(
+    wellPanel(
         #radioButtons(inputId = ns("up_rmv"),label = "",choices = c("آپلود","پاک"),selected = "آپلود",inline = TRUE),
         uiOutput(outputId = ns("f_upload"))),
         #uiOutput(ns("message2"), inline=TRUE),
@@ -76,7 +78,7 @@ box(width="200%",
           #actionButton(ns("save"), "ذخیره کردن دیتا"),
           div(style="height:150%;",
               downloadButton(ns("downloadData"),
-                             div(class="action-button--font-size","ذخیره کردن دیتا"),
+                             div(class="action-button--font-size","ذخیره کردن داده"),
                              class="downlaod-button--general action-button--color--yellow")),
           uiOutput(ns("message"), inline=TRUE)
           #div(class="col-sm-6",
@@ -159,7 +161,31 @@ div(style="text-align:center;",
                    #   
                    #   ),
                    
-                   uiOutput(ns("Table")),
+                   uiOutput(ns("Text")),
+                  
+                   
+                   # conditionalPanel(
+                   #   condition = " output.Table == 'NA'",
+                   #   div(class="green2",style="font-size:120%;",
+                   #       "فایل با موفقیت وارد شد",
+                   #       br())
+                   # ),
+                   
+                   
+                   # if(is.null(input$hot)){
+                   #   A <- div(style="color:grey; font-size:150%;",br(), br(),
+                   #            "هنوز فایلی وارد نشده است",
+                   #            br(),
+                   #            "فایل خود را از منوی سمت چپ وارد کرده یا بسازید",
+                   #            br(),br(),br())
+                   # }
+                   # else{
+                   #   A <- ""
+                   # }
+                         
+                   
+                   div(class="data-table--general",
+                       rHandsontableOutput(ns("hot"))),
                    # conditionalPanel(condition="is.null(input.Table)==TRUE",
                    #                  h2("هنوز فایلی وارد نشده است")),
                    # conditionalPanel(condition="is.null(input.Table)==FALSE",
@@ -264,23 +290,24 @@ M0_Load <- function(input,output,session,outputDir){
   #output$Table <- renderUI({React_out()})
   
   
-  output$Table <- renderUI({
-    print(is.null(input$hot))
+  output$Text <- renderUI({
+    #print(is.null(input$hot))
     if(is.null(input$hot)){
-      A <- div(style="color:grey; font-size:150%;",br(), br(), "هنوز فایلی وارد نشده است",br(),br(),br())
+      A <- div(style="color:grey; font-size:150%;",br(), br(),
+               "هنوز فایلی وارد نشده است",
+               br(),
+              "فایل خود را از منوی سمت چپ وارد کرده یا بسازید",
+               br(),br(),br())
     }
     else{
-      A <- ""
+      A <-  div(class="green2 right",style="font-size:120%;",
+              "فایل با موفقیت وارد شد",
+               br())
     }
-    
-    B <-  div(class="data-table--general",
-              rHandsontableOutput(session$ns("hot")))
-    
-    return(list(A,B))
-    
+
+    return(A)
+
   })
-  
-  
   
     
     # if(outvar$a==1){        # Does not need have () for input$x .... I mean, input$x() is wrong.
@@ -530,7 +557,7 @@ M0_Load <- function(input,output,session,outputDir){
       r2 <- data.frame(cbind(values[["names"]],values[["now"]]),stringsAsFactors = FALSE)
       names(r2) <- names(r1)
       Tot <- rbind(r1,r2)
-      rhandsontable(Tot, useTypes = TRUE, stretchH = "all",
+       rhandsontable(Tot, useTypes = TRUE, stretchH = "all",
        colHeaders = 1:dim(Tot)[2]  ,rowHeaders = NULL,search = TRUE) %>%
        #colHeaders = NULL  ,rowHeaders = NULL) %>%
        hot_cols(colWidths = 120, fixedColumnsLeft = 1,manualColumnMove = FALSE,manualColumnResize = FALSE) %>%
@@ -596,6 +623,8 @@ M0_Load <- function(input,output,session,outputDir){
   observeEvent(input$cancel, {
     if(!is.null(isolate(values[["previous"]]))) values[["now"]] <- isolate(values[["previous"]])
   })
+  
+  
   
   return(values)
   

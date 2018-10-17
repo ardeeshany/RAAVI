@@ -5,13 +5,14 @@ M3_ClassUI <- function(id){
   tabsetPanel(
     
     
-     tabPanel(title=div(class="tabPanel--font-size center","تحلیل را انتخاب کنید"),icon = icon("hand-o-right",class="tabPanel-icon")),
+     #tabPanel(title=div(class="tabPanel--font-size center","تحلیل را انتخاب کنید"),icon = icon("hand-o-right",class="tabPanel-icon")),
+     M0_LoadUI(ns("Load")),
      M0_BoxUI(ns("Box")),
+     M0_ScatterUI(ns("Scatter")),     
      M0_HistUI(ns("Hist")),
-     M0_ScatterUI(ns("Scatter")),                       
-     M0_CatUI(ns("Category")),
      M0_ProgUI(ns("Progress")),
-     M0_LoadUI(ns("Load"))
+     M0_CatUI(ns("Category"))
+     
   )}
 
 

@@ -2,7 +2,8 @@ M0_ProgUI <- function(id){
   
   ns <- NS(id)
   
-  tabPanel(title = div(class="tabPanel--font-size center","پیشرفت"),
+  tabPanel(title = div(class="tabPanel--font-size center",
+                       "پیشرفت"),
            icon=icon("arrow-circle-up",class="tabPanel-icon"),
            
            ### For Error Message          
@@ -88,13 +89,17 @@ M0_Prog <- function(input,output,session,Vals){
     return(M)
   })
   
-  
+
   output$Pr_numI <- renderUI({
-    selectInput(ns("Pr_numI"),label = "میانگین وزنی",choices = 1:ncol(Data()),selected = 1)
+    if(is.null(Data())) ch <- ""
+    else ch <- 1:ncol(Data())
+    selectInput(ns("Pr_numI"),label = "میانگین وزنی",choices = ch )
   })
   
   output$Pr_bin2 <- renderUI({
-    selectInput(ns("Pr_bin2"),label = "تعداد گروه",choices = 1:nrow(Data()),selected = 1)
+    if(is.null(Data())) ch <- ""
+    else ch <- 1:nrow(Data())
+    selectInput(ns("Pr_bin2"),label = "تعداد گروه",choices = ch )
   })
   
   
@@ -120,6 +125,10 @@ M0_Prog <- function(input,output,session,Vals){
   
   React_Pr1 <- eventReactive(input$Pr_AC1, {
 
+    validate(
+      need(!is.null(Data()),"هنوز داده ای وارد نشده است")
+    )
+    
     Mean <- apply(Data(),2,mean)
     Data_tot1 <- rbind(Data(),Mean)
     rownames(Data_tot1) <- c(rownames(Data()),"میانگین")
@@ -183,6 +192,10 @@ M0_Prog <- function(input,output,session,Vals){
   
   React_Pr2 <-eventReactive(input$Pr_AC2, {
     
+    
+    validate(
+      need(!is.null(Data()),"هنوز داده ای وارد نشده است")
+    )
    
     bin2 <- as.numeric(input$Pr_bin2)
     numI <- as.numeric(input$Pr_numI)
@@ -291,6 +304,10 @@ M0_Prog <- function(input,output,session,Vals){
   
   React_DT3 <-eventReactive(input$DT_AC3, {
     
+    
+    validate(
+      need(!is.null(Data()),"هنوز داده ای وارد نشده است")
+    )
     
     bin2 <- as.numeric(input$Pr_bin2)
     numI <- as.numeric(input$Pr_numI)

@@ -3,8 +3,28 @@ M0_BoxUI <- function(id,date,names){
   ns <- NS(id)
   
         
-  tabPanel(title =div(class="tabPanel--font-size center","نمودار جعبه ای"),
+  tabPanel(title =div(class="tabPanel--font-size center",
+                       "روند کلاس"),
            icon=icon("archive",class="tabPanel-icon"),
+           
+           
+           
+           ### For Error Message
+           tags$head(
+             tags$style(HTML("
+                             .shiny-output-error-validation {
+                             color: red;
+                             font-size: 16%;
+                             margin-top: 10%;
+                             margin-left: 10%;
+                             font-weight:bold;
+                             }
+                             "))
+             ),
+           
+           
+           
+           
            fluidRow(
              
              column(1,
@@ -55,7 +75,7 @@ M0_Box <- function(input,output,session,Vals){
   output$Bx_SeI1 <- renderUI({
     selectInput(inputId = ns("Bx_SeI1"),
                 label = div(class="m-input-box--align-center m-input-box--font-size","زمان ابتدا"),
-                choices = colnames(Data()),selected = tail(colnames(Data()),4)[1])
+                choices = colnames(Data()),selected = colnames(Data())[1])
   })
   
   
@@ -68,6 +88,8 @@ M0_Box <- function(input,output,session,Vals){
   #Mean <- reactive({ apply(Data(),2,mean) })
   
   melt_Data_Bx <- reactive({
+    
+
     min=which(colnames(Data())==input$Bx_SeI1)
     max=which(colnames(Data())==input$Bx_SeI2)
     
@@ -87,6 +109,11 @@ M0_Box <- function(input,output,session,Vals){
   })
   
   Reac_CP2M_Bx <- eventReactive(input$Bx_Ac, {
+    
+    validate(
+      need(!is.null(Data()),"هنوز داده ای وارد نشده است")
+    )
+    
     min=which(colnames(Data())==input$Bx_SeI1)
     max=which(colnames(Data())==input$Bx_SeI2)
     if(min <=max){

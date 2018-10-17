@@ -18,7 +18,7 @@ library(reshape2)
 library(plotly)
 library(ggplot2)
 library(rhandsontable)
-library(rdrop2)
+#library(rdrop2)
 library(rio)
 library(tidyr)
 library(stringr)
@@ -31,7 +31,7 @@ library(dashboardthemes)
 #library(visNetwork)
 library(shinydashboardPlus)
 library(mailR)
-library(profvis)
+#library(profvis)
 
 
 #font_import()
@@ -89,4 +89,3 @@ source('Module/I1_Info.R')
     
   shinyApp(ui=ui,server=server)
 
-  
