@@ -2,8 +2,7 @@
 #  sudo su - -c "R -e \"install.packages('devtools', repos='http://cran.rstudio.com/')\""
 #  sudo su - -c "R -e \"devtools::install_github('daattali/shinyjs')\""
 
-
-## app.R ##f
+# ## app.R ##f
 library(shiny)
 library(stats)
 #library(XLConnect)
@@ -19,13 +18,13 @@ library(plotly)
 library(ggplot2)
 library(rhandsontable)
 #library(rdrop2)
-library(rio)
+#library(rio)
 library(tidyr)
 library(stringr)
 library(extrafont)
 #library(shinyWidgets)
 #library(shiny.semantic)
-library(shinythemes)
+#library(shinythemes)
 #library(networkD3)
 library(dashboardthemes)
 #library(visNetwork)
@@ -40,11 +39,11 @@ Sys.setlocale(category = 'LC_ALL','en_US.UTF-8')
 
 
 ## modules ##
-source('Module/Extra/ui_color.R')
+#source('Module/Extra/ui_color.R')
 
 source('Module/Header.R')
 source('Module/Sidebar.R')
-source('Module/RightSidebar.R')
+#source('Module/RightSidebar.R')
 source('Module/Body.R')
 source('Module/theme.R')
 

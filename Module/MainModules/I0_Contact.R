@@ -8,10 +8,12 @@ I0_ContactUI <- function(id){
     box(status = "primary",collapsible = FALSE, width=9,
     uiOutput(ns("error")),
     div(class="mailR right",
-        textAreaInput(ns("name"), "نام و نام خانوادگی", value=""), 
+        
+        div(class="Bnaz",
+        textAreaInput(ns("name"), "نام و نام خانوادگی", value=""),
         textAreaInput(ns("from"), "آدرس ایمیل", value=""),
         textAreaInput(ns("subject"), "موضوع", value=""),
-        textAreaInput(ns("message"),label = "پیام خود را اینجا وارد کنید")),
+        textAreaInput(ns("message"),label = "پیام خود را اینجا وارد کنید"))),
      div(style="margin-left:86%;",
       actionButton(ns("send"), "ارسال ایمیل", class="action-button--color--yellow"))
           )))

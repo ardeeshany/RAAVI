@@ -234,7 +234,7 @@ div(style="text-align:center;",
 
 M0_Load <- function(input,output,session,outputDir){
   
-  Date_US <- as.OtherDate(Sys.Date(),"persian")[1:3]
+  Date_US <- as.OtherDate(Sys.Date(),"modpersian")[1:3]
   Date_Persian = sprintf("%s-%s-%s",Date_US[3],Date_US[2],Date_US[1])
   
   
@@ -295,7 +295,7 @@ M0_Load <- function(input,output,session,outputDir){
     if(is.null(input$hot)){
       A <- div(style="color:grey; font-size:150%;",br(), br(),
                "هنوز فایلی وارد نشده است",
-               br(),
+               br(),br(),
               "فایل خود را از منوی سمت چپ وارد کرده یا بسازید",
                br(),br(),br())
     }
