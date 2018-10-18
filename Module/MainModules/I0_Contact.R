@@ -14,8 +14,8 @@ I0_ContactUI <- function(id){
         textAreaInput(ns("from"), "آدرس ایمیل", value=""),
         textAreaInput(ns("subject"), "موضوع", value=""),
         textAreaInput(ns("message"),label = "پیام خود را اینجا وارد کنید"))),
-     div(style="margin-left:86%;",
-      actionButton(ns("send"), "ارسال ایمیل", class="action-button--color--yellow"))
+     div(style="margin-left:87%;",
+      actionButton(ns("send"), "ارسال پیام", class="action-button--color--yellow"))
           )))
   
 }
@@ -44,9 +44,9 @@ I0_Contact <- function(input,output,server){
       
       output$error <- renderUI({""})
       subject <- isolate(input$subject)
-      body <- isolate(paste("ایمیل : " , "\n",input$from,"\n",
-                            "نام و نام خانوادگی : ","\n", input$name,"\n",
-                            "موضوع : " ,"\n", input$subject , "\n",
+      body <- isolate(paste("ایمیل : " , "\n",input$from,"\n","\n","\n",
+                            "نام و نام خانوادگی : ","\n", input$name,"\n","\n","\n",
+                            "موضوع : " ,"\n", input$subject , "\n","\n","\n",
                             "پیام : ", "\n", input$message,sep=""))
       
       send.mail(from = info[[1]], to = info[[3]], subject = subject, body = body, 
