@@ -102,45 +102,19 @@ M0_Scatter <- function(input,output,session,Vals){
     return(M)
   })
 
+    
   output$St_ChG <- renderUI({
     checkboxGroupInput(inputId = ns("St_ChG"), label = "", choices = c(rownames(Data())))
   })
 
 
-  Mean <- reactive({ apply(Data(),2,mean) })
+
 
   observe({
     updateCheckboxGroupInput(
       session, 'St_ChG', choices = rownames(Data()),
       selected = if (input$St_all) rownames(Data())
     )
-  })
-
-  melt_Data_St <- reactive({
-
-    validate(
-      need((input$St_Mean==TRUE)||!is.null(input$St_ChG),
-           "حداقل باید یک نمودار را انتخاب کنید"))
-
-    if(input$St_Mean==TRUE){
-      if(is.null(input$St_ChG)==TRUE){
-        d <- t(as.matrix(Mean()))
-        rownames(d) <- "میانگین"
-      }else{
-        d <- as.data.frame(Data()[which(rownames(Data()) %in% input$St_ChG),,drop=FALSE])
-        d <- rbind(d,Mean())
-        rownames(d) <- c(rownames(d)[-length(rownames(d))],"میانگین")
-      }
-
-      colnames(d) <- 1:dim(d)[2]
-
-    }else{
-      d <- as.data.frame(Data()[which(rownames(Data()) %in% input$St_ChG),,drop=FALSE])
-      colnames(d) <- 1:dim(d)[2]
-    }
-    d <- melt(as.matrix(d))
-    colnames(d) <- c("Student","Day","value")
-    return(d)
   })
 
 
@@ -151,15 +125,38 @@ M0_Scatter <- function(input,output,session,Vals){
       need(!is.null(Data()),"هنوز داده ای وارد نشده است")
     )
     
-    m <- lm(value ~ Day, melt_Data_St())
+    validate(
+      need((input$St_Mean==TRUE)||!is.null(input$St_ChG),
+           "حداقل باید یک نمودار را انتخاب کنید"))
+    
+    Mean <- apply(Data(),2,mean)
+    
+    if(input$St_Mean==TRUE){
+      if(is.null(input$St_ChG)==TRUE){
+        d <- t(Mean)
+        rownames(d) <- "میانگین"
+      }else{
+        d <- as.data.frame(Data()[which(rownames(Data()) %in% input$St_ChG),,drop=FALSE])
+        d <- rbind(d,Mean)
+        rownames(d) <- c(rownames(d)[-length(rownames(d))],"میانگین")
+      }
+      
+      colnames(d) <- 1:dim(d)[2]
+      
+    }else{
+      d <- as.data.frame(Data()[which(rownames(Data()) %in% input$St_ChG),,drop=FALSE])
+      colnames(d) <- 1:dim(d)[2]
+    }
+    melt_Data_St <- melt(as.matrix(d))
+    colnames(melt_Data_St) <- c("Student","Day","value")
+    
+    m <- lm(value ~ Day, melt_Data_St)
 
     text <- coef(m)[1]
 
     if(input$St_chbI == FALSE){
       
-      
-      print(unique(melt_Data_St()[,1]))
-      if(length(unique(melt_Data_St()[,1]))==1){
+      if(length(unique(melt_Data_St[,1]))==1){
         x_angle = 60
         x_size = 11
       }else{
@@ -167,7 +164,7 @@ M0_Scatter <- function(input,output,session,Vals){
         x_size = 8
       }
       
-      p <- ggplot(melt_Data_St(), aes(Day, value)) + geom_point(aes(color = Student)) +
+      p <- ggplot(melt_Data_St, aes(Day, value)) + geom_point(aes(color = Student)) +
         stat_smooth(aes(color = Student),method = input$St_rb) +
         facet_wrap( ~ Student,as.table = FALSE, scales = "free_x")+
         # theme(axis.line = element_line(colour = "darkblue", size = 1, linetype = "solid"),
@@ -178,14 +175,15 @@ M0_Scatter <- function(input,output,session,Vals){
               plot.title = element_text(size=14,face="bold"),
               legend.title = element_text(size=12,face="bold"),
               text=element_text(family="dastnevis"))+
-        labs(title="تحلیل زمانی دانش آموزان",color="دانش آموزان") +
+        labs(title="روند دانش آموزان در طول زمان",
+             color="دانش آموزان") +
         scale_x_discrete(name ="", limits=colnames(Data())) +
         #annotate('text',x = 9,y = 18,label= text())+
         xlab("زمان") + ylab("نمره")
     }
     else{
 
-      p <- ggplot(melt_Data_St(), aes(Day, value)) + geom_point(aes(color = Student)) +
+      p <- ggplot(melt_Data_St, aes(Day, value)) + geom_point(aes(color = Student)) +
         stat_smooth(aes(color = Student),method = input$St_rb,se=FALSE) +
         # theme(axis.line = element_line(colour = "darkblue", size = 1, linetype = "solid"),
         #       axis.text.x  = element_text(face="bold",angle=45, vjust=0.5, size=5)) +
@@ -195,7 +193,8 @@ M0_Scatter <- function(input,output,session,Vals){
               plot.title = element_text(size=14,face="bold"),
               legend.title = element_text(size=12,face="bold"),
               text=element_text(family="dastnevis"))+
-        labs(title="تحلیل زمانی دانش آموزان",color="دانش آموزان") +
+        labs(title="روند دانش آموزان در طول زمان",
+             color="دانش آموزان") +
         scale_x_discrete(name ="", limits=colnames(Data())) +
         #annotate('text',x = 9,y = 18,label= text())+
         #geom_text(aes(color=Student),position = position_dodge(width = 1),label = text(), parse = TRUE)+
