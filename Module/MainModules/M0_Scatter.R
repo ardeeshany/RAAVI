@@ -8,6 +8,19 @@ M0_ScatterUI <- function(id){
 ###
 
 
+### For Error Message          
+tags$head(
+  tags$style(HTML("
+                  .shiny-output-error-validation {
+                  color: red;
+                  font-size: 16px;
+                  margin-top: 10px;
+                  margin-left: 10px;
+                  }
+                  "))
+  ),
+###
+
             fluidRow(
 
              column(1,
@@ -16,7 +29,7 @@ M0_ScatterUI <- function(id){
                       label = div(class="dropdown__title","دانش آموزان مورد نظر را انتخاب کنید"), 
                       status = "default", width = "130%",
                           checkboxInput(ns('St_all'), 
-                           div(class="dropdown__text",style="color:red;",'تمام / هیچ')),
+                           div(class="dropdown__text",style="color: #607D8B ;",'تمام / هیچ')),
                       div(class="dropdown__text",
                       uiOutput(ns("St_ChG"))
                                )))
@@ -58,7 +71,7 @@ M0_ScatterUI <- function(id){
            ),
 
 
-   withSpinner( plotlyOutput(ns("St")),type=5,color = "#006E6D",size = 0.6)
+   withSpinner(plotlyOutput(ns("St")),type=5,color = "#006E6D",size = 0.6)
 
   )
 }
@@ -83,14 +96,7 @@ M0_Scatter <- function(input,output,session,Vals){
 
   
     Data <- reactive({
-
-      
     M <- Vals[["now"]]
-    # print(class(M[1,1]))
-    # print(M[1,1])
-    # print(persian.tonumber(M[1,1]))
-    # M[1,1] <- persian.tonumber(M[1,1])
-    #print("########### Scat")
     rownames(M) <- Vals[["names"]]
     colnames(M) <- Vals[["dates"]]
     return(M)
@@ -113,8 +119,8 @@ M0_Scatter <- function(input,output,session,Vals){
   melt_Data_St <- reactive({
 
     validate(
-      need((input$St_Mean==TRUE)||!is.null(input$St_ChG),"حداقل باید یک نمودار را انتخاب کنید")
-    )
+      need((input$St_Mean==TRUE)||!is.null(input$St_ChG),
+           "حداقل باید یک نمودار را انتخاب کنید"))
 
     if(input$St_Mean==TRUE){
       if(is.null(input$St_ChG)==TRUE){
@@ -132,10 +138,8 @@ M0_Scatter <- function(input,output,session,Vals){
       d <- as.data.frame(Data()[which(rownames(Data()) %in% input$St_ChG),,drop=FALSE])
       colnames(d) <- 1:dim(d)[2]
     }
-
     d <- melt(as.matrix(d))
     colnames(d) <- c("Student","Day","value")
-    print(d)
     return(d)
   })
 
@@ -147,28 +151,52 @@ M0_Scatter <- function(input,output,session,Vals){
       need(!is.null(Data()),"هنوز داده ای وارد نشده است")
     )
     
-    m <- reactive({lm(value ~ Day, melt_Data_St())})
+    m <- lm(value ~ Day, melt_Data_St())
 
-    text <- reactive({ coef(m())[1] })
+    text <- coef(m)[1]
 
     if(input$St_chbI == FALSE){
+      
+      
+      print(unique(melt_Data_St()[,1]))
+      if(length(unique(melt_Data_St()[,1]))==1){
+        x_angle = 60
+        x_size = 11
+      }else{
+        x_angle = 90
+        x_size = 8
+      }
+      
       p <- ggplot(melt_Data_St(), aes(Day, value)) + geom_point(aes(color = Student)) +
         stat_smooth(aes(color = Student),method = input$St_rb) +
         facet_wrap( ~ Student,as.table = FALSE, scales = "free_x")+
-        theme(axis.line = element_line(colour = "darkblue", size = 1, linetype = "solid"),
-              axis.text.x  = element_text(face="bold",angle=45, vjust=0.5, size=5)) +
+        # theme(axis.line = element_line(colour = "darkblue", size = 1, linetype = "solid"),
+        #       axis.text.x  = element_text(face="bold",angle=45, vjust=0.5, size=5)) +
+        theme(axis.text.x = element_text(size=x_size,colour="black",angle=x_angle, hjust=1,vjust=.5),
+              axis.text.y = element_text(size=12,colour="black"),
+              axis.title=element_text(size=14,face="bold"),
+              plot.title = element_text(size=14,face="bold"),
+              legend.title = element_text(size=12,face="bold"),
+              text=element_text(family="dastnevis"))+
         labs(title="تحلیل زمانی دانش آموزان",color="دانش آموزان") +
-        scale_x_discrete(name ="تاریخ امتحان", limits=colnames(Data())) +
+        scale_x_discrete(name ="", limits=colnames(Data())) +
         #annotate('text',x = 9,y = 18,label= text())+
         xlab("زمان") + ylab("نمره")
     }
     else{
+
       p <- ggplot(melt_Data_St(), aes(Day, value)) + geom_point(aes(color = Student)) +
         stat_smooth(aes(color = Student),method = input$St_rb,se=FALSE) +
-        theme(axis.line = element_line(colour = "darkblue", size = 1, linetype = "solid"),
-              axis.text.x  = element_text(face="bold",angle=45, vjust=0.5, size=5)) +
+        # theme(axis.line = element_line(colour = "darkblue", size = 1, linetype = "solid"),
+        #       axis.text.x  = element_text(face="bold",angle=45, vjust=0.5, size=5)) +
+        theme(axis.text.x = element_text(size=11,colour="black",angle=60, hjust=1,vjust=.5),
+              axis.text.y = element_text(size=12,colour="black"),
+              axis.title=element_text(size=14,face="bold"),
+              plot.title = element_text(size=14,face="bold"),
+              legend.title = element_text(size=12,face="bold"),
+              text=element_text(family="dastnevis"))+
         labs(title="تحلیل زمانی دانش آموزان",color="دانش آموزان") +
-        scale_x_discrete(name ="تاریخ امتحان", limits=colnames(Data())) +
+        scale_x_discrete(name ="", limits=colnames(Data())) +
         #annotate('text',x = 9,y = 18,label= text())+
         #geom_text(aes(color=Student),position = position_dodge(width = 1),label = text(), parse = TRUE)+
         xlab("زمان") + ylab("نمره")
