@@ -63,8 +63,8 @@ M0_CatUI <- function(id){
              
            ),                          
 
+  withSpinner(plotlyOutput(ns("DT")),type=5,color = "#006E6D",size = 0.6)
 
-plotlyOutput(ns("DT"))
 
 
 )

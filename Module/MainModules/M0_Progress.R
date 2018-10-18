@@ -59,8 +59,8 @@ M0_ProgUI <- function(id){
              
            ),
            
+    withSpinner(plotlyOutput(ns("Pr")),type=5,color = "#006E6D",size = 0.6)
            
-           plotlyOutput(ns("Pr"))
            
              )
   }

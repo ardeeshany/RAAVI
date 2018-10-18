@@ -5,19 +5,6 @@ M0_ScatterUI <- function(id){
   tabPanel(title = div(class="tabPanel--font-size center",
                        "روند دانش آموزان"),
            icon=icon("line-chart",class="tabPanel-icon"),
-
-### For Error Message
-           tags$head(
-             tags$style(HTML("
-                             .shiny-output-error-validation {
-                             color: red;
-                             font-size: 16%;
-                             margin-top: 10%;
-                             margin-left: 10%;
-                             font-weight:bold;
-                             }
-                             "))
-             ),
 ###
 
 
@@ -71,8 +58,8 @@ M0_ScatterUI <- function(id){
            ),
 
 
+   withSpinner( plotlyOutput(ns("St")),type=5,color = "#006E6D",size = 0.6)
 
-           plotlyOutput(ns("St"))
   )
 }
 

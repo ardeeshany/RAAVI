@@ -26,7 +26,7 @@ M0_BoxUI <- function(id,date,names){
                                      width="130%"))
              )
            ),
-           plotlyOutput(ns("Bx"))
+           withSpinner(plotlyOutput(ns("Bx")),type=5,color = "#006E6D",size = 0.6)
   )
 }
 
@@ -66,34 +66,7 @@ M0_Box <- function(input,output,session,Vals){
   })
   
 
-  
-#   melt_Data_Bx <- reactive({
-#     
-# # D <- read.xlsx(xlsxFile = "www/Data.xlsx")
-# #     d <- as.data.frame(D)
-#     
-#     min=which(colnames(Data())==input$Bx_SeI1)
-#     max=which(colnames(Data())==input$Bx_SeI2)
-#     
-#     if(min < max){
-#       d <- as.data.frame(Data()[,min:max])
-#     }
-#     if(min==max){
-#       d <- as.data.frame(Data()[,max])
-#     }
-#     if(min > max){
-#       d <- as.data.frame(Data())
-#     }
-#     d <- melt(as.matrix(d))
-#     colnames(d) <- c("Student","Day","value")
-#     d$Day <- factor(d$Day)
-#     d
-#   })
-  
-  
   Reac_CP2M_Bx <- eventReactive(input$Bx_Ac, {
-    
-    print(class(Data()))
     
     validate(
       need(!is.null(Data()),"هنوز داده ای وارد نشده است")
@@ -128,7 +101,7 @@ M0_Box <- function(input,output,session,Vals){
         theme(axis.text.x = element_text(size=11,colour="black",angle=60, hjust=1,vjust=.5),
               axis.text.y = element_text(size=12,colour="black"),
               axis.title=element_text(size=14,face="bold"),
-              plot.title = element_text(size=16,face="bold"),
+              plot.title = element_text(size=14,face="bold"),
               legend.title = element_text(size=12,face="bold"),
               text=element_text(family="dastnevis"))
         

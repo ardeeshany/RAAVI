@@ -30,8 +30,7 @@ M0_HistUI <- function(id){
                         width="130%"))
              )
            ),
-           
-           plotlyOutput(ns("Hg")), 
+           withSpinner(plotlyOutput(ns("Hg")),type=5,color = "#006E6D",size = 0.6),
            tags$div(
              tags$table(
                DT::dataTableOutput(ns("Gr_N"))

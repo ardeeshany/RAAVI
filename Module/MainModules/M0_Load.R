@@ -163,33 +163,8 @@ div(style="text-align:center;",
                    
                    uiOutput(ns("Text")),
                   
-                   
-                   # conditionalPanel(
-                   #   condition = " output.Table == 'NA'",
-                   #   div(class="green2",style="font-size:120%;",
-                   #       "فایل با موفقیت وارد شد",
-                   #       br())
-                   # ),
-                   
-                   
-                   # if(is.null(input$hot)){
-                   #   A <- div(style="color:grey; font-size:150%;",br(), br(),
-                   #            "هنوز فایلی وارد نشده است",
-                   #            br(),
-                   #            "فایل خود را از منوی سمت چپ وارد کرده یا بسازید",
-                   #            br(),br(),br())
-                   # }
-                   # else{
-                   #   A <- ""
-                   # }
-                         
-                   
                    div(class="data-table--general",
                        rHandsontableOutput(ns("hot"))),
-                   # conditionalPanel(condition="is.null(input.Table)==TRUE",
-                   #                  h2("هنوز فایلی وارد نشده است")),
-                   # conditionalPanel(condition="is.null(input.Table)==FALSE",
-                   # uiOutput(ns("Table"))),
                    
                    br(),
                    
