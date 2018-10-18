@@ -6,24 +6,7 @@ M0_BoxUI <- function(id,date,names){
   tabPanel(title =div(class="tabPanel--font-size center",
                        "روند کلاس"),
            icon=icon("archive",class="tabPanel-icon"),
-           
-           
-           
-           ### For Error Message
-           tags$head(
-             tags$style(HTML("
-                             .shiny-output-error-validation {
-                             color: red;
-                             font-size: 16%;
-                             margin-top: 10%;
-                             margin-left: 10%;
-                             font-weight:bold;
-                             }
-                             "))
-             ),
-           
-           
-           
+          
            
            fluidRow(
              
@@ -49,10 +32,6 @@ M0_BoxUI <- function(id,date,names){
 
 
 
-
-
-
-
 ######################
 #
 # Server Logic
@@ -71,6 +50,7 @@ M0_Box <- function(input,output,session,Vals){
     return(M)
   })
   
+ 
   
   output$Bx_SeI1 <- renderUI({
     selectInput(inputId = ns("Bx_SeI1"),
@@ -85,30 +65,35 @@ M0_Box <- function(input,output,session,Vals){
                 selected = tail( colnames(Data()),1))
   })
   
-  #Mean <- reactive({ apply(Data(),2,mean) })
-  
-  melt_Data_Bx <- reactive({
-    
 
-    min=which(colnames(Data())==input$Bx_SeI1)
-    max=which(colnames(Data())==input$Bx_SeI2)
-    
-    if(min < max){
-      d <- as.data.frame(Data()[,min:max])
-    }
-    if(min==max){
-      d <- as.data.frame(Data()[,max])
-    }
-    if(min > max){
-      d <- as.data.frame(Data())
-    }
-    d <- melt(as.matrix(d))
-    colnames(d) <- c("Student","Day","value")
-    d$Day <- factor(d$Day)
-    d
-  })
+  
+#   melt_Data_Bx <- reactive({
+#     
+# # D <- read.xlsx(xlsxFile = "www/Data.xlsx")
+# #     d <- as.data.frame(D)
+#     
+#     min=which(colnames(Data())==input$Bx_SeI1)
+#     max=which(colnames(Data())==input$Bx_SeI2)
+#     
+#     if(min < max){
+#       d <- as.data.frame(Data()[,min:max])
+#     }
+#     if(min==max){
+#       d <- as.data.frame(Data()[,max])
+#     }
+#     if(min > max){
+#       d <- as.data.frame(Data())
+#     }
+#     d <- melt(as.matrix(d))
+#     colnames(d) <- c("Student","Day","value")
+#     d$Day <- factor(d$Day)
+#     d
+#   })
+  
   
   Reac_CP2M_Bx <- eventReactive(input$Bx_Ac, {
+    
+    print(class(Data()))
     
     validate(
       need(!is.null(Data()),"هنوز داده ای وارد نشده است")
@@ -116,21 +101,40 @@ M0_Box <- function(input,output,session,Vals){
     
     min=which(colnames(Data())==input$Bx_SeI1)
     max=which(colnames(Data())==input$Bx_SeI2)
-    if(min <=max){
-      p <- ggplot(melt_Data_Bx() , aes(x=Day,y=value,fill=Day)) + geom_boxplot(outlier.size=6) +
-        stat_summary(fun.y=mean, geom="point", shape=20, size=2, color="red", fill="red")+
-        labs(title = "Grade", x = "Date")+
-        scale_x_discrete(labels=colnames(Data())[which(colnames(Data())==input$Bx_SeI1):which(colnames(Data())==input$Bx_SeI2)])+
-        theme(axis.text.x = element_text(size=10,colour="black",angle=90, hjust=1,vjust=.5)) }
-    else{
-      p <- ggplot(melt_Data_Bx() , aes(x=Day,y=value,fill=Day)) + geom_boxplot(outlier.size=6) +
-        stat_summary(fun.y=mean, geom="point", shape=20, size=2, color="red", fill="red")+
-        labs(title = "Grade", x = "Date")+
-        scale_x_discrete(labels=colnames(Data()))+
-        theme(axis.text.x = element_text(size=10,colour="black",angle=90, hjust=1,vjust=.5))
+
+    validate(
+      need(min <= max,"زمان ابتدا نباید بعد از زمان انتها باشد")
+    )
+    
+    if(min < max){
+      d <- Data()[,min:max]
+      melt_Data_Bx <- melt(d)
+      colnames(melt_Data_Bx) <- c("Student","Day","value")
+      vec_ind <- min:max
     }
-    gg <- ggplotly(p)
-    gg
+    if(min==max){
+      d <- Data()[,max]
+      melt_Data_Bx <- melt(as.matrix(d))
+      colnames(melt_Data_Bx) <- c("Student","Day","value")
+      melt_Data_Bx$Day <- input$Bx_SeI1    #factor(melt_Data_Bx$Day)
+      vec_ind <- max
+    }
+
+
+      p <- ggplot(melt_Data_Bx , aes(x=Day,y=value,fill=Day)) + geom_boxplot(outlier.size=6) +
+        stat_summary(fun.y=mean, geom="point", shape=20, size=2, color="red", fill="red")+
+        labs(title = "روند کلاس در طول زمان", x ="",y="نمره",fill="تاریخ")+
+        scale_x_discrete(labels=colnames(Data())[vec_ind])+
+        theme(axis.text.x = element_text(size=11,colour="black",angle=60, hjust=1,vjust=.5),
+              axis.text.y = element_text(size=12,colour="black"),
+              axis.title=element_text(size=14,face="bold"),
+              plot.title = element_text(size=16,face="bold"),
+              legend.title = element_text(size=12,face="bold"),
+              text=element_text(family="dastnevis"))
+        
+
+     gg <- ggplotly(p)
+     gg
   })
   
   output$Bx <- renderPlotly(Reac_CP2M_Bx())
