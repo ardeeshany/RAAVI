@@ -11,6 +11,7 @@ M0_HistUI <- function(id){
                       "گروه بندی"),
             icon = icon("group",class="tabPanel-icon"),
            
+           
            fluidRow(            
              
              column(1,
@@ -72,7 +73,7 @@ M0_Hist <- function(input,output,session,Vals){
   Reac_Hg <- eventReactive(input$Hg_Ac, {
    
     validate(
-      need(!is.null(Data()),"هنوز داده ای وارد نشده است")
+      need(!is.null(Data()),"هنوز داده ای وارد نشده است"),errorClass = "box"
     )
     
     d <- as.data.frame(Data()[,input$Hg_SeI])

@@ -148,7 +148,7 @@ React_DT1 <-eventReactive(input$DT_AC1, {
 
  
   validate(
-    need(!is.null(Data()),"هنوز داده ای وارد نشده است")
+    need(!is.null(Data()),"هنوز داده ای وارد نشده است"),errorClass = "Cat_left"
   )
   
   if(input$DT_chb1==TRUE){
@@ -190,7 +190,7 @@ React_DT1 <-eventReactive(input$DT_AC1, {
 React_DT2 <-eventReactive(input$DT_AC2, {
 
   validate(
-    need(!is.null(Data()),"هنوز داده ای وارد نشده است")
+    need(!is.null(Data()),"هنوز داده ای وارد نشده است"),errorClass = "Cat_right"
   )
   
   if((input$DT_sl[2] <min(melt_Data_DT()$value)) || (input$DT_sl[1] > max(melt_Data_DT()$value))){

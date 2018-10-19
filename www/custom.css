@@ -1,3 +1,60 @@
+.shiny-output-error-box {
+      color: red;
+      font-size: 130%;
+      margin-top: 2%;
+      margin-left:4.5%;
+      font-weight:bold;
+}
+
+.shiny-output-error-scatter {
+      color: red;
+      font-size: 130%;
+      margin-top: 0%;
+      margin-left:3%;
+      font-weight:bold;
+}
+
+.shiny-output-error-scatter_min {
+      color: red;
+      font-size: 130%;
+      margin-top: 0%;
+      margin-left:2.5%;
+      font-weight:bold;
+}
+
+.shiny-output-error-Pr {
+      color: red;
+      font-size: 130%;
+      margin-top: 2%;
+      margin-left:0.5%;
+      font-weight:bold;
+}
+
+
+.shiny-output-error-Pr_right {
+      color: red;
+      font-size: 130%;
+      margin-top: 2%;
+      margin-left:82%;
+      font-weight:bold;
+}
+
+.shiny-output-error-Cat_left {
+      color: red;
+      font-size: 130%;
+      margin-top: 2%;
+      margin-left:8%;
+      font-weight:bold;
+}
+
+.shiny-output-error-Cat_right {
+      color: red;
+      font-size: 130%;
+      margin-top: 2%;
+      margin-left:69%;
+      font-weight:bold;
+}
+
 
 .load{
   color: red;

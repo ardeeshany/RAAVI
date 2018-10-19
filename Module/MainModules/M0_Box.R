@@ -1,12 +1,11 @@
+
 M0_BoxUI <- function(id,date,names){
   
   ns <- NS(id)
-  
         
   tabPanel(title =div(class="tabPanel--font-size center",
                        "روند کلاس"),
            icon=icon("archive",class="tabPanel-icon"),
-          
            
            fluidRow(
              
@@ -69,7 +68,7 @@ M0_Box <- function(input,output,session,Vals){
   Reac_CP2M_Bx <- eventReactive(input$Bx_Ac, {
     
     validate(
-      need(!is.null(Data()),"هنوز داده ای وارد نشده است")
+      need(!is.null(Data()),"هنوز داده ای وارد نشده است"),errorClass = "box"
     )
     
     min=which(colnames(Data())==input$Bx_SeI1)

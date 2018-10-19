@@ -6,19 +6,6 @@ M0_ProgUI <- function(id){
                        "پیشرفت"),
            icon=icon("arrow-circle-up",class="tabPanel-icon"),
            
-           ### For Error Message          
-           tags$head(
-             tags$style(HTML("
-                             .shiny-output-error-validation {
-                             color: red;
-                             font-size: 16px;
-                             margin-top: 10px;
-                             margin-left: 10px;
-                             }
-                             "))
-             ),
-           ###
-           
            
            fluidRow(                   
             
@@ -126,7 +113,7 @@ M0_Prog <- function(input,output,session,Vals){
   React_Pr1 <- eventReactive(input$Pr_AC1, {
 
     validate(
-      need(!is.null(Data()),"هنوز داده ای وارد نشده است")
+      need(!is.null(Data()),"هنوز داده ای وارد نشده است"),errorClass = "Pr_right"
     )
     
     Mean <- apply(Data(),2,mean)
@@ -194,7 +181,7 @@ M0_Prog <- function(input,output,session,Vals){
     
     
     validate(
-      need(!is.null(Data()),"هنوز داده ای وارد نشده است")
+      need(!is.null(Data()),"هنوز داده ای وارد نشده است"),errorClass = "Pr"
     )
    
     bin2 <- as.numeric(input$Pr_bin2)
@@ -306,7 +293,7 @@ M0_Prog <- function(input,output,session,Vals){
     
     
     validate(
-      need(!is.null(Data()),"هنوز داده ای وارد نشده است")
+      need(!is.null(Data()),"هنوز داده ای وارد نشده است"),errorClass = "Pr"
     )
     
     bin2 <- as.numeric(input$Pr_bin2)

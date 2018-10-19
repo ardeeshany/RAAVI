@@ -7,20 +7,6 @@ M0_ScatterUI <- function(id){
            icon=icon("line-chart",class="tabPanel-icon"),
 ###
 
-
-### For Error Message          
-tags$head(
-  tags$style(HTML("
-                  .shiny-output-error-validation {
-                  color: red;
-                  font-size: 16px;
-                  margin-top: 10px;
-                  margin-left: 10px;
-                  }
-                  "))
-  ),
-###
-
             fluidRow(
 
              column(1,
@@ -122,12 +108,12 @@ M0_Scatter <- function(input,output,session,Vals){
   Reac_CP2_Sc <- eventReactive(input$St_Ac, {
 
     validate(
-      need(!is.null(Data()),"هنوز داده ای وارد نشده است")
+      need(!is.null(Data()),"هنوز داده ای وارد نشده است"),errorClass = "scatter"
     )
     
     validate(
       need((input$St_Mean==TRUE)||!is.null(input$St_ChG),
-           "حداقل باید یک نمودار را انتخاب کنید"))
+           "حداقل باید یک نمودار را انتخاب کنید"),errorClass = "scatter_min")
     
     Mean <- apply(Data(),2,mean)
     
