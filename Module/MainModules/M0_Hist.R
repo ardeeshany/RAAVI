@@ -46,11 +46,6 @@ M0_HistUI <- function(id){
              tags$table(
                withSpinner( DT::dataTableOutput(ns("Gr_N")),type=5,color = "#006E6D",size = 0.4)
            ))
-           
-           # tags$div(
-           #   tags$table(
-           #     withSpinner( DT::dataTableOutput(ns("Gr_N2")),type=5,color = "#006E6D",size = 0.4)
-           #   ))
 
   )
         
@@ -180,12 +175,7 @@ M0_Hist <- function(input,output,session,Vals){
     
     gg <- ggplotly(p)
     
-
-### number of groups == #bins    
-        
-
-    #count <- ggplot_build(p)$data[[1]]$count
-    #splt=split(sort(melt_Data_Hg[,3]), rep(1:length(count), count))
+##################
     
       group_names <- as.data.frame(matrix(NA,max(count),length(splt)))
       colnames(group_names) <- sapply(1:length(splt), function(x){paste("دسته",x)})
@@ -193,113 +183,19 @@ M0_Hist <- function(input,output,session,Vals){
 
      for(i in 1:length(splt)){
        group_names[1:length(splt[[i]]),i] <- melt_Data_Hg[melt_Data_Hg[,3] %in% splt[[i]],1]
-     }
- 
-     
-     # GR_names <- as.data.frame(matrix(NA,length(gr_names),max(sapply(gr_names,length))))
-     # colnames(group_names) <- sapply(1:length(gr_names), function(x){paste("دسته",x)})
-     # #rownames(group_names) <- 1:max(count)
-     # 
-     # for(i in 1:length(splt)){
-     #   GR_names[,i] <- gr_names[[i]]
-     # }
-     
-     
-    #group_names[is.na(group_names)] <- ""
-    
-
-### number of groups: between each two zero, we consider one group    
-    
-    
-    # if(0 %in% count){
-    #   
-    # }else{
-    #   gr_num <- 1
-    #   gr_names <- unlist
-    # }
-    # 
-    # 
-    # 
-    # gr_num <- 1
-    # edge_gr <- list(1)
-    # zero_ind <- which (count == 0 )
-    # 
-    # if(length(zero_ind) > 1 ){
-    #   edge_gr[[2]] <- 
-    # for(i in 2:length(zero_ind)){
-    #   if(zero_ind[i]-zero_ind[i-1] > 1){
-    #     gr_num <- gr_num + 1
-    #     edge_gr[[gr_num]] <- 
-    #   }
-    # }}
-    # 
-    # gr_names <- rep(list(NA),gr_num)
-    # 
-    # for(i in 1:gr_num){
-    #   
-    # }
-    
-    
-    
-    
-    # if(0 %in% count){
-    #   
-    # }
-    # else{
-    #   group_compct <- rownames(Data)
-    # }
-    # 
-    # 
-    # splt=split(sort(melt_Data_Hg()[,3]), rep(1:length(count), count))
-    # 
-    # group_names <- as.data.frame(matrix(NA,max(count),length(splt)))
-    # colnames(group_names) <- 1:length(splt)
-    # rownames(group_names) <- 1:max(count)
-    # for(i in 1:length(splt)){
-    #   colnames(group_names)[i] <- paste0("گروه",i)
-    # }
-    # for(i in 1:length(splt)){
-    #   group_names[1:length(splt[[i]]),i] <- melt_Data_Hg()[melt_Data_Hg()[,3] %in% splt[[i]],1]
-    # }
-    # 
-    # group_names[is.na(group_names)] <- ""
-    
-     Gr_names <- as.data.frame(matrix(NA,nrow = max(sapply(gr_names,length)),ncol = gr_num ))
-     
-    #gr_names <- as.data.frame(gr_names)
-    colnames(Gr_names) <- sapply(1:gr_num, function(x){paste("گروه",x)})
-     for(i in 1:length(gr_names)){
-       Gr_names[1:length(gr_names[[i]]),i] = gr_names[[i]]
-     }
+     }     
+      
+      Gr_names <- as.data.frame(matrix(NA,nrow = max(sapply(gr_names,length)),ncol = gr_num ))
+      colnames(Gr_names) <- sapply(1:gr_num, function(x){paste("گروه",x)})
+      for(i in 1:length(gr_names)){
+        Gr_names[1:length(gr_names[[i]]),i] = gr_names[[i]]
+      }
      
     out <- list(gg=gg,group_names=group_names,gr_names=Gr_names,color_count = color_count ,cc1 = cc1)
     
     return(out)
 
     })
-  
-
-  
-  
-  
-  # p <- ggplot(melt_Data_Hg,aes(value)) + geom_histogram(aes(y=..density..),bins=12,colour="black", fill="forestgreen",alpha=0.9)+
-  #   geom_density(aes(y=..density..),alpha=0.4, fill="#FF6666",colour="firebrick2",lwd=1.5)+
-  #   labs(title ="هیستوگرام", x = "نمره", y = "فرکانس")
-  # splt=split(sort(melt_Data_Hg[,3]), rep(1:length(count), count))
-  # 
-  # c=1
-  # z_id <- which(count==0)
-  # count_cmpct <- rep(NA,length(z_id)+1)
-  # splt_cmpct <- rep(NA,length(z_id)+1)                   
-  # for(i in 1:(length(z_id)+1)){
-  #   
-  #   count_cmpct[i] <- length(c:(z_id[i]-1))
-  #   splt_cmpct[i] <- sum(count[c:(z_id[i]-1)])
-  #   
-  #   if(i!=(length(z_id)+1)) c=z_id[i]+1
-  # }
-  # 
-  # cumsum(count)
   
   
   D_Table <- reactive({
@@ -376,8 +272,6 @@ M0_Hist <- function(input,output,session,Vals){
   })
   
   output$Gr_N <- DT::renderDataTable( React_out() )
-  
-  #output$Gr_N2 <- DT::renderDataTable( D_Table2() )
   
   
 }
