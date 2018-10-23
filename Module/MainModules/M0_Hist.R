@@ -32,15 +32,25 @@ M0_HistUI <- function(id){
              ),
              column(1,offset = 2,
                     div(class="check-box--general check-box--mtop__hist check-box--font-size",
-                        checkboxInput(inputId = ns("density"),label = "توزیع",value = TRUE))
+                        checkboxInput(inputId = ns("density"),label = "توزیع",value = FALSE))
              )
              
            ),
-           withSpinner(plotlyOutput(ns("Hg")),type=5,color = "#006E6D",size = 0.6),
+           
+            withSpinner(plotlyOutput(ns("Hg")),type=5,color = "#006E6D",size = 0.6),
+           
+           radioButtons(inputId = ns("table"),label = "",choices = c("گروه"="G","دسته"="D"),
+                        selected = "G",inline = TRUE),
+           
            tags$div(
              tags$table(
                withSpinner( DT::dataTableOutput(ns("Gr_N")),type=5,color = "#006E6D",size = 0.4)
            ))
+           
+           # tags$div(
+           #   tags$table(
+           #     withSpinner( DT::dataTableOutput(ns("Gr_N2")),type=5,color = "#006E6D",size = 0.4)
+           #   ))
 
   )
         
@@ -81,29 +91,90 @@ M0_Hist <- function(input,output,session,Vals){
     melt_Data_Hg[,1] <- rownames(Data())
     melt_Data_Hg[,2] <- input$Hg_SeI
     colnames(melt_Data_Hg) <- c("Student","Day","value")
+    melt_Data_Hg <- melt_Data_Hg[order(melt_Data_Hg$value,decreasing = F),]
     
+    
+    f <-ggplot(melt_Data_Hg,aes(value))+
+      geom_histogram(aes(y = round(..count../(0.01*sum(..count..)),1)),bins=input$Hg_bin)
+    
+    count <- ggplot_build(f)$data[[1]]$count
+    splt=split(sort(melt_Data_Hg[,3]), rep(1:length(count), count))
+    
+    cum_count <- cumsum(count)
+    dup_count <- unique(cum_count[duplicated(cum_count)])
+    gr_num <- length(dup_count) + 1
+    
+    gr_names <- rep(list(NA),gr_num)
 
+    cc1 <- rev(colorRampPalette(c("#00BFC4","#D8AE47","#F7786B"))(gr_num))
     
+    melt_Data_Hg$clr <- NA
+    
+    if(gr_num==1){
+      gr_names <- melt_Data_Hg[,1]
+      melt_Data_Hg[,4] <- cc1[1]
+    }else{
+    if(gr_num==2){
+      gr_names[[1]] <- melt_Data_Hg[1:dup_count[1],1]
+      gr_names[[2]] <- melt_Data_Hg[(dup_count[1]+1):tail(cum_count,1),1]
+      melt_Data_Hg[1:dup_count[1],4] <- cc1[1]
+      melt_Data_Hg[(dup_count[1]+1):tail(cum_count,1),4] <- cc1[2]
+    }else{
+    gr_names[[1]] <- melt_Data_Hg[1:dup_count[1],1]
+    melt_Data_Hg[1:dup_count[1],4] <- cc1[1]
+    for(i in 2:(gr_num-1)){
+    gr_names[[i]] <- melt_Data_Hg[((dup_count[i-1]+1):dup_count[i]),1]
+    melt_Data_Hg[(dup_count[i-1]+1):dup_count[i],4] <- cc1[i]
+    }
+    gr_names[[gr_num]] <- melt_Data_Hg[(dup_count[length(dup_count)]+1):tail(cum_count,1),1]
+    melt_Data_Hg[(dup_count[length(dup_count)]+1):tail(cum_count,1),4] <- tail(cc1,1)
+}}
+
+
+    color_count <- rep(cc1[1],length(count))
+    a <- 1
+    for(i in 2:length(count)){
+      if(count[i] == 0 && count[i-1] !=0){
+        a <- a+1
+      }
+      color_count[i] <- cc1[a]
+    }
+    color_count <- color_count[-which(count==0)]
+    
+    
+    
+    lab_legend <- sapply(1:gr_num, function(x){
+      paste("گروه",x)
+      })
     
     p <- ggplot(melt_Data_Hg,aes(value)) + 
-         geom_histogram(aes(y = round(..count../(0.01*sum(..count..)),1)),bins=input$Hg_bin,
-                        colour="black", fill="#009688",alpha=0.9)+
+         geom_histogram(aes(y = round(..count../(0.01*sum(..count..)),1),fill=factor(clr,labels=lab_legend)),
+                        bins=input$Hg_bin,
+                        colour="black",alpha=0.9)+
          labs(title ="هیستوگرام", x = "نمره", y = "فراوانی")+
          theme(axis.text.x = element_text(size=11,colour="black",angle=0, hjust=1,vjust=.5),
              axis.text.y = element_text(size=12,colour="black"),
              axis.title=element_text(size=14,face="bold"),
              plot.title = element_text(size=14,face="bold"),
              legend.title = element_text(size=12,face="bold"),
-             text=element_text(family="dastnevis"))
+             legend.text=element_text(size=12),
+             text=element_text(family="dastnevis"))+
+             scale_fill_manual(aes(breaks=clr),values=rev(cc1),guide = guide_legend(title = "",size=20))
     
     
+    
+    lab_hist <- function(x){
+      if(x==0) return("")
+      else return(paste0(x,"%"))
+      }
+  
     if(input$density==TRUE){
       p <- p + geom_density(aes(y=100*..density..),alpha=0.3, fill="#9B2335",colour="#9B2335",lwd=1.5)+
-        stat_bin(aes(label=round(..count../(0.01*sum(..count..)),1)),geom="text",
-                 bins = input$Hg_bin,color="white", size=5,vjust=0.5)
+        stat_bin(aes(label=lapply(round(..count../(0.01*sum(..count..)),1),FUN= lab_hist)),geom="text",
+                 bins = input$Hg_bin,color="black", size=4.5)
     }else{
-      p <- p + stat_bin(aes(label=round(..count../(0.01*sum(..count..)),1)),geom="text",
-                 bins = input$Hg_bin,color="white", size=5,vjust=0.5)
+      p <- p + stat_bin(aes(label=lapply(round(..count../(0.01*sum(..count..)),1),FUN=lab_hist)),geom="text",
+                 bins = input$Hg_bin,color="black", size=4.5)
     }
     
     
@@ -113,21 +184,63 @@ M0_Hist <- function(input,output,session,Vals){
 ### number of groups == #bins    
         
 
-    count <- ggplot_build(p)$data[[1]]$count
-    splt=split(sort(melt_Data_Hg[,3]), rep(1:length(count), count))
+    #count <- ggplot_build(p)$data[[1]]$count
+    #splt=split(sort(melt_Data_Hg[,3]), rep(1:length(count), count))
     
-     group_names <- as.data.frame(matrix(NA,max(count),length(splt)))
-     colnames(group_names) <- sapply(1:length(splt), function(x){paste0("گروه",x)})
-     rownames(group_names) <- 1:max(count)
-    
-    for(i in 1:length(splt)){
-      group_names[1:length(splt[[i]]),i] <- melt_Data_Hg[melt_Data_Hg[,3] %in% splt[[i]],1]
-    }
+      group_names <- as.data.frame(matrix(NA,max(count),length(splt)))
+      colnames(group_names) <- sapply(1:length(splt), function(x){paste("دسته",x)})
+      rownames(group_names) <- 1:max(count)
+
+     for(i in 1:length(splt)){
+       group_names[1:length(splt[[i]]),i] <- melt_Data_Hg[melt_Data_Hg[,3] %in% splt[[i]],1]
+     }
  
+     
+     # GR_names <- as.data.frame(matrix(NA,length(gr_names),max(sapply(gr_names,length))))
+     # colnames(group_names) <- sapply(1:length(gr_names), function(x){paste("دسته",x)})
+     # #rownames(group_names) <- 1:max(count)
+     # 
+     # for(i in 1:length(splt)){
+     #   GR_names[,i] <- gr_names[[i]]
+     # }
+     
+     
     #group_names[is.na(group_names)] <- ""
     
-    
+
 ### number of groups: between each two zero, we consider one group    
+    
+    
+    # if(0 %in% count){
+    #   
+    # }else{
+    #   gr_num <- 1
+    #   gr_names <- unlist
+    # }
+    # 
+    # 
+    # 
+    # gr_num <- 1
+    # edge_gr <- list(1)
+    # zero_ind <- which (count == 0 )
+    # 
+    # if(length(zero_ind) > 1 ){
+    #   edge_gr[[2]] <- 
+    # for(i in 2:length(zero_ind)){
+    #   if(zero_ind[i]-zero_ind[i-1] > 1){
+    #     gr_num <- gr_num + 1
+    #     edge_gr[[gr_num]] <- 
+    #   }
+    # }}
+    # 
+    # gr_names <- rep(list(NA),gr_num)
+    # 
+    # for(i in 1:gr_num){
+    #   
+    # }
+    
+    
+    
     
     # if(0 %in% count){
     #   
@@ -151,10 +264,15 @@ M0_Hist <- function(input,output,session,Vals){
     # 
     # group_names[is.na(group_names)] <- ""
     
-    
-    
-    
-    out <- list(gg=gg,group_names=group_names)
+     Gr_names <- as.data.frame(matrix(NA,nrow = max(sapply(gr_names,length)),ncol = gr_num ))
+     
+    #gr_names <- as.data.frame(gr_names)
+    colnames(Gr_names) <- sapply(1:gr_num, function(x){paste("گروه",x)})
+     for(i in 1:length(gr_names)){
+       Gr_names[1:length(gr_names[[i]]),i] = gr_names[[i]]
+     }
+     
+    out <- list(gg=gg,group_names=group_names,gr_names=Gr_names,color_count = color_count ,cc1 = cc1)
     
     return(out)
 
@@ -184,16 +302,82 @@ M0_Hist <- function(input,output,session,Vals){
   # cumsum(count)
   
   
+  D_Table <- reactive({
+
+
+    n <- dim(Reac_Hg()$group_names)[2]
+    column <- 1:n
+    color <- rep('black',n)
+    backColor <- Reac_Hg()$color_count
+    font <- rep('bold',n)
+
+    DT <- datatable(Reac_Hg()$group_names,
+              options = list(
+                pageLength = 10, orderClasses = TRUE,
+                searching = FALSE, paging = FALSE
+                # initComplete = DT::JS(
+                #   "function(settings, json) {",
+                #   "$(this.api().table().header()).css({'background-color': 'gray', 'color': 'black'});",
+                #   "}")
+              ))
+
+    for(i in 1:n){
+      DT <- DT %>%
+        formatStyle(column[i],  color = color[i], backgroundColor = backColor[i], fontWeight = font[i])
+    }
+
+    return(DT)
+
+  })
+  
+  
+  
+  
+  D_Table2 <- reactive({
+
+    n <- dim(Reac_Hg()$gr_names)[2]
+    column <- 1:n
+    color <- rep('black',n)
+    backColor <- Reac_Hg()$cc1
+    font <- rep('bold',n)
+
+    DT <- datatable(Reac_Hg()$gr_names,
+                    options = list(
+                      pageLength = 10, orderClasses = TRUE,
+                      searching = FALSE, paging = FALSE
+                      # initComplete = DT::JS(
+                      #   "function(settings, json) {",
+                      #   "$(this.api().table().header()).css({'background-color': 'gray', 'color': 'black'});",
+                      #   "}")
+                    ))
+
+    for(i in 1:n){
+      DT <- DT %>%
+        formatStyle(column[i],  color = color[i], backgroundColor = backColor[i], fontWeight = font[i])
+    }
+
+    return(DT)
+
+  })
   
   
   
   output$Hg <- renderPlotly(Reac_Hg()$gg)
   
-  output$Gr_N <- DT::renderDataTable(Reac_Hg()$group_names,
-                              options = list(
-                              pageLength = 10, orderClasses = TRUE,
-                              searching = FALSE, paging = FALSE
-                                     ))
+  
+  React_out <- reactive({
+    
+    if(input$table=="D"){
+      return(D_Table())
+    }else{
+      return(D_Table2())
+    }
+    
+  })
+  
+  output$Gr_N <- DT::renderDataTable( React_out() )
+  
+  #output$Gr_N2 <- DT::renderDataTable( D_Table2() )
   
   
 }
