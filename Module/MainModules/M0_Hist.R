@@ -138,9 +138,40 @@ M0_Hist <- function(input,output,session,Vals){
     color_count <- color_count[-which(count==0)]
     }
 
-    lab_legend <- sapply(1:gr_num, function(x){
-      paste("گروه",x)
-      })
+    
+    group_names <- as.data.frame(matrix(NA,max(count),length(splt)))
+    colnames(group_names) <- sapply(1:length(splt), function(x){paste("دسته",x)})
+    rownames(group_names) <- 1:max(count)
+    
+    for(i in 1:length(splt)){
+      group_names[1:length(splt[[i]]),i] <- melt_Data_Hg[melt_Data_Hg[,3] %in% splt[[i]],1]
+    }     
+    
+    if(gr_num==1){
+      Gr_names <- as.data.frame(gr_names)
+      colnames(Gr_names) <- "گروه ۱"
+    }else{
+      Gr_names <- as.data.frame(matrix(NA,nrow = max(sapply(gr_names,length)),ncol = gr_num ))
+      colnames(Gr_names) <- sapply(1:gr_num, function(x){paste("گروه",x)})
+      for(i in 1:gr_num){
+        Gr_names[1:length(gr_names[[i]]),i] = gr_names[[i]]
+      }}
+    
+    leg <- rev(apply(Gr_names,2,FUN=function(x){
+      length(x[which(x!='NA')])/tail(cum_count,1)
+    }))
+    
+    # m=0
+    # lab_legend <- sapply(100*leg, function(x){
+    #   paste0(x,"%")
+    # })
+    
+    lab_legend <- paste("گروه",
+          length(leg):1,":   ","%",round(100*leg,0))
+    
+    # lab_legend <- sapply(1:gr_num, function(x){
+    #   paste("گروه",x)
+    #   })
     
     p <- ggplot(melt_Data_Hg,aes(value)) + 
          geom_histogram(aes(y = round(..count../(0.01*sum(..count..)),1),
@@ -154,7 +185,9 @@ M0_Hist <- function(input,output,session,Vals){
              legend.title = element_text(size=12,face="bold"),
              legend.text=element_text(size=12),
              text=element_text(family="dastnevis"))+
-             scale_fill_manual(aes(breaks=clr),values=rev(cc1),guide = guide_legend(title = "",size=20))
+             scale_fill_manual(values=rev(cc1),guide = guide_legend(reverse = TRUE,title = "",size=20))
+    
+    
     
     
     
@@ -177,23 +210,23 @@ M0_Hist <- function(input,output,session,Vals){
     
 ##################
     
-      group_names <- as.data.frame(matrix(NA,max(count),length(splt)))
-      colnames(group_names) <- sapply(1:length(splt), function(x){paste("دسته",x)})
-      rownames(group_names) <- 1:max(count)
-
-     for(i in 1:length(splt)){
-       group_names[1:length(splt[[i]]),i] <- melt_Data_Hg[melt_Data_Hg[,3] %in% splt[[i]],1]
-     }     
-      
-      if(gr_num==1){
-        Gr_names <- as.data.frame(gr_names)
-        colnames(Gr_names) <- "گروه ۱"
-      }else{
-      Gr_names <- as.data.frame(matrix(NA,nrow = max(sapply(gr_names,length)),ncol = gr_num ))
-      colnames(Gr_names) <- sapply(1:gr_num, function(x){paste("گروه",x)})
-      for(i in 1:gr_num){
-        Gr_names[1:length(gr_names[[i]]),i] = gr_names[[i]]
-      }}
+     #  group_names <- as.data.frame(matrix(NA,max(count),length(splt)))
+     #  colnames(group_names) <- sapply(1:length(splt), function(x){paste("دسته",x)})
+     #  rownames(group_names) <- 1:max(count)
+     # 
+     # for(i in 1:length(splt)){
+     #   group_names[1:length(splt[[i]]),i] <- melt_Data_Hg[melt_Data_Hg[,3] %in% splt[[i]],1]
+     # }     
+     #  
+     #  if(gr_num==1){
+     #    Gr_names <- as.data.frame(gr_names)
+     #    colnames(Gr_names) <- "گروه ۱"
+     #  }else{
+     #  Gr_names <- as.data.frame(matrix(NA,nrow = max(sapply(gr_names,length)),ncol = gr_num ))
+     #  colnames(Gr_names) <- sapply(1:gr_num, function(x){paste("گروه",x)})
+     #  for(i in 1:gr_num){
+     #    Gr_names[1:length(gr_names[[i]]),i] = gr_names[[i]]
+     #  }}
       
     out <- list(gg=gg,group_names=group_names,gr_names=Gr_names,color_count = color_count ,cc1 = cc1)
     
