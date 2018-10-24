@@ -6,7 +6,7 @@ M0_ProgUI <- function(id){
                        "پیشرفت"),
            icon=icon("arrow-circle-up",class="tabPanel-icon"),
            
-           
+           tags$style(HTML(".js-irs-0 .irs-single, .js-irs-0 .irs-bar-edge, .js-irs-0 .irs-bar {background: #485167}")),         
            fluidRow(                   
             
              column(1,
@@ -45,11 +45,31 @@ M0_ProgUI <- function(id){
 
              
            ),
-           
+    fluidRow(
+    
+    column(2,
+    div(class="inline",style="text-align:center;",
+    sliderInput(inputId = ns("slider_width"),min = 15,max = 75,value = 30,label="مقیاس نمودارها"))),
+    
+    column(1,offset = 1,
+    div(class="inline check-box--general check-box--font-size", style="margin-top:48%; margin-left:40%;size:50%",
+        checkboxInput(inputId = ns("density"),label = "توزیع",value = TRUE)))
+    
+    ),
+    br(), 
+    fluidRow(
     withSpinner(plotlyOutput(ns("Pr")),type=5,color = "#006E6D",size = 0.6)
-           
-           
-             )
+    ),
+    fluidRow(
+        uiOutput(ns("table")),
+      
+      tags$div(
+        tags$table(
+          withSpinner( DT::dataTableOutput(ns("Gr_N")),type=5,color = "#006E6D",size = 0.4)
+        ))
+    )
+  )   
+             
   }
 
 
@@ -94,9 +114,11 @@ M0_Prog <- function(input,output,session,Vals){
     else{
     ch <- ch_bin()
     }
-    selectInput(ns("Pr_bin2"),label = "تعداد گروه",choices = ch )
+    selectInput(ns("Pr_bin2"),label = "تعداد گروه",choices = ch,selected = min(2,length(ch)))
   })
+
   
+
   
   
   ## Variable (like trigger) for selecting which React_DT should be shown in output
@@ -194,14 +216,12 @@ M0_Prog <- function(input,output,session,Vals){
   
   group_mean <- reactive({
     
-    bin2 <- as.numeric(input$Pr_bin2)
     numI <- as.numeric(input$Pr_numI)
     
     if(numI==1)
       gr <- rep(1,dim(Data())[2])
     else
       gr <- as.numeric(cut(1:dim(Data())[2],breaks = numI,labels = 1:numI))
-    
     
     d <- as.data.frame(apply(Data(),1,function(x){weighted.mean(x,gr)}))
     d$names <- rownames(Data())
@@ -325,86 +345,368 @@ M0_Prog <- function(input,output,session,Vals){
     bin2 <- as.numeric(input$Pr_bin2)
     numI <- as.numeric(input$Pr_numI)
     
-    melt_Data_Hg <- as.data.frame(group_mean())
-    # melt_Data_Hg <- melt(as.matrix(d))
-    # melt_Data_Hg[,1] <- rownames(Data())
-    # melt_Data_Hg[,2] <- colnames(Data())
-      colnames(melt_Data_Hg) <- c("value","Student")
-      melt_Data_Hg <- melt_Data_Hg[order(melt_Data_Hg$value,decreasing = F),]
-    # 
+    melt_Data_Hg <- as.data.frame(group_mean())[,2:1]
+    colnames(melt_Data_Hg) <- c("Student","value")
+    melt_Data_Hg <- melt_Data_Hg[order(melt_Data_Hg$value,decreasing = F),]
       
-     gr_num <- 1
-     c <- 1
-     print("HIST LOOP")
-
-     while(gr_num < bin2 && bin2 > 1){
+    gr_num <- 1
+    c <- 0
+    count <- dim(melt_Data_Hg)[1]
+   
+     if(bin2==1) {
+       c <- 1
+       }else{
+     while(gr_num < bin2){
+      c <- c+1
       f <-ggplot(melt_Data_Hg,aes(value))+
           geom_histogram(aes(y = round(..count../(0.01*sum(..count..)),1)),bins=c)
        count <- ggplot_build(f)$data[[1]]$count
        cum_count <- cumsum(count)
        dup_count <- unique(as.vector(cum_count[duplicated(cum_count)]))
        gr_num <- length(dup_count) + 1
-       c <- c+1
-       print("count")
-       print(count)
-       print("dup_count")
-       print(dup_count)
-       print("c")
-       print(c)
        }
-
-     
-     
-    cc1 <- colorRampPalette(c("#00BFC4","#D8AE47","#F7786B"))(bin2)
-    
+      }
+     splt=split(sort(melt_Data_Hg[,2]), rep(1:length(count), count))
+     cc1 <- rev(colorRampPalette(c("#00BFC4","#D8AE47","#F7786B"))(gr_num))
+      
      melt_Data_Hg$clr <- NA
-     
-     if(bin2==1){
-       #gr_names <- melt_Data_Hg[,1]
+     gr_names <- rep(list(NA),gr_num)
+
+     if(gr_num==1){
+       gr_names <- melt_Data_Hg[,1]
        melt_Data_Hg[,3] <- cc1[1]
      }else{
-       if(bin2==2){
-         #gr_names[[1]] <- melt_Data_Hg[1:dup_count[1],1]
-         #gr_names[[2]] <- melt_Data_Hg[(dup_count[1]+1):tail(cum_count,1),1]
+       if(gr_num==2){
+         gr_names[[1]] <- melt_Data_Hg[1:dup_count[1],1]
+         gr_names[[2]] <- melt_Data_Hg[(dup_count[1]+1):tail(cum_count,1),1]
          melt_Data_Hg[1:dup_count[1],3] <- cc1[1]
          melt_Data_Hg[(dup_count[1]+1):tail(cum_count,1),3] <- cc1[2]
        }else{
-          #gr_names[[1]] <- melt_Data_Hg[1:dup_count[1],1]
+          gr_names[[1]] <- melt_Data_Hg[1:dup_count[1],1]
           melt_Data_Hg[1:dup_count[1],3] <- cc1[1]
           for(i in 2:(gr_num-1)){
-            #gr_names[[i]] <- melt_Data_Hg[(dup_count[i-1]+1):dup_count[i],1]
+            gr_names[[i]] <- melt_Data_Hg[(dup_count[i-1]+1):dup_count[i],1]
             melt_Data_Hg[(dup_count[i-1]+1):dup_count[i],3] <- cc1[i]
           }
-          #gr_names[[gr_num]] <- melt_Data_Hg[(dup_count[length(dup_count)]+1):tail(cum_count,1),1]
+          gr_names[[gr_num]] <- melt_Data_Hg[(dup_count[length(dup_count)]+1):tail(cum_count,1),1]
           melt_Data_Hg[(dup_count[length(dup_count)]+1):tail(cum_count,1),3] <- tail(cc1,1)
         }}
     
-    
-    lab_legend <- sapply(1:bin2, function(x){
+     
+    color_count <- rep(cc1[1],length(count))
+    if(length(count) > 1){
+      a <- 1
+      for(i in 2:length(count)){
+        if(count[i] == 0 && count[i-1] !=0){
+          a <- a+1
+        }
+        color_count[i] <- cc1[a]
+      }
+      if(length(which(count==0))>0)
+        color_count <- color_count[-which(count==0)]
+    }
+     
+     
+     
+    lab_legend <- sapply(1:gr_num, function(x){
       paste("گروه",x)
     })
     
-    p <- ggplot(melt_Data_Hg,aes(x = reorder(Student,value),y = value))+
+
+    gg_bar <- ggplot(melt_Data_Hg,aes(x = reorder(Student,value),y = value))+
       geom_bar(stat="identity",aes(fill=factor(clr,labels=lab_legend)),color="black")+
       geom_text(data=melt_Data_Hg,aes(x = Student,y = value, label= value),
                 position = position_stack(vjust = 0.5),color="black",size=4.5)+
-      labs(title ="میانگین وزنی", x = "", y = "میانگین وزنی")+
-      theme(axis.text.x = element_text(size=11,colour="black",angle=0, hjust=1,vjust=.5),
-        axis.text.y = element_text(size=12,colour="black"),
+      labs(title ="", x = "", y = "")+
+      theme(axis.text.x = element_text(size=12,colour="black",angle=0, hjust=1,vjust=.5),
+        axis.text.y = element_text(size=9,colour="black"),
         axis.title=element_text(size=14,face="bold"),
         plot.title = element_text(size=14,face="bold"),
         legend.title = element_text(size=12,face="bold"),
         legend.text=element_text(size=12),
-        text=element_text(family="dastnevis"),
-        legend.position="none")+
-        scale_fill_manual(aes(breaks=clr),values=rev(cc1),guide = guide_legend(title = "",size=20))
+        text=element_text(family="dastnevis"))+
+        scale_fill_manual(aes(breaks=clr),values=rev(cc1),guide = guide_legend(title = "",size=20))+
+        coord_flip()
     
-    gg <- ggplotly(p)
     
-    gg  
+    f <- list(
+      #family = "Courier New, monospace",
+      size = 16,
+      weight = 'bold',
+      color = "black")
+    
+    text_bar <- list(
+      text = "میانگین وزنی نمره دانش آموزان در طول زمان",
+      font=f,
+      xref = "paper",
+      yref = "paper",
+      yanchor = "bottom",
+      xanchor = "center",
+      align = "center",
+      x = 0.5,
+      y = 1,
+      showarrow = FALSE
+    )
+    
+    
+    gg_bar <- ggplotly(gg_bar) %>% layout(annotations = text_bar)
+    
+########
+    
+    gg_hist <- ggplot(melt_Data_Hg,aes(value)) +
+      geom_histogram(aes(y = round(..count../(0.01*sum(..count..)),1),
+                    fill=factor(clr,labels=lab_legend)), bins=c,
+                     colour="black",alpha=0.9)+
+      labs(title ="", x = "نمره", y = "")+
+      theme(axis.text.x = element_text(size=11,colour="black",angle=0, hjust=1,vjust=.5),
+            axis.text.y = element_text(size=12,colour="black"),
+            axis.title=element_text(size=14,face="bold"),
+            plot.title = element_text(size=14,face="bold"),
+            legend.title = element_text(size=12,face="bold"),
+            legend.text=element_text(size=12),
+            text=element_text(family="dastnevis"))+
+            scale_fill_manual(aes(breaks=clr),values=rev(cc1),guide = guide_legend(title = "",size=20))
+    
+
+    
+    text_hist <- list(
+      text = "فراوانی میانگین وزنی نمره ها در طول زمان",
+      font=f,
+      xref = "paper",
+      yref = "paper",
+      yanchor = "bottom",
+      xanchor = "center",
+      align = "center",
+      x = 0.5,
+      y = 1,
+      showarrow = FALSE
+    )
+
+
+    lab_hist <- function(x){
+      if(x==0) return("")
+      else return(paste0(x,"%"))
+    }
+
+    if(gr_num > 3){
+      size_text <- 3
+    }else{
+      size_text <- 4.8
+    }
+    
+    if(input$density==TRUE){
+      gg_hist <- gg_hist + geom_density(aes(y=100*..density..),alpha=0.3, fill="#9B2335",colour="#9B2335",lwd=1.5)+
+        stat_bin(aes(label=lapply(round(..count../(0.01*sum(..count..)),1),FUN= lab_hist)),geom="text",
+                 bins = c,color="black", size=size_text)
+    }else{
+      gg_hist <- gg_hist + stat_bin(aes(label=lapply(round(..count../(0.01*sum(..count..)),1),FUN=lab_hist)),geom="text",
+                       bins = c,color="black", size=size_text)
+    }
+
+
+    gg_hist <- ggplotly(gg_hist) %>% layout(annotations = text_hist) 
+    
+    ##################
+    
+    group_names <- as.data.frame(matrix(NA,max(count),length(splt)))
+    colnames(group_names) <- sapply(1:length(splt), function(x){paste("دسته",x)})
+    rownames(group_names) <- 1:max(count)
+
+    for(i in 1:length(splt)){
+      group_names[1:length(splt[[i]]),i] <- melt_Data_Hg[melt_Data_Hg[,2] %in% splt[[i]],1]
+    }
+
+
+    if(gr_num==1){
+      Gr_names <- as.data.frame(gr_names)
+      colnames(Gr_names) <- "گروه ۱"
+    }else{
+      Gr_names <- as.data.frame(matrix(NA,nrow = max(sapply(gr_names,length)),ncol = gr_num ))
+      colnames(Gr_names) <- sapply(1:gr_num, function(x){paste("گروه",x)})
+      for(i in 1:gr_num){
+        Gr_names[1:length(gr_names[[i]]),i] = gr_names[[i]]
+      }}
+    
+    
+    
+    
+##############################    
+##############################      
+##############################      
+    
+    names_ch <- rep(list("NA"),gr_num)
+    Data_T <- rep(list("NA"),gr_num)
+    for(i in 1:gr_num){
+      #names_ch[[i]] <- d$names[ind[[i]]]
+      Data_T[[i]] <- Data()[rownames(Data()) %in% Gr_names[,i],]
+      if(length(which(Gr_names[,i]!="NA"))==1){
+        Data_T[[i]] <- t(Data_T[[i]])
+      }
+    }
+    print(Data())
+    print(Gr_names)
+    print(Data_T)
+    
+    fit_tot <- rep(list("NA"),gr_num)
+    slope <- rep(NA,gr_num)  
+    
+    
+    for(i in 1:gr_num){  
+      Mean <- apply(Data_T[[i]],2,mean)
+      Mean <- melt(as.matrix(Mean))[,-2]
+      colnames(Mean) <- c("Day","value")
+      Mean$Day <- 1:ncol(Data())
+      fit_tot[[i]] <- lm(value~Day, data=Mean)
+      slope[i] <- coef(fit_tot[[i]])[2]
+    }
+    
+    slope <- as.data.frame(slope)
+    slope$names <- 1:gr_num
+    slope$clr <- "green"
+    colnames(slope) <- c("sl","names","clr")
+    slope[which(slope$sl>0),3] <- "red"
+    #slope <- slope[dim(slope)[1]:1,] 
+
+
+    print("slope")
+    print(slope)
+    
+    ylab_names <- rep(list("NA"),gr_num)
+
+    for(i in 1:gr_num){
+      ylab_names[[i]] <- paste(Gr_names[which(Gr_names[,i]!="NA"),i],sep = "\n")
+    }
+    
+    
+    if(length(unique(slope[,3]))==1){
+      if(slope[,3]=="red"){
+        lab="پیشرفت"
+        col="#00BFC4"
+      }
+      else{
+        lab="پسرفت"
+        col="#F8766D"
+      }
+    }else{
+      lab <- c("پسرفت","پیشرفت")
+      col <- c("#F8766D","#00BFC4")
+    }
+    
+    slope <- slope[order(slope$sl,decreasing = F),]    
+    
+    gg_slope_gr <- ggplot(slope,aes(x=reorder(names,1:gr_num), y = round(100*sl,1)))+
+      geom_bar(stat="identity",aes(fill=factor(clr,labels = lab)),color="black")+
+      scale_fill_manual(values=col)+    # filling geom_bar with colors
+      labs(title="پیشرفت گروهی دانش آموزان",x="",y="درصد پیشرفت خطی",fill="")+
+      geom_text(data=slope,aes(x = reorder(names,1:bin2),y = round(100*sl,1),
+                               label= lapply(round(100*sl,1),FUN=function(x){paste0(x,"%")})),
+                position = position_stack(vjust = 0.5),color="black",size=4.5)+
+      scale_x_discrete(labels= ylab_names[bin2:1])+
+      theme(axis.text.x = element_text(size=11,colour="black",angle=0, hjust=1,vjust=.5),
+            axis.text.y = element_text(size=12,colour="black"),
+            axis.title=element_text(size=14,face="bold"),
+            plot.title = element_text(size=14,face="bold"),
+            legend.title = element_text(size=12,face="bold"),
+            legend.text=element_text(size=12),
+            text=element_text(family="dastnevis"))
+    
+    gg_slope_gr <- ggplotly(gg_slope_gr)
+    
+    
+    
+    out <- list(gg_bar=gg_bar,gg_hist=gg_hist, gg_slope_gr = gg_slope_gr, group_names=group_names,gr_names=Gr_names,color_count = color_count ,cc1 = cc1)
+    
+    return(out)    
     
   })
   
+  
+
+  D_Table <- reactive({
+    
+    
+    n <- dim(React_DT3()$group_names)[2]
+    column <- 1:n
+    color <- rep('black',n)
+    backColor <- React_DT3()$color_count
+    font <- rep('bold',n)
+    
+    DT <- datatable(React_DT3()$group_names,
+                    options = list(
+                      pageLength = 10, orderClasses = TRUE,
+                      searching = FALSE, paging = FALSE
+                    ))
+    
+    for(i in 1:n){
+      DT <- DT %>%
+        formatStyle(column[i],  color = color[i], backgroundColor = backColor[i], fontWeight = font[i])
+    }
+    
+    return(DT)
+    
+  })
+  
+  
+  
+  
+  D_Table2 <- reactive({
+    
+    n <- dim(React_DT3()$gr_names)[2]
+    column <- 1:n
+    color <- rep('black',n)
+    backColor <- React_DT3()$cc1
+    font <- rep('bold',n)
+    
+    DT <- datatable(React_DT3()$gr_names,
+                    options = list(
+                      pageLength = 10, orderClasses = TRUE,
+                      searching = FALSE, paging = FALSE
+                      # initComplete = DT::JS(
+                      #   "function(settings, json) {",
+                      #   "$(this.api().table().header()).css({'background-color': 'gray', 'color': 'black'});",
+                      #   "}")
+                    ))
+    
+    for(i in 1:n){
+      DT <- DT %>%
+        formatStyle(column[i],  color = color[i], backgroundColor = backColor[i], fontWeight = font[i])
+    }
+    
+    return(DT)
+    
+  })
+  
+React_out_table <- reactive({
+    
+    if(input$table=="D"){
+      return(D_Table())
+    }else{
+      return(D_Table2())
+    }
+    
+  })
+  
+  output$Gr_N <- NULL
+  
+  observeEvent(input$DT_AC3,{
+  output$Gr_N <- DT::renderDataTable( React_out_table() )
+  })
+  
+  observeEvent(input$Pr_AC1,{
+    output$Gr_N <- NULL
+  })
+  
+  output$table <- renderUI({
+    A <- radioButtons(inputId = ns("table"),label = "",choices = c("گروه"="G","دسته"="D"),
+                 selected = "G",inline = TRUE)
+  })
+  
+  React_GrCat <- reactive({
+    A <- subplot(React_DT3()$gg_bar,React_DT3()$gg_hist,React_DT3()$gg_slope_gr,shareX = FALSE,shareY = FALSE,
+                 titleX=TRUE) %>% layout(showlegend = FALSE)
+    return(A)
+
+  })
   
   
   
@@ -420,7 +722,7 @@ M0_Prog <- function(input,output,session,Vals){
     }
     
     if(var$a==3){
-      return(React_DT3())
+      return(React_GrCat())
     }
     
   })

@@ -94,7 +94,7 @@ M0_Hist <- function(input,output,session,Vals){
     
     count <- ggplot_build(f)$data[[1]]$count
     splt=split(sort(melt_Data_Hg[,3]), rep(1:length(count), count))
-    
+
     cum_count <- cumsum(count)
     dup_count <- unique(cum_count[duplicated(cum_count)])
     gr_num <- length(dup_count) + 1
@@ -125,8 +125,8 @@ M0_Hist <- function(input,output,session,Vals){
     melt_Data_Hg[(dup_count[length(dup_count)]+1):tail(cum_count,1),4] <- tail(cc1,1)
 }}
 
-
     color_count <- rep(cc1[1],length(count))
+    if(length(count) > 1){
     a <- 1
     for(i in 2:length(count)){
       if(count[i] == 0 && count[i-1] !=0){
@@ -134,17 +134,17 @@ M0_Hist <- function(input,output,session,Vals){
       }
       color_count[i] <- cc1[a]
     }
+    if(length(which(count==0))>0)
     color_count <- color_count[-which(count==0)]
-    
-    
-    
+    }
+
     lab_legend <- sapply(1:gr_num, function(x){
       paste("گروه",x)
       })
     
     p <- ggplot(melt_Data_Hg,aes(value)) + 
-         geom_histogram(aes(y = round(..count../(0.01*sum(..count..)),1),fill=factor(clr,labels=lab_legend)),
-                        bins=input$Hg_bin,
+         geom_histogram(aes(y = round(..count../(0.01*sum(..count..)),1),
+                        fill=factor(clr,labels=lab_legend)), bins=input$Hg_bin,
                         colour="black",alpha=0.9)+
          labs(title ="هیستوگرام", x = "نمره", y = "فراوانی")+
          theme(axis.text.x = element_text(size=11,colour="black",angle=0, hjust=1,vjust=.5),
@@ -185,12 +185,16 @@ M0_Hist <- function(input,output,session,Vals){
        group_names[1:length(splt[[i]]),i] <- melt_Data_Hg[melt_Data_Hg[,3] %in% splt[[i]],1]
      }     
       
+      if(gr_num==1){
+        Gr_names <- as.data.frame(gr_names)
+        colnames(Gr_names) <- "گروه ۱"
+      }else{
       Gr_names <- as.data.frame(matrix(NA,nrow = max(sapply(gr_names,length)),ncol = gr_num ))
       colnames(Gr_names) <- sapply(1:gr_num, function(x){paste("گروه",x)})
-      for(i in 1:length(gr_names)){
+      for(i in 1:gr_num){
         Gr_names[1:length(gr_names[[i]]),i] = gr_names[[i]]
-      }
-     
+      }}
+      
     out <- list(gg=gg,group_names=group_names,gr_names=Gr_names,color_count = color_count ,cc1 = cc1)
     
     return(out)
