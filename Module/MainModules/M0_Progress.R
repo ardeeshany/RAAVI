@@ -534,19 +534,14 @@ M0_Prog <- function(input,output,session,Vals){
 ##############################      
 ##############################      
     
-    names_ch <- rep(list("NA"),gr_num)
     Data_T <- rep(list("NA"),gr_num)
     for(i in 1:gr_num){
-      #names_ch[[i]] <- d$names[ind[[i]]]
       Data_T[[i]] <- Data()[rownames(Data()) %in% Gr_names[,i],]
       if(length(which(Gr_names[,i]!="NA"))==1){
         Data_T[[i]] <- t(Data_T[[i]])
       }
     }
-    print(Data())
-    print(Gr_names)
-    print(Data_T)
-    
+
     fit_tot <- rep(list("NA"),gr_num)
     slope <- rep(NA,gr_num)  
     
@@ -565,12 +560,7 @@ M0_Prog <- function(input,output,session,Vals){
     slope$clr <- "green"
     colnames(slope) <- c("sl","names","clr")
     slope[which(slope$sl>0),3] <- "red"
-    #slope <- slope[dim(slope)[1]:1,] 
 
-
-    print("slope")
-    print(slope)
-    
     ylab_names <- rep(list("NA"),gr_num)
 
     for(i in 1:gr_num){

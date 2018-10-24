@@ -31,6 +31,24 @@
 }
 
 
+.shiny-output-error-Hist_l {
+      color: red;
+      font-size: 130%;
+      margin-top: -4%;
+      margin-left:10%;
+      font-weight:bold;
+}
+
+.shiny-output-error-Hist_r {
+      color: red;
+      font-size: 130%;
+      margin-top: 2%;
+      margin-left:76%;
+      font-weight:bold;
+}
+
+
+
 .shiny-output-error-Pr_right {
       color: red;
       font-size: 130%;
@@ -318,6 +336,14 @@ margin-top:28%;
 
 .action-button--mleft__Pr{
   margin-left:30%;
+}
+
+.action-button--mleft__Hist{
+  margin-left:10%;
+}
+
+.action-button--mleft__Hist1{
+  margin-left:180%;
 }
 
 .action-button--mleft__scatter{
