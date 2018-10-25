@@ -43,6 +43,7 @@ library(mailR)
 library(shinycssloaders)
 #library(profvis)
 #library(gridExtra)
+library(DT)
 
 
 #font_import()
