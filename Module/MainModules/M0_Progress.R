@@ -187,11 +187,11 @@ M0_Prog <- function(input,output,session,Vals){
       }
       else{
         lab="پسرفت"
-        col="#F8766D"
+        col="#fa8880"
       }
     }else{
       lab <- c("پسرفت","پیشرفت")
-      col <- c("#F8766D","#00BFC4")
+      col <- c("#fa8880","#00BFC4")
     }
     
     
@@ -208,6 +208,7 @@ M0_Prog <- function(input,output,session,Vals){
             legend.title = element_text(size=12,face="bold"),
             legend.text=element_text(size=12),
             text=element_text(family="dastnevis"))+
+            scale_fill_manual(values=col)+
             coord_flip()
     
     gg1 <- ggplotly(s1)
@@ -277,22 +278,16 @@ M0_Prog <- function(input,output,session,Vals){
      #? break/cut insted of for(){}
      if(gr_num==1){
        gr_names <- melt_Data_Hg[,1]
-       #melt_Data_Hg[,3] <- cc1[1]
      }else{
        if(gr_num==2){
          gr_names[[1]] <- melt_Data_Hg[1:dup_count[1],1]
          gr_names[[2]] <- melt_Data_Hg[(dup_count[1]+1):tail(cum_count,1),1]
-         #melt_Data_Hg[1:dup_count[1],3] <- cc1[1]
-         #melt_Data_Hg[(dup_count[1]+1):tail(cum_count,1),3] <- cc1[2]
        }else{
           gr_names[[1]] <- melt_Data_Hg[1:dup_count[1],1]
-          #melt_Data_Hg[1:dup_count[1],3] <- cc1[1]
           for(i in 2:(gr_num-1)){
             gr_names[[i]] <- melt_Data_Hg[(dup_count[i-1]+1):dup_count[i],1]
-            #melt_Data_Hg[(dup_count[i-1]+1):dup_count[i],3] <- cc1[i]
           }
           gr_names[[gr_num]] <- melt_Data_Hg[(dup_count[length(dup_count)]+1):tail(cum_count,1),1]
-          #melt_Data_Hg[(dup_count[length(dup_count)]+1):tail(cum_count,1),3] <- tail(cc1,1)
         }}
     
      
@@ -339,13 +334,13 @@ M0_Prog <- function(input,output,session,Vals){
     
     ##################
     
-    group_names <- as.data.frame(matrix(NA,max(count),length(splt)))
-    colnames(group_names) <- sapply(length(splt):1, function(x){paste("دسته",x)})
-    rownames(group_names) <- 1:max(count)
+    # group_names <- as.data.frame(matrix(NA,max(count),length(splt)))
+    # colnames(group_names) <- sapply(length(splt):1, function(x){paste("دسته",x)})
+    # rownames(group_names) <- 1:max(count)
 
-    for(i in 1:length(splt)){
-      group_names[1:length(splt[[i]]),i] <- melt_Data_Hg[melt_Data_Hg[,2] %in% splt[[i]],1]
-    }
+    # for(i in 1:length(splt)){
+    #   group_names[1:length(splt[[i]]),i] <- melt_Data_Hg[melt_Data_Hg[,2] %in% splt[[i]],1]
+    # }
 
 
     if(gr_num==1){
@@ -452,20 +447,21 @@ M0_Prog <- function(input,output,session,Vals){
     }
 
     
-    #lab=""
-    #col <- rep(NA,gr_num)
-    g <- c("#00BFC4","#8de5ec","#d0f4f7","#e1f8fa","#f2fcfd","#26cdde")
-    r <- c("#fbaba5","#fa9992","#f9887f","#f8766d","#f8655a","#083337")
+    g <- c("#00BFC4","#7ce1e9","#9ee9ef","#bff1f4","#e1f8fa")
+    r <- c("#fa8880","#fbaba5","#fcbdb8","#fee0de","#fef2f1")
+    #r <- rev(c("blue","pink","red","yellow","white"))
     
     slope[,3] <- rev(g[1:gr_num])
+    ind_neg <- which(slope[,1] < 0)
     
-    if(length(which(slope[,1] < 0)) > 0)
-    slope[1:(tail(which(slope[,1] < 0),1)),3] <- r[1:(tail(which(slope[,1] < 0),1))]
+    if(length(ind_neg) > 0){
+    slope[1:length(ind_neg),3] <- (r[1:length(ind_neg)])
+    }
     
     lab_r <- lapply(1:length(slope[,1]),FUN=function(x){paste("گروه",x,": پسرفت")})
     lab_g <- lapply(1:length(slope[,1]),FUN=function(x){paste("گروه",x,": پیشرفت")})
     
-    ind_neg <- which(slope[,1] < 0)
+
     lab_legend_bar <- lab_g[1:gr_num]
     if(length(ind_neg) > 0)
     lab_legend_bar[(gr_num-length(ind_neg)+1):gr_num] <- lab_r[(gr_num-length(ind_neg)+1):gr_num]
@@ -522,8 +518,10 @@ M0_Prog <- function(input,output,session,Vals){
     # col <- rev(slope[,3])
     # col[length(which(slope$sl < 0 )):length(slope[,3])] <- rev(col[length(which(slope$sl < 0 )):length(slope[,3])])
     
+    col <- rev(slope$clr)
+    #names(col) <- 1:length(col)
     gg_slope_gr <- ggplot(slope,aes(x=reorder(names,sl),y = round(100*sl,1)))+
-      geom_bar(stat="identity",aes(fill=factor(clr,labels=lab_legend_bar)),color="black")+
+      geom_bar(stat="identity",fill=slope$clr,color="black")+ #  aes(fill=factor(clr,labels=lab_legend_bar)),color="black")+
       #scale_fill_manual(values = factor(col))+    # filling geom_bar with colors
       #scale_fill_brewer(palette="blues")+
       labs(title="پیشرفت گروهی دانش آموزان",x="",y="درصد پیشرفت خطی",fill="")+
@@ -539,14 +537,15 @@ M0_Prog <- function(input,output,session,Vals){
             legend.text=element_text(size=12),
             text=element_text(family="dastnevis"))+
             #aes(stringr::str_wrap(YLAB, 15))+
-            scale_fill_manual(aes(breaks=clr),values= rev(slope$clr),guide = guide_legend(title = "",size=20))+
-            coord_flip()
+      #aes(fill = clr)+
+      #scale_fill_manual(values= slope$clr,guide = guide_legend(title = "",size=20))+
+      coord_flip()
     
     gg_slope_gr <- ggplotly(gg_slope_gr)
     
     
     
-    out <- list(sl = slope$sl ,gg_slope_gr = gg_slope_gr, group_names=group_names,gr_names=Gr_names,cc1 = cc1,color_count=color_count)
+    out <- list(sl = slope$sl ,gg_slope_gr = gg_slope_gr,gr_names=Gr_names, color = slope$clr)
     
     return(out)    
     
@@ -554,30 +553,30 @@ M0_Prog <- function(input,output,session,Vals){
   
   
 
-   D_Table <- reactive({
-     
-    n <- dim(React_DT3()$group_names)[2]
-    column <- 1:n
-    color <- rep('black',n)
-    backColor <- rep("#00BFC4",n)
-    backColor[which(React_DT3()$sl < 0)] <- "#F8766D" 
-    #backColor <- React_DT3()$color_count
-    font <- rep('bold',n)
-
-    DT <- datatable(React_DT3()$group_names,
-                    options = list(
-                      pageLength = 10, orderClasses = TRUE,
-                      searching = FALSE, paging = FALSE
-                    ))
-
-    for(i in 1:n){
-      DT <- DT %>%
-        formatStyle(column[i],  color = color[i], backgroundColor = backColor[i], fontWeight = font[i])
-    }
-
-    return(DT)
-
-  })
+  #  D_Table <- reactive({
+  #    
+  #   n <- dim(React_DT3()$group_names)[2]
+  #   column <- 1:n
+  #   color <- rep('black',n)
+  #   backColor <- rep("#00BFC4",n)
+  #   backColor[which(React_DT3()$sl < 0)] <- "#F8766D" 
+  #   #backColor <- React_DT3()$color_count
+  #   font <- rep('bold',n)
+  # 
+  #   DT <- datatable(React_DT3()$group_names,
+  #                   options = list(
+  #                     pageLength = 10, orderClasses = TRUE,
+  #                     searching = FALSE, paging = FALSE
+  #                   ))
+  # 
+  #   for(i in 1:n){
+  #     DT <- DT %>%
+  #       formatStyle(column[i],  color = color[i], backgroundColor = backColor[i], fontWeight = font[i])
+  #   }
+  # 
+  #   return(DT)
+  # 
+  # })
 
 
 
@@ -586,9 +585,10 @@ M0_Prog <- function(input,output,session,Vals){
     n <- dim(React_DT3()$gr_names)[2]
     column <- 1:n
     color <- rep('black',n)
-    backColor <- rep("#00BFC4",n)
-    if(length(which(React_DT3()$sl < 0)) > 0 )
-    backColor[which(React_DT3()$sl < 0)] <-  "#F8766D"
+    backColor <- React_DT3()$color
+    # backColor <- rep("#00BFC4",n)
+    # if(length(which(React_DT3()$sl < 0)) > 0 )
+    # backColor[which(React_DT3()$sl < 0)] <-  "#F8766D"
     #backColor <- React_DT3()$cc1
     font <- rep('bold',n)
 
@@ -615,30 +615,30 @@ M0_Prog <- function(input,output,session,Vals){
   
   
 
-React_out_table <- reactive({
-
-    if(input$table=="D"){
-      return(D_Table())
-    }else{
-      return(D_Table2())
-    }
-
-  })
+# React_out_table <- reactive({
+# 
+#     if(input$table=="D"){
+#       return(D_Table())
+#     }else{
+#       return(D_Table2())
+#     }
+# 
+#   })
   
   output$Gr_N <- NULL
 
   observeEvent(input$DT_AC3,{
-  output$Gr_N <- DT::renderDataTable( React_out_table() )
+  output$Gr_N <- DT::renderDataTable( D_Table2() )
   })
 
   observeEvent(input$Pr_AC1,{
     output$Gr_N <- NULL
   })
 
-  output$table <- renderUI({
-    A <- radioButtons(inputId = ns("table"),label = "",choices = c("گروه"="G","دسته"="D"),
-                 selected = "G",inline = TRUE)
-  })
+  # output$table <- renderUI({
+  #   A <- radioButtons(inputId = ns("table"),label = "",choices = c("گروه"="G","دسته"="D"),
+  #                selected = "G",inline = TRUE)
+  # })
   
   React_GrCat <- reactive({
     A <- subplot(React_DT3()$gg_slope_gr,shareX = FALSE,shareY = FALSE,
