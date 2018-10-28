@@ -100,5 +100,3 @@ source('Module/I1_Info.R')
       
     
   shinyApp(ui=ui,server=server)
-
-  

@@ -197,7 +197,7 @@ M0_Hist <- function(input,output,session,Vals){
     
     
     group_names <- as.data.frame(matrix(NA,max(count),length(splt)))
-    colnames(group_names) <- sapply(1:length(splt), function(x){paste("دسته",x)})
+    colnames(group_names) <- sapply(length(splt):1, function(x){paste("دسته",x)})
     rownames(group_names) <- 1:max(count)
     
     for(i in 1:length(splt)){
@@ -209,7 +209,7 @@ M0_Hist <- function(input,output,session,Vals){
       colnames(Gr_names) <- "گروه ۱"
     }else{
       Gr_names <- as.data.frame(matrix(NA,nrow = max(sapply(gr_names,length)),ncol = gr_num ))
-      colnames(Gr_names) <- sapply(1:gr_num, function(x){paste("گروه",x)})
+      colnames(Gr_names) <- sapply(gr_num:1, function(x){paste("گروه",x)})
       for(i in 1:gr_num){
         Gr_names[1:length(gr_names[[i]]),i] = gr_names[[i]]
       }}
@@ -224,7 +224,7 @@ M0_Hist <- function(input,output,session,Vals){
     # })
     
     lab_legend <- paste("گروه",
-                        length(leg):1,":   ","%",round(100*leg,1))
+                        1:length(leg),":   ","%",round(100*leg,1))
     
     # lab_legend <- sapply(1:gr_num, function(x){
     #   paste("گروه",x)
@@ -381,17 +381,20 @@ M0_Hist <- function(input,output,session,Vals){
   
   
   
-  ch_bin <- eventReactive(input$Pr_numI,{
+  ch_bin <- reactive({
     d <- group_mean()
-    return(1:length(unique(d[,1])))
+    return(length(unique(d[,1])))
   })
   
   output$Pr_bin2 <- renderUI({
-    if(is.null(Data())) ch <- ""
-    else{
-      ch <- ch_bin()
+    if(is.null(Data())) {
+      ch <- ""
+      ch_select <- ""
+    }else{
+      ch <- 1:min(ch_bin(),20)
+      ch_select <- min(2,ch_bin())
     }
-    selectInput(ns("Pr_bin2"),label = "تعداد گروه",choices = ch,selected = min(2,length(ch)))
+    selectInput(ns("Pr_bin2"),label = "تعداد گروه",choices = ch,selected = ch_select)
   })  
   
   
@@ -479,7 +482,7 @@ React_DT3 <-eventReactive(input$DT_AC3, {
   ##################
   
   group_names <- as.data.frame(matrix(NA,max(count),length(splt)))
-  colnames(group_names) <- sapply(1:length(splt), function(x){paste("دسته",x)})
+  colnames(group_names) <- sapply(length(splt):1, function(x){paste("دسته",x)})
   rownames(group_names) <- 1:max(count)
   
   for(i in 1:length(splt)){
@@ -492,7 +495,7 @@ React_DT3 <-eventReactive(input$DT_AC3, {
     colnames(Gr_names) <- "گروه ۱"
   }else{
     Gr_names <- as.data.frame(matrix(NA,nrow = max(sapply(gr_names,length)),ncol = gr_num ))
-    colnames(Gr_names) <- sapply(1:gr_num, function(x){paste("گروه",x)})
+    colnames(Gr_names) <- sapply(gr_num:1, function(x){paste("گروه",x)})
     for(i in 1:gr_num){
       Gr_names[1:length(gr_names[[i]]),i] = gr_names[[i]]
     }}
@@ -533,7 +536,7 @@ React_DT3 <-eventReactive(input$DT_AC3, {
   }))
   
   lab_legend_hist <- paste("گروه",
-                           length(leg_hist):1,":   ","%",round(100*leg_hist,1))
+                           1:length(leg_hist),":   ","%",round(100*leg_hist,1))
   
 
   gg_hist0 <- ggplot(melt_Data_Hg,aes(value)) +

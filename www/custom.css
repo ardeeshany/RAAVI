@@ -22,14 +22,13 @@
       font-weight:bold;
 }
 
-.shiny-output-error-Pr {
+.shiny-output-error-Pr_left {
       color: red;
       font-size: 130%;
       margin-top: 2%;
-      margin-left:0.5%;
+      margin-left:6.5%;
       font-weight:bold;
 }
-
 
 .shiny-output-error-Hist_l {
       color: red;

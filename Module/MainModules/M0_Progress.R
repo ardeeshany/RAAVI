@@ -17,16 +17,16 @@ M0_ProgUI <- function(id){
                     div(class="numeric-box--general__Pr",
                         uiOutput(ns("Pr_bin2")))),
              
+             # column(1,
+             #        div(class="action-button--general--left action-button--mtop__Pr action-button--mleft__Pr",
+             #            actionButton(inputId = ns("DT_AC3"),
+             #                label = div(class="action-button--font-size", "گروه بندی میانگین وزنی"),
+             #                class="action-button--color--yellow"
+             #            ))),
+                            #icon=icon("arrow-right")))),
              column(1,
                     div(class="action-button--general--left action-button--mtop__Pr action-button--mleft__Pr",
                         actionButton(inputId = ns("DT_AC3"),
-                            label = div(class="action-button--font-size", "گروه بندی میانگین وزنی"),
-                            class="action-button--color--yellow"
-                        ))),
-                            #icon=icon("arrow-right")))),
-             column(1,offset = 1,
-                    div(class="action-button--general--left action-button--mtop__Pr action-button--mleft__Pr",
-                        actionButton(inputId = ns("Pr_AC2"),
                             label = div(class="action-button--font-size","پیشرفت گروهی"),
                               class="action-button--color--yellow"
                         ))),
@@ -35,39 +35,39 @@ M0_ProgUI <- function(id){
              
              ########################################
  
-             column(1,offset = 5,
+             column(1,offset = 7,
                     div(class="action-button--general--left",
-                        style="margin-left:30%; margin-top:80%;",
-                        actionButton(inputId = ns("Pr_AC1"),
+                        style="margin-left:-40%; margin-top:80%;",
+                        actionButton(inputId = ns("Pr_AC1"),width = "180%",
                             label = div(class="action-button--font-size","پیشرفت فردی"),
                             class="action-button--color--yellow"))
                     )
 
              
            ),
-    fluidRow(
-    
-    column(2,
-    div(class="inline",style="text-align:center;",
-    sliderInput(inputId = ns("slider_width"),min = 15,max = 75,value = 30,label="مقیاس نمودارها"))),
-    
-    column(1,offset = 1,
-    div(class="inline check-box--general check-box--font-size", style="margin-top:48%; margin-left:40%;size:50%",
-        checkboxInput(inputId = ns("density"),label = "توزیع",value = TRUE)))
-    
-    ),
+    # fluidRow(
+    # 
+    # column(2,
+    # div(class="inline",style="text-align:center;",
+    # sliderInput(inputId = ns("slider_width"),min = 15,max = 75,value = 30,label="مقیاس نمودارها"))),
+    # 
+    # column(1,offset = 1,
+    # div(class="inline check-box--general check-box--font-size", style="margin-top:48%; margin-left:40%;size:50%",
+    #     checkboxInput(inputId = ns("density"),label = "توزیع",value = TRUE)))
+    # 
+    # ),
     br(), 
     fluidRow(
     withSpinner(plotlyOutput(ns("Pr")),type=5,color = "#006E6D",size = 0.6)
     ),
     fluidRow(
-        uiOutput(ns("table")),
-      
+         uiOutput(ns("table")),
+
       tags$div(
         tags$table(
           withSpinner( DT::dataTableOutput(ns("Gr_N")),type=5,color = "#006E6D",size = 0.4)
         ))
-    )
+     )
   )   
              
   }
@@ -104,17 +104,20 @@ M0_Prog <- function(input,output,session,Vals){
   })
   
   
-  ch_bin <- eventReactive(input$Pr_numI,{
+  ch_bin <- reactive({
     d <- group_mean()
-    return(1:length(unique(d[,1])))
+    return(length(unique(d[,1])))
   })
   
   output$Pr_bin2 <- renderUI({
-    if(is.null(Data())) ch <- ""
-    else{
-    ch <- ch_bin()
+    if(is.null(Data())) {
+      ch <- ""
+      ch_select <- ""
+      }else{
+    ch <- 1:min(ch_bin(),20)
+    ch_select <- min(2,ch_bin())
     }
-    selectInput(ns("Pr_bin2"),label = "تعداد گروه",choices = ch,selected = min(2,length(ch)))
+    selectInput(ns("Pr_bin2"),label = "تعداد گروه",choices = ch,selected = ch_select)
   })
 
   
@@ -128,9 +131,9 @@ M0_Prog <- function(input,output,session,Vals){
     var$a = 1
   })
   
-  observeEvent(input$Pr_AC2, {
-    var$a = 2
-  })
+  # observeEvent(input$Pr_AC2, {
+  #   var$a = 2
+  # })
   
   observeEvent(input$DT_AC3, {
     var$a = 3
@@ -199,13 +202,13 @@ M0_Prog <- function(input,output,session,Vals){
       geom_text(data=slope1,aes(x = names,y = 100*sl,label= lapply(round(100*sl,1),FUN=function(x){paste0(x,"%")})),
                 position = position_stack(vjust = 0.5),color="black",size=4.5)+
       theme(axis.text.x = element_text(size=11,colour="black",angle=0, hjust=1,vjust=.5),
-            axis.text.y = element_text(size=12,colour="black"),
+            axis.text.y = element_text(size=9,colour="black"),
             axis.title=element_text(size=14,face="bold"),
             plot.title = element_text(size=14,face="bold"),
             legend.title = element_text(size=12,face="bold"),
             legend.text=element_text(size=12),
-            text=element_text(family="dastnevis"))
-      #coord_flip()
+            text=element_text(family="dastnevis"))+
+            coord_flip()
     
     gg1 <- ggplotly(s1)
     gg1
@@ -226,111 +229,10 @@ M0_Prog <- function(input,output,session,Vals){
     d <- as.data.frame(apply(Data(),1,function(x){weighted.mean(x,gr)}))
     d$names <- rownames(Data())
     colnames(d) <- c("mean.w","names")
-    d <- d[order(d$mean.w,decreasing = T),]
+    #d <- d[order(d$mean.w,decreasing = T),]
     d[,1] <- round(d[,1],2)
     return(d)
   })
-  
-  
-  
-  
-  
-  
-  React_Pr2 <-eventReactive(input$Pr_AC2, {
-    
-    
-    validate(
-      need(!is.null(Data()),"هنوز داده ای وارد نشده است"),errorClass = "Pr"
-    )
-   
-    
-    bin2 <- as.numeric(input$Pr_bin2)
-    numI <- as.numeric(input$Pr_numI)
-    
-      d <- group_mean()
-      names_ch <- rep(list("NA"),bin2)
-      Data_T <- rep(list("NA"),bin2)
-      if(bin2==1)
-      ind <- list(1:nrow(Data()))
-      else
-      ind <- split(1:nrow(Data()), as.vector(cut(1:dim(Data())[1],breaks = bin2,labels = 1:bin2)))
-    
-      for(i in 1:bin2){
-        names_ch[[i]] <- d$names[ind[[i]]]
-        Data_T[[i]] <- Data()[rownames(Data()) %in% names_ch[[i]],]
-        if(length(names_ch[[i]])==1){
-          Data_T[[i]] <- t(Data_T[[i]])
-        }
-        }
-      
-      
-      fit_tot <- rep(list("NA"),length(Data_T))
-      slope <- rep(NA,length(Data_T))  
-      
-
-      for(i in 1:length(Data_T)){  
-        Mean <- apply(Data_T[[i]],2,mean)
-        Mean <- melt(as.matrix(Mean))[,-2]
-        colnames(Mean) <- c("Day","value")
-        Mean$Day <- 1:ncol(Data())
-        fit_tot[[i]] <- lm(value~Day, data=Mean)
-        slope[i] <- coef(fit_tot[[i]])[2]
-      }
-      
-      slope <- as.data.frame(slope)
-      slope$names <- 1:bin2
-      slope$clr <- "green"
-      colnames(slope) <- c("sl","names","clr")
-      slope[which(slope$sl>0),3] <- "red"
-      #slope <- slope[dim(slope)[1]:1,] 
-      
-      
-      ylab_names <- rep(list("NA"),bin2)
-      
-      for(i in 1:bin2){
-        ylab_names[[i]] <- paste(names_ch[[i]],sep = "\n")
-      }
-    
-       
-      if(length(unique(slope[,3]))==1){
-        if(slope[,3]=="red"){
-          lab="پیشرفت"
-          col="#00BFC4"
-        }
-        else{
-          lab="پسرفت"
-          col="#F8766D"
-        }
-      }else{
-        lab <- c("پسرفت","پیشرفت")
-        col <- c("#F8766D","#00BFC4")
-      }
-      
-   slope <- slope[order(slope$sl,decreasing = F),]    
-        
-   s <- ggplot(slope,aes(x=reorder(names,1:bin2), y = round(100*sl,1)))+
-        geom_bar(stat="identity",aes(fill=factor(clr,labels = lab)),color="black")+
-        scale_fill_manual(values=col)+    # filling geom_bar with colors
-        labs(title="پیشرفت گروهی دانش آموزان",x="",y="درصد پیشرفت خطی",fill="")+
-        geom_text(data=slope,aes(x = reorder(names,1:bin2),y = round(100*sl,1),
-              label= lapply(round(100*sl,1),FUN=function(x){paste0(x,"%")})),
-              position = position_stack(vjust = 0.5),color="black",size=4.5)+
-           scale_x_discrete(labels= ylab_names[bin2:1])+
-           theme(axis.text.x = element_text(size=11,colour="black",angle=0, hjust=1,vjust=.5),
-           axis.text.y = element_text(size=12,colour="black"),
-           axis.title=element_text(size=14,face="bold"),
-           plot.title = element_text(size=14,face="bold"),
-           legend.title = element_text(size=12,face="bold"),
-           legend.text=element_text(size=12),
-           text=element_text(family="dastnevis"))
-        
-      gg <- ggplotly(s)
-
-    
-    return(gg)
-    
-  })  
-  
   
   
   #########
@@ -339,7 +241,7 @@ M0_Prog <- function(input,output,session,Vals){
     
     
     validate(
-      need(!is.null(Data()),"هنوز داده ای وارد نشده است"),errorClass = "Pr"
+      need(!is.null(Data()),"هنوز داده ای وارد نشده است"),errorClass = "Pr_left"
     )
     
     bin2 <- as.numeric(input$Pr_bin2)
@@ -350,13 +252,11 @@ M0_Prog <- function(input,output,session,Vals){
     melt_Data_Hg <- melt_Data_Hg[order(melt_Data_Hg$value,decreasing = F),]
       
     gr_num <- 1
-    c <- 0
+    c <- 1
     count <- dim(melt_Data_Hg)[1]
    
-     if(bin2==1) {
-       c <- 1
-       }else{
-     while(gr_num < bin2){
+    if(bin2 > 1){
+      while(gr_num < bin2){
       c <- c+1
       f <-ggplot(melt_Data_Hg,aes(value))+
           geom_histogram(aes(y = round(..count../(0.01*sum(..count..)),1)),bins=c)
@@ -366,30 +266,33 @@ M0_Prog <- function(input,output,session,Vals){
        gr_num <- length(dup_count) + 1
        }
       }
-     splt=split(sort(melt_Data_Hg[,2]), rep(1:length(count), count))
+
+     splt=split(melt_Data_Hg[,2], rep(1:length(count), count))
      cc1 <- rev(colorRampPalette(c("#00BFC4","#D8AE47","#F7786B"))(gr_num))
-      
+
      melt_Data_Hg$clr <- NA
      gr_names <- rep(list(NA),gr_num)
 
+
+     #? break/cut insted of for(){}
      if(gr_num==1){
        gr_names <- melt_Data_Hg[,1]
-       melt_Data_Hg[,3] <- cc1[1]
+       #melt_Data_Hg[,3] <- cc1[1]
      }else{
        if(gr_num==2){
          gr_names[[1]] <- melt_Data_Hg[1:dup_count[1],1]
          gr_names[[2]] <- melt_Data_Hg[(dup_count[1]+1):tail(cum_count,1),1]
-         melt_Data_Hg[1:dup_count[1],3] <- cc1[1]
-         melt_Data_Hg[(dup_count[1]+1):tail(cum_count,1),3] <- cc1[2]
+         #melt_Data_Hg[1:dup_count[1],3] <- cc1[1]
+         #melt_Data_Hg[(dup_count[1]+1):tail(cum_count,1),3] <- cc1[2]
        }else{
           gr_names[[1]] <- melt_Data_Hg[1:dup_count[1],1]
-          melt_Data_Hg[1:dup_count[1],3] <- cc1[1]
+          #melt_Data_Hg[1:dup_count[1],3] <- cc1[1]
           for(i in 2:(gr_num-1)){
             gr_names[[i]] <- melt_Data_Hg[(dup_count[i-1]+1):dup_count[i],1]
-            melt_Data_Hg[(dup_count[i-1]+1):dup_count[i],3] <- cc1[i]
+            #melt_Data_Hg[(dup_count[i-1]+1):dup_count[i],3] <- cc1[i]
           }
           gr_names[[gr_num]] <- melt_Data_Hg[(dup_count[length(dup_count)]+1):tail(cum_count,1),1]
-          melt_Data_Hg[(dup_count[length(dup_count)]+1):tail(cum_count,1),3] <- tail(cc1,1)
+          #melt_Data_Hg[(dup_count[length(dup_count)]+1):tail(cum_count,1),3] <- tail(cc1,1)
         }}
     
      
@@ -405,28 +308,6 @@ M0_Prog <- function(input,output,session,Vals){
       if(length(which(count==0))>0)
         color_count <- color_count[-which(count==0)]
     }
-     
-     
-     
-    lab_legend <- sapply(1:gr_num, function(x){
-      paste("گروه",x)
-    })
-    
-
-    gg_bar <- ggplot(melt_Data_Hg,aes(x = reorder(Student,value),y = value))+
-      geom_bar(stat="identity",aes(fill=factor(clr,labels=lab_legend)),color="black")+
-      geom_text(data=melt_Data_Hg,aes(x = Student,y = value, label= value),
-                position = position_stack(vjust = 0.5),color="black",size=4.5)+
-      labs(title ="", x = "", y = "")+
-      theme(axis.text.x = element_text(size=12,colour="black",angle=0, hjust=1,vjust=.5),
-        axis.text.y = element_text(size=9,colour="black"),
-        axis.title=element_text(size=14,face="bold"),
-        plot.title = element_text(size=14,face="bold"),
-        legend.title = element_text(size=12,face="bold"),
-        legend.text=element_text(size=12),
-        text=element_text(family="dastnevis"))+
-        scale_fill_manual(aes(breaks=clr),values=rev(cc1),guide = guide_legend(title = "",size=20))+
-        coord_flip()
     
     
     f <- list(
@@ -434,40 +315,6 @@ M0_Prog <- function(input,output,session,Vals){
       size = 16,
       weight = 'bold',
       color = "black")
-    
-    text_bar <- list(
-      text = "میانگین وزنی نمره دانش آموزان در طول زمان",
-      font=f,
-      xref = "paper",
-      yref = "paper",
-      yanchor = "bottom",
-      xanchor = "center",
-      align = "center",
-      x = 0.5,
-      y = 1,
-      showarrow = FALSE
-    )
-    
-    
-    gg_bar <- ggplotly(gg_bar) %>% layout(annotations = text_bar)
-    
-########
-    
-    gg_hist <- ggplot(melt_Data_Hg,aes(value)) +
-      geom_histogram(aes(y = round(..count../(0.01*sum(..count..)),1),
-                    fill=factor(clr,labels=lab_legend)), bins=c,
-                     colour="black",alpha=0.9)+
-      labs(title ="", x = "نمره", y = "")+
-      theme(axis.text.x = element_text(size=11,colour="black",angle=0, hjust=1,vjust=.5),
-            axis.text.y = element_text(size=12,colour="black"),
-            axis.title=element_text(size=14,face="bold"),
-            plot.title = element_text(size=14,face="bold"),
-            legend.title = element_text(size=12,face="bold"),
-            legend.text=element_text(size=12),
-            text=element_text(family="dastnevis"))+
-            scale_fill_manual(aes(breaks=clr),values=rev(cc1),guide = guide_legend(title = "",size=20))
-    
-
     
     text_hist <- list(
       text = "فراوانی میانگین وزنی نمره ها در طول زمان",
@@ -488,28 +335,12 @@ M0_Prog <- function(input,output,session,Vals){
       else return(paste0(x,"%"))
     }
 
-    if(gr_num > 3){
-      size_text <- 3
-    }else{
-      size_text <- 4.8
-    }
-    
-    if(input$density==TRUE){
-      gg_hist <- gg_hist + geom_density(aes(y=100*..density..),alpha=0.3, fill="#9B2335",colour="#9B2335",lwd=1.5)+
-        stat_bin(aes(label=lapply(round(..count../(0.01*sum(..count..)),1),FUN= lab_hist)),geom="text",
-                 bins = c,color="black", size=size_text)
-    }else{
-      gg_hist <- gg_hist + stat_bin(aes(label=lapply(round(..count../(0.01*sum(..count..)),1),FUN=lab_hist)),geom="text",
-                       bins = c,color="black", size=size_text)
-    }
 
-
-    gg_hist <- ggplotly(gg_hist) %>% layout(annotations = text_hist) 
     
     ##################
     
     group_names <- as.data.frame(matrix(NA,max(count),length(splt)))
-    colnames(group_names) <- sapply(1:length(splt), function(x){paste("دسته",x)})
+    colnames(group_names) <- sapply(length(splt):1, function(x){paste("دسته",x)})
     rownames(group_names) <- 1:max(count)
 
     for(i in 1:length(splt)){
@@ -519,10 +350,10 @@ M0_Prog <- function(input,output,session,Vals){
 
     if(gr_num==1){
       Gr_names <- as.data.frame(gr_names)
-      colnames(Gr_names) <- "گروه ۱"
+      #colnames(Gr_names) <- "گروه ۱"
     }else{
       Gr_names <- as.data.frame(matrix(NA,nrow = max(sapply(gr_names,length)),ncol = gr_num ))
-      colnames(Gr_names) <- sapply(1:gr_num, function(x){paste("گروه",x)})
+      #colnames(Gr_names) <- sapply(gr_num:1, function(x){paste("گروه",x)})
       for(i in 1:gr_num){
         Gr_names[1:length(gr_names[[i]]),i] = gr_names[[i]]
       }}
@@ -557,54 +388,165 @@ M0_Prog <- function(input,output,session,Vals){
     
     slope <- as.data.frame(slope)
     slope$names <- 1:gr_num
-    slope$clr <- "green"
-    colnames(slope) <- c("sl","names","clr")
-    slope[which(slope$sl>0),3] <- "red"
 
-    ylab_names <- rep(list("NA"),gr_num)
+    #slope$clr <- melt_Data_Hg[,3]
+     #slope$clr <- "green"
+     slope$clr <- NA
+     colnames(slope) <- c("sl","names","clr")
+     #slope[which(slope$sl>0),3] <- "red"
 
-    for(i in 1:gr_num){
-      ylab_names[[i]] <- paste(Gr_names[which(Gr_names[,i]!="NA"),i],sep = "\n")
-    }
-    
-    
-    if(length(unique(slope[,3]))==1){
-      if(slope[,3]=="red"){
-        lab="پیشرفت"
-        col="#00BFC4"
-      }
-      else{
-        lab="پسرفت"
-        col="#F8766D"
-      }
+    if(gr_num==1){
+      colnames(Gr_names) <- "گروه ۱"
     }else{
-      lab <- c("پسرفت","پیشرفت")
-      col <- c("#F8766D","#00BFC4")
-    }
+      Gr_names <- Gr_names[,order(slope$sl,decreasing = F)]
+      colnames(Gr_names) <- sapply(gr_num:1, function(x){paste("گروه",x)})
+      }
+
+     ylab_names <- rep(list("NA"),gr_num)
+     
+     for(i in 1:gr_num){
+       ylab_names[[i]] <- paste(Gr_names[which(Gr_names[,i]!="NA"),i],collapse = " , ")
+     }
     
+    ylab_gr <- sapply(gr_num:1, function(x){
+      paste("گروه",x)
+    })
+    
+    
+    ylab_full <- rep(list("NA"),gr_num)
+
+    if(gr_num==1){
+      ylab_full <- "گروه ۱ : تمام دانش آموزان"
+    }else{
+      for(i in 1:gr_num){
+        if(length(Gr_names[which(Gr_names[,i]!="NA"),i]) > 5) 
+          ylab_full[[i]] <- paste(ylab_gr[i])
+        else
+          ylab_full[[i]] <- paste(ylab_gr[i],":  ",ylab_names[[i]])
+      }}
+    
+
+    #YLAB <- gsub(,paste(ylab_names,collapse = "--"))
+    #print("YLAB")
+    #print(ylab_names,15)
+    
+    # if(length(unique(slope[,3]))==1){
+    #   if(slope[,3]=="red"){
+    #     lab="پیشرفت"
+    #     col="#00BFC4"
+    #   }
+    #   else{
+    #     lab="پسرفت"
+    #     col="#F8766D"
+    #   }
+    # }else{
+    #   lab <- c("پسرفت","پیشرفت")
+    #   col <- c("#F8766D","#00BFC4")
+    # }
+    
+    #ylab_names <- ylab_names[order(slope$sl,decreasing = F)]
     slope <- slope[order(slope$sl,decreasing = F),]    
     
-    gg_slope_gr <- ggplot(slope,aes(x=reorder(names,1:gr_num), y = round(100*sl,1)))+
-      geom_bar(stat="identity",aes(fill=factor(clr,labels = lab)),color="black")+
-      scale_fill_manual(values=col)+    # filling geom_bar with colors
+    for(i in 1:gr_num){
+      slope[i,2] <- ylab_full[[i]]
+    }
+
+    
+    #lab=""
+    #col <- rep(NA,gr_num)
+    g <- c("#00BFC4","#8de5ec","#d0f4f7","#e1f8fa","#f2fcfd","#26cdde")
+    r <- c("#fbaba5","#fa9992","#f9887f","#f8766d","#f8655a","#083337")
+    
+    slope[,3] <- rev(g[1:gr_num])
+    
+    if(length(which(slope[,1] < 0)) > 0)
+    slope[1:(tail(which(slope[,1] < 0),1)),3] <- r[1:(tail(which(slope[,1] < 0),1))]
+    
+    lab_r <- lapply(1:length(slope[,1]),FUN=function(x){paste("گروه",x,": پسرفت")})
+    lab_g <- lapply(1:length(slope[,1]),FUN=function(x){paste("گروه",x,": پیشرفت")})
+    
+    ind_neg <- which(slope[,1] < 0)
+    lab_legend_bar <- lab_g[1:gr_num]
+    if(length(ind_neg) > 0)
+    lab_legend_bar[(gr_num-length(ind_neg)+1):gr_num] <- lab_r[(gr_num-length(ind_neg)+1):gr_num]
+    
+    lab_legend_bar <- lab_legend_bar
+    
+    print(slope)
+    print(lab_legend_bar)
+    
+    #r <- c("red","blue","green","yellow","black")
+    # length_slp <- (length(which(slope$sl >= 0)))
+    # length_sln <- (length(which(slope$sl < 0)))
+    # 
+    # col <- rev(g[1:gr_num])
+    # if(length_sln > 0){
+    # col[1:length_sln] <- r[1:length_sln]
+    # }
+    # 
+    # slope[,3] <- col
+    # 
+    # 
+
+     
+     
+    # #print(lab_legend_bar)
+     # if(length_sln > 0)
+     # lab_legend_bar[(length_sln+1):gr_num] <- lab_r[(length_sln+1):gr_num]
+    
+    #print(lab_legend_bar)
+    
+    
+    
+    
+    #lab <- rev(lab)
+    
+    #ylab_names <- 1:gr_num
+    #levels(birds$effect) <- gsub(" ", "\n", levels(birds$effect))
+
+    # print("YLAB")
+    # print(ylab_names)
+    
+    # print(slope)
+    # print(col)
+   
+    # label_legend <- rep(NA,gr_num)
+    # for(i in 1:gr_num){
+    #   if(slope[i,1] >= 0)
+    #     label_legend <- paste("گروه",i,"پیشرفت")
+    #   else
+    #     label_legend <- paste("گروه",i,"پسرفت")
+    # }
+
+    
+    # col <- rev(slope[,3])
+    # col[length(which(slope$sl < 0 )):length(slope[,3])] <- rev(col[length(which(slope$sl < 0 )):length(slope[,3])])
+    
+    gg_slope_gr <- ggplot(slope,aes(x=reorder(names,sl),y = round(100*sl,1)))+
+      geom_bar(stat="identity",aes(fill=factor(clr,labels=lab_legend_bar)),color="black")+
+      #scale_fill_manual(values = factor(col))+    # filling geom_bar with colors
+      #scale_fill_brewer(palette="blues")+
       labs(title="پیشرفت گروهی دانش آموزان",x="",y="درصد پیشرفت خطی",fill="")+
-      geom_text(data=slope,aes(x = reorder(names,1:bin2),y = round(100*sl,1),
+      geom_text(data=slope,aes(x = reorder(names,round(100*sl,1)),y = round(100*sl,1),
                                label= lapply(round(100*sl,1),FUN=function(x){paste0(x,"%")})),
                 position = position_stack(vjust = 0.5),color="black",size=4.5)+
-      scale_x_discrete(labels= ylab_names[bin2:1])+
+      #scale_x_discrete(labels=ylab_full)+
       theme(axis.text.x = element_text(size=11,colour="black",angle=0, hjust=1,vjust=.5),
-            axis.text.y = element_text(size=12,colour="black"),
+            axis.text.y = element_text(size=9,colour="black"),
             axis.title=element_text(size=14,face="bold"),
             plot.title = element_text(size=14,face="bold"),
             legend.title = element_text(size=12,face="bold"),
             legend.text=element_text(size=12),
-            text=element_text(family="dastnevis"))
+            text=element_text(family="dastnevis"))+
+            #aes(stringr::str_wrap(YLAB, 15))+
+            scale_fill_manual(aes(breaks=clr),values= rev(slope$clr),guide = guide_legend(title = "",size=20))+
+            coord_flip()
     
     gg_slope_gr <- ggplotly(gg_slope_gr)
     
     
     
-    out <- list(gg_bar=gg_bar,gg_hist=gg_hist, gg_slope_gr = gg_slope_gr, group_names=group_names,gr_names=Gr_names,color_count = color_count ,cc1 = cc1)
+    out <- list(sl = slope$sl ,gg_slope_gr = gg_slope_gr, group_names=group_names,gr_names=Gr_names,cc1 = cc1,color_count=color_count)
     
     return(out)    
     
@@ -612,41 +554,44 @@ M0_Prog <- function(input,output,session,Vals){
   
   
 
-  D_Table <- reactive({
-    
-    
+   D_Table <- reactive({
+     
     n <- dim(React_DT3()$group_names)[2]
     column <- 1:n
     color <- rep('black',n)
-    backColor <- React_DT3()$color_count
+    backColor <- rep("#00BFC4",n)
+    backColor[which(React_DT3()$sl < 0)] <- "#F8766D" 
+    #backColor <- React_DT3()$color_count
     font <- rep('bold',n)
-    
+
     DT <- datatable(React_DT3()$group_names,
                     options = list(
                       pageLength = 10, orderClasses = TRUE,
                       searching = FALSE, paging = FALSE
                     ))
-    
+
     for(i in 1:n){
       DT <- DT %>%
         formatStyle(column[i],  color = color[i], backgroundColor = backColor[i], fontWeight = font[i])
     }
-    
+
     return(DT)
-    
+
   })
-  
-  
-  
-  
+
+
+
   D_Table2 <- reactive({
-    
+
     n <- dim(React_DT3()$gr_names)[2]
     column <- 1:n
     color <- rep('black',n)
-    backColor <- React_DT3()$cc1
+    backColor <- rep("#00BFC4",n)
+    if(length(which(React_DT3()$sl < 0)) > 0 )
+    backColor[which(React_DT3()$sl < 0)] <-  "#F8766D"
+    #backColor <- React_DT3()$cc1
     font <- rep('bold',n)
-    
+
     DT <- datatable(React_DT3()$gr_names,
                     options = list(
                       pageLength = 10, orderClasses = TRUE,
@@ -656,44 +601,48 @@ M0_Prog <- function(input,output,session,Vals){
                       #   "$(this.api().table().header()).css({'background-color': 'gray', 'color': 'black'});",
                       #   "}")
                     ))
-    
+
     for(i in 1:n){
       DT <- DT %>%
         formatStyle(column[i],  color = color[i], backgroundColor = backColor[i], fontWeight = font[i])
     }
-    
+
     return(DT)
-    
+
   })
+
+
   
+  
+
 React_out_table <- reactive({
-    
+
     if(input$table=="D"){
       return(D_Table())
     }else{
       return(D_Table2())
     }
-    
+
   })
   
   output$Gr_N <- NULL
-  
+
   observeEvent(input$DT_AC3,{
   output$Gr_N <- DT::renderDataTable( React_out_table() )
   })
-  
+
   observeEvent(input$Pr_AC1,{
     output$Gr_N <- NULL
   })
-  
+
   output$table <- renderUI({
     A <- radioButtons(inputId = ns("table"),label = "",choices = c("گروه"="G","دسته"="D"),
                  selected = "G",inline = TRUE)
   })
   
   React_GrCat <- reactive({
-    A <- subplot(React_DT3()$gg_bar,React_DT3()$gg_hist,React_DT3()$gg_slope_gr,shareX = FALSE,shareY = FALSE,
-                 titleX=TRUE) %>% layout(showlegend = FALSE)
+    A <- subplot(React_DT3()$gg_slope_gr,shareX = FALSE,shareY = FALSE,
+                 titleX=TRUE) %>% layout(showlegend = TRUE)
     return(A)
 
   })
@@ -707,10 +656,6 @@ React_out_table <- reactive({
       return(React_Pr1())   # return is important here. Without it does not work
     }
     
-    if(var$a==2){
-      return(React_Pr2())
-    }
-    
     if(var$a==3){
       return(React_GrCat())
     }
@@ -718,7 +663,7 @@ React_out_table <- reactive({
   })
   ###
   
-  output$Pr <- renderPlotly(React_out())  
+  output$Pr <- renderPlotly(React_out())
   
 }
 
