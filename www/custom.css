@@ -33,8 +33,7 @@
 .shiny-output-error-Hist_l {
       color: red;
       font-size: 130%;
-      margin-top: -4%;
-      margin-left:10%;
+      text-align:center;
       font-weight:bold;
 }
 
@@ -218,13 +217,12 @@ font-weight:bold;
 }
 
 .input-box--general{
-text-align:center;
-font-size:125%;
+font-size:105%;
 }
 
 .numeric-box--general__Pr{
 text-align:center;
-font-size:125%;
+font-size:105%;
 /*margin-top:35%;
 width:130%;*/
 }

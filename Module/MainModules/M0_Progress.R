@@ -6,7 +6,7 @@ M0_ProgUI <- function(id){
                        "پیشرفت"),
            icon=icon("arrow-circle-up",class="tabPanel-icon"),
            
-           tags$style(HTML(".js-irs-0 .irs-single, .js-irs-0 .irs-bar-edge, .js-irs-0 .irs-bar {background: #485167}")),         
+           #tags$style(HTML(".js-irs-0 .irs-single, .js-irs-0 .irs-bar-edge, .js-irs-0 .irs-bar {background: #485167}")),         
 
            
 fluidRow(

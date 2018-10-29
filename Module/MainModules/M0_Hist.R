@@ -10,89 +10,63 @@ M0_HistUI <- function(id){
   tabPanel(title = div(class="tabPanel--font-size center",
                        "گروه بندی"),
            icon = icon("group",class="tabPanel-icon"),
-   
            
-    tags$style(HTML(".js-irs-0 .irs-single, .js-irs-0 .irs-bar-edge, .js-irs-0 .irs-bar {background: #485167}")), 
-           
+    # tags$style(HTML(".js-irs-0 .irs-single, .js-irs-0 .irs-bar-edge, .js-irs-0 .irs-bar {background: #485167}")), 
+    #        
                    
-           fluidRow(            
+fluidRow(            
              
-             column(1,
+div(style="text-align:center;",
+column(width = 2, 
+br(),  
+box(width="100%",status="primary",     
+    
+  wellPanel(
+  
                     div(class="input-box--general",
-                        uiOutput(ns("Hg_SeI")))
-             ),
+                        uiOutput(ns("Hg_SeI"))),
              
-             column(1,
-                    div(class="input-box--general",style="margin-left:90%",
-                        uiOutput(ns("Hg_bin")))
-             ),
-             column(1,
-                    div(class="action-button--general action-button--mleft__Hist1 action-button--mtop",
+
+                    div(class="input-box--general",
+                        uiOutput(ns("Hg_bin"))),
+
                         actionButton(inputId = ns("Hg_Ac"),
-                                     label = div(class="action-button--font-size","آنالیز"),
-                                     class="action-button--color--yellow",
-                                     width="130%"))
-             ),             
-             column(1,offset = 2,
-                    div(class="check-box--general check-box--mtop__hist check-box--font-size",
-                        style="margin-left:-65%;",
-                        checkboxInput(inputId = ns("density"),label = "توزیع",value = FALSE))
-             ),
+                                     label = div(class="action-button--font-size","در یک زمان"),
+                                     class="action-button--color--yellow")
 
-
+),
              
              
 ####################################
       
-     
-      column(1,offset = 2,
-           div(class="check-box--general check-box--mtop__hist check-box--font-size",
-               style="margin-left:-90%;",
-           checkboxInput(inputId = ns("density_r"),label = "توزیع",value = FALSE))),
+ wellPanel(    
+
+             div(class="numeric-box--general__Pr",
+                 uiOutput(ns("Pr_numI"))),
+
+             div(class="numeric-box--general__Pr",
+                 uiOutput(ns("Pr_bin2"))),
 
 
-      column(1,
-             div(class="numeric-box--general__Pr",
-                 style="margin-left:-150%;",
-                 uiOutput(ns("Pr_numI")))),
-      
-      column(1,
-             div(class="numeric-box--general__Pr",
-                 style="margin-left:-148%;",
-                 uiOutput(ns("Pr_bin2")))),
-      
-      column(1,
-             div(class="action-button--general--left action-button--mtop__Pr action-button--mleft__Hist",
-                 style="margin-left:-146%;",
                  actionButton(inputId = ns("DT_AC3"),
-                              label = div(class="action-button--font-size", "گروه بندی میانگین وزنی"),
-                              class="action-button--color--yellow"
-                 ))),
-       fluidRow(
-          column(2,offset = 8,
-             div(class="inline",
-             style="size:30%; text-align:right;  margin-top: -40%;margin-left:10%;",
-             sliderInput(inputId = ns("slider_width"),min = 15,max = 75,value = 35,label=""))))
+                              label = div(class="action-button--font-size", "در طول زمان"),
+                              class="action-button--color--yellow")
 
-           ),
-           
+)
 
-           withSpinner(plotlyOutput(ns("Hg")),type=5,color = "#006E6D",size = 0.6),
+))),
            
-           radioButtons(inputId = ns("table"),label = "",choices = c("گروه"="G","دسته"="D"),
-                        selected = "G",inline = TRUE),
-           
-           tags$div(
-             tags$table(
-               withSpinner( DT::dataTableOutput(ns("Gr_N")),type=5,color = "#006E6D",size = 0.4)
-             ))
-           
-           
-  )
+column(width = 10,
+br(),  
+box(status="primary",width="100%",collapsible = TRUE,collapsed = FALSE,
 
-
+    uiOutput(ns("Hg_full"))
+    
+           ))           
   
-        
+
+))
+
 }
 
 
@@ -124,9 +98,9 @@ M0_Hist <- function(input,output,session,Vals){
   
   Reac_Hg <- eventReactive(input$Hg_Ac, {
     
-    validate(
-      need(!is.null(Data()),"هنوز داده ای وارد نشده است"),errorClass = "Hist_l"
-    )
+    # validate(
+    #   need(!is.null(Data()),"هنوز داده ای وارد نشده است"),errorClass = "Hist_l"
+    # )
     
     d <- as.data.frame(Data()[,input$Hg_SeI])
     melt_Data_Hg <- melt(as.matrix(d))
@@ -314,7 +288,7 @@ M0_Hist <- function(input,output,session,Vals){
   })
   
   
-  table_ind <- reactiveValues(a=1)
+  table_ind <- reactiveValues(a=0)
   
 
   observeEvent(input$Hg_Ac, {
@@ -402,9 +376,9 @@ M0_Hist <- function(input,output,session,Vals){
 
 React_DT3 <-eventReactive(input$DT_AC3, { 
   
-  validate(
-    need(!is.null(Data()),"هنوز داده ای وارد نشده است"),errorClass = "Hist_r"
-  )
+  # validate(
+  #   need(!is.null(Data()),"هنوز داده ای وارد نشده است"),errorClass = "Hist_r"
+  # )
   
   bin2 <- as.numeric(input$Pr_bin2)
   numI <- as.numeric(input$Pr_numI)
@@ -689,7 +663,7 @@ React_DT3 <-eventReactive(input$DT_AC3, {
 
     bin <- Reac_Hg()$c
 
-    if(input$density){
+    if(input$density_1){
       
       p <- Reac_Hg()$p + geom_density(aes(y=100*..density..),alpha=0.3, fill="#9B2335",colour="#9B2335",lwd=1.5)+
         stat_bin(aes(label=lapply(round(..count../(0.01*sum(..count..)),1),FUN= lab_hist)),geom="text",
@@ -707,7 +681,7 @@ React_DT3 <-eventReactive(input$DT_AC3, {
   React_GrCat_final <- reactive({
     
     
-    if(input$density_r){
+    if(input$density_2){
       
       p <- React_DT3()$gg_hist0 + geom_density(aes(y=100*..density..),alpha=0.3, fill="#9B2335",colour="#9B2335",lwd=1.5)+
         stat_bin(aes(label=lapply(round(..count../(0.01*sum(..count..)),1),FUN= lab_hist)),geom="text",
@@ -737,22 +711,12 @@ React_DT3 <-eventReactive(input$DT_AC3, {
   })
   
   
-  
-  React_out <- reactive({
-    
-    if(table_ind$a==1){        # Does not need have () for input$x .... I mean, input$x() is wrong.
-      return(Reac_Hg_final())   # return is important here. Without it does not work
-    }
-    
-    if(table_ind$a==2){
-      return(React_GrCat_final())
-    }
-    
-  }) 
 
-  output$Hg <- renderPlotly(React_out())
+
+  output$Hg_1 <- renderPlotly(Reac_Hg_final())
+  output$Hg_2 <- renderPlotly(React_GrCat_final())
   
-  
+
   React_out_table <- reactive({
     
     if(table_ind$a==1){        # Does not need have () for input$x .... I mean, input$x() is wrong.
@@ -765,7 +729,82 @@ React_DT3 <-eventReactive(input$DT_AC3, {
     
   })
   
-  output$Gr_N <- DT::renderDataTable( React_out_table() )
+  output$Gr_N_1 <- DT::renderDataTable( React_out_table_l() )
+  output$Gr_N_2 <- DT::renderDataTable( React_out_table_r() )
+  
+  
+  output$Hg_full <- renderUI({
+    
+    
+    if(table_ind$a==1){
+       
+       
+      validate(
+        need(!is.null(Data()),"هنوز داده ای وارد نشده است"),errorClass = "Hist_l"
+      )
+      
+      A <- div(class="inline check-box--font-size", style="text-align:right;",
+               checkboxInput(inputId = ns("density_1"),label = "توزیع",value = FALSE))
+       B <- plotlyOutput(ns("Hg_1"))
+       
+       C <- radioButtons(inputId = ns("table"),label = "",choices = c("گروه"="G","دسته"="D"),
+                         selected = "G",inline = TRUE)
+       
+       D <- tags$div(
+         tags$table(
+           DT::dataTableOutput(ns("Gr_N_1"))
+         ))
+       
+       out <- withSpinner(list(A,B,C,D),type=5,color = "#006E6D",size = 0.6)
+       
+       return(out)
+       
+    }
+    
+    if(table_ind$a==2){
+      
+    validate(
+      need(!is.null(Data()),"هنوز داده ای وارد نشده است"),errorClass = "Hist_l"
+    )  
+    
+   
+      
+    A <- dropdown(
+        div(style="text-align:right; font-size :120%; font-weight:bold;", ":تنظیمات نمودار"),
+        div(style="text-align:left",
+            noUiSliderInput(inputId = ns("slider_width"),
+                            label =div(style="font-size:80%;","مقیاس نمودارها"),tooltips = F,
+                            inline = T, min = 15,max = 75,value = 35,step = 1,
+                            width = "100%",color = "#578CA9")),
+        materialSwitch(inputId = ns("density_2"), label = "نمودار توزیع", status = "primary", right = TRUE),
+        circle = TRUE, status = "default", icon = icon("gear"),style = "unite",width = "25%"
+      )  
+      
+         
+    B <- withSpinner(plotlyOutput(ns("Hg_2")),type=5,color = "#006E6D",size = 0.6)
+    
+    
+    C <- dropdown(
+      div(style="text-align:right; font-size :120%; font-weight:bold;", ":تنظیمات جدول"),
+      awesomeRadio(inputId = ns("table"),label = "",choices = c("گروه"="G","دسته"="D"),
+                   checkbox = T,status = "primary", selected = "G",inline = TRUE),
+      circle = TRUE, status = "default", icon = icon("gear"),style = "unite",width = "25%"
+    )
+    
+    D <- tags$div(
+      tags$table(
+        DT::dataTableOutput(ns("Gr_N_2"))
+      ))
+    
+
+    
+    out <- list(A,B,C,D)
+    
+    return(out)
+    
+    }
+    
+  })
   
   
 }

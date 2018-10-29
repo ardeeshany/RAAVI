@@ -21,9 +21,9 @@ div(style="text-align:center;",
                     div(class="input-box--general",
                         uiOutput(ns("Bx_SeI2"))),
                     #div(class="action-button--general action-button--mleft action-button--mtop",
-                        actionButton(inputId = ns("Bx_Ac"),
-                                     label = div(class="action-button--font-size","آنالیز"),
-                                     class="action-button--color--yellow")
+                    actionBttn(inputId = ns("Bx_Ac"),style = "jelly",
+                                     label = div(class="action-button--font-size","آنالیز"))
+                                     #class="action-button--color--yellow")
            )))),
 
 column(width = 10,
