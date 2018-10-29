@@ -218,20 +218,17 @@ font-weight:bold;
 }
 
 .input-box--general{
-display:inline-block;
 text-align:center;
 font-size:125%;
-width:220%;
-margin-top:30%; 
 }
 
 .numeric-box--general__Pr{
-display:inline-block;
 text-align:center;
 font-size:125%;
-width:140%;
-margin-top:35%; 
+/*margin-top:35%;
+width:130%;*/
 }
+
 
 
 .numeric-box--general__cat{
@@ -306,7 +303,8 @@ margin-top:28%;
 .action-button--color--yellow{
   color: black; 
   background-color: #EFC050; 
-  border-color: #2e6da4
+  border-color: #2e6da4;
+  width:100%;
 }
 .action-button--color--yellow:hover{
   color: #fff; 
@@ -326,7 +324,7 @@ margin-top:28%;
 
 .action-button--general--left{
   text-align:left;
-  width = "250%";
+  /*width = "250%";*/
 }
 
 .action-button--mleft{
@@ -363,12 +361,11 @@ margin-top:28%;
 }
 
 .check-box--general{
-  display:inline-block;
   text-align:left;
 }
 
 .check-box--font-size{
- font-size:135%; 
+ font-size:120%; 
 }
 
 .check-box--font-size__cat{
@@ -401,20 +398,12 @@ margin-top:28%;
 }
 
 
-
-
-.dropdown--margin-top{
-  margin-top:30%;
-}
-
 .dropdown__title{
-  display:inline-block;
   text-align:center;
-  font-size:130%;
+  font-size:120%;
 }
 
 .dropdown__text{
-  display:inline-block;
   text-align:left;
   font-size:105%;
 }

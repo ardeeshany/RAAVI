@@ -45,7 +45,7 @@ M0_LoadUI <- function(id){
 div(style="text-align:center;",
 column(width = 3,
 br(),
-box(width="200%",
+box(width="100%",
     #title = div(class="load__title--font-size",""),
     status="primary",
 
@@ -55,16 +55,13 @@ box(width="200%",
         #uiOutput(ns("message2"), inline=TRUE),
     wellPanel(
       #radioButtons(inputId = ns("up_rmv"),label = "",choices = c("آپلود","پاک"),selected = "آپلود",inline = TRUE),
-      fluidRow(
-      column(6,
-             div(class="inline action-button--font-size__make",
+
+    div(class="numeric-box--general__Pr",
                  numericInput(inputId = ns("num_row"),
-                  label =  "تعداد دانش آموز",min = 1,value = 1,step = 1))),
-      
-      column(6,
-             div(class="inline action-button--font-size__make", 
+                  label =  "تعداد دانش آموز",min = 1,value = 1,step = 1)),
+    div(class="numeric-box--general__Pr", 
                  numericInput(inputId = ns("num_col"),
-                  label = "تعداد امتحان",min = 1,value = 1,step = 1)))),
+                  label = "تعداد امتحان",min = 1,value = 1,step = 1)),
       
       uiOutput(outputId = ns("f_make"))
       #"این فایل را ذخیره کرده، تغییر داده و دوباره آپلود کنید"
@@ -148,8 +145,8 @@ box(width="200%",
 
 div(style="text-align:center;",         
     column(width = 9,
-           div(style="margin-top: 3%;",
-               box(status="primary",width="200%",collapsible = TRUE,collapsed = FALSE,
+br(),
+    box(status="primary",width="100%",collapsible = TRUE,collapsed = FALSE,
                    # fluidRow(
                    #   # column(width = 4,
                    #   #        div(style="display:inline-block;width:90%;",
@@ -199,7 +196,7 @@ div(style="text-align:center;",
                                       class="action-button--color--yellow inline",
                                       style="margin-top:1%;")))
                        ))
-               ))))
+               )))
 
 
 
@@ -355,7 +352,7 @@ M0_Load <- function(input,output,session,outputDir){
        #A <- textInput(inputId = session$ns("f_name"),label = "نام دیتا",
        #            value = sprintf("%s-%s-%s",Date[3],Date[2],Date[1]))
      #includeScript("progress.js")
-     div(style="padding-top:1%;",
+     div(style="padding-top:0.5%;",
      fileInput(inputId = session$ns("f_new"),
                       label = div(class="load__subtitle--font-size","آپلود کردن فایل جدید"),
                       #buttonLabel = list(div(style="font-size:130%;","جستجو",icon("folder"))),

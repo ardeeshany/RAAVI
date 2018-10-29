@@ -13,7 +13,7 @@ dropdownButton <- function(label = "", status = c("default", "primary", "success
     class = "dropdown-menu",
     style = if (!is.null(width)) 
       paste0("width: ", validateCssUnit(width), ";"),
-    lapply(X = list(...), FUN = tags$li, style = "margin-right: 10%; color:red;")
+    lapply(X = list(...), FUN = tags$li, style = "color:red;")
   )
   # dropdown button apparence
   html_button <- list(
@@ -25,7 +25,7 @@ dropdownButton <- function(label = "", status = c("default", "primary", "success
   html_button <- c(html_button, list(tags$span(class = "caret")))
   # final result
   tags$div(
-    style = "display:inline-block; margin-top:20% ;width: 250%;",
+    style = "color:red;",
     class = "dropdown",
     do.call(tags$button, html_button),
     do.call(tags$ul, html_ul),
@@ -34,4 +34,16 @@ dropdownButton <- function(label = "", status = c("default", "primary", "success
       e.stopPropagation();
 });")
   )
-  }
+}
+
+
+
+
+
+
+
+
+
+
+
+

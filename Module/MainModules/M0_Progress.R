@@ -7,68 +7,57 @@ M0_ProgUI <- function(id){
            icon=icon("arrow-circle-up",class="tabPanel-icon"),
            
            tags$style(HTML(".js-irs-0 .irs-single, .js-irs-0 .irs-bar-edge, .js-irs-0 .irs-bar {background: #485167}")),         
-           fluidRow(                   
+
+           
+fluidRow(
+div(style="text-align:center;",
+column(width = 2, 
+br(),  
+box(width="100%",status="primary",
             
-             column(1,
+    wellPanel(
+
                     div(class="numeric-box--general__Pr",
-                        uiOutput(ns("Pr_numI")))),
-             
-             column(1,
+                        uiOutput(ns("Pr_numI"))),
+
                     div(class="numeric-box--general__Pr",
-                        uiOutput(ns("Pr_bin2")))),
-             
-             # column(1,
-             #        div(class="action-button--general--left action-button--mtop__Pr action-button--mleft__Pr",
-             #            actionButton(inputId = ns("DT_AC3"),
-             #                label = div(class="action-button--font-size", "گروه بندی میانگین وزنی"),
-             #                class="action-button--color--yellow"
-             #            ))),
-                            #icon=icon("arrow-right")))),
-             column(1,
-                    div(class="action-button--general--left action-button--mtop__Pr action-button--mleft__Pr",
+                        uiOutput(ns("Pr_bin2"))),
+                    
+                    #div(class="action-button--general--left", #action-button--mtop__Pr action-button--mleft__Pr",
                         actionButton(inputId = ns("DT_AC3"),
-                            label = div(class="action-button--font-size","پیشرفت گروهی"),
+                              label = div(class="action-button--font-size","پیشرفت گروهی"),
                               class="action-button--color--yellow"
-                        ))),
-                            #icon=icon("arrow-right")))),
-             
-             
-             ########################################
- 
-             column(1,offset = 7,
-                    div(class="action-button--general--left",
-                        style="margin-left:-40%; margin-top:80%;",
-                        actionButton(inputId = ns("Pr_AC1"),width = "180%",
+                        )
+              ),
+
+########################################
+
+   wellPanel(
+
+                    #div(class="action-button--general--left",
+                       #style="margin-left:-40%; margin-top:80%;",
+                        actionButton(inputId = ns("Pr_AC1"),
                             label = div(class="action-button--font-size","پیشرفت فردی"),
-                            class="action-button--color--yellow"))
-                    )
-
+                            class="action-button--color--yellow")
              
-           ),
-    # fluidRow(
-    # 
-    # column(2,
-    # div(class="inline",style="text-align:center;",
-    # sliderInput(inputId = ns("slider_width"),min = 15,max = 75,value = 30,label="مقیاس نمودارها"))),
-    # 
-    # column(1,offset = 1,
-    # div(class="inline check-box--general check-box--font-size", style="margin-top:48%; margin-left:40%;size:50%",
-    #     checkboxInput(inputId = ns("density"),label = "توزیع",value = TRUE)))
-    # 
-    # ),
-    br(), 
-    fluidRow(
-    withSpinner(plotlyOutput(ns("Pr")),type=5,color = "#006E6D",size = 0.6)
-    ),
-    fluidRow(
-         uiOutput(ns("table")),
+           )
+  ))),
 
+column(width = 10,
+br(),
+box(status="primary",width="100%",collapsible = TRUE,collapsed = FALSE,
+
+    withSpinner(plotlyOutput(ns("Pr")),type=5,color = "#006E6D",size = 0.6),
+
+    # fluidRow(
+    #      uiOutput(ns("table")),
       tags$div(
         tags$table(
           withSpinner( DT::dataTableOutput(ns("Gr_N")),type=5,color = "#006E6D",size = 0.4)
-        ))
-     )
-  )   
+        )))
+     ))
+
+)
              
   }
 
@@ -100,7 +89,7 @@ M0_Prog <- function(input,output,session,Vals){
   output$Pr_numI <- renderUI({
     if(is.null(Data())) ch <- ""
     else ch <- 1:ncol(Data())
-    selectInput(ns("Pr_numI"),label = "میانگین وزنی",choices = ch )
+    selectInput(ns("Pr_numI"),label = "میانگین وزنی",choices = ch)
   })
   
   

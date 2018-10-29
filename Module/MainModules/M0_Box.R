@@ -7,26 +7,33 @@ M0_BoxUI <- function(id,date,names){
                        "روند کلاس"),
            icon=icon("archive",class="tabPanel-icon"),
            
-           fluidRow(
-             
-             column(1,
+fluidRow(
+ 
+div(style="text-align:center;",
+  column(width = 2, 
+  br(),  
+  box(width="100%",status="primary",              
+   
+  wellPanel(
                     div(class="input-box--general",
-                        uiOutput(ns("Bx_SeI1")))
-             ),
-             column(1, 
-                    div(class="input-box--general",style="margin-left:90%",
-                        uiOutput(ns("Bx_SeI2")))
-             ),
-             column(1,
-                    div(class="action-button--general action-button--mleft action-button--mtop",
+                        uiOutput(ns("Bx_SeI1"))),
+
+                    div(class="input-box--general",
+                        uiOutput(ns("Bx_SeI2"))),
+                    #div(class="action-button--general action-button--mleft action-button--mtop",
                         actionButton(inputId = ns("Bx_Ac"),
                                      label = div(class="action-button--font-size","آنالیز"),
-                                     class="action-button--color--yellow",
-                                     width="130%"))
-             )
-           ),
+                                     class="action-button--color--yellow")
+           )))),
+
+column(width = 10,
+br(),  
+box(status="primary",width="100%",collapsible = TRUE,collapsed = FALSE,
+
            withSpinner(plotlyOutput(ns("Bx")),type=5,color = "#006E6D",size = 0.6)
-  )
+  ))
+
+))
 }
 
 
@@ -53,7 +60,7 @@ M0_Box <- function(input,output,session,Vals){
   
   output$Bx_SeI1 <- renderUI({
     selectInput(inputId = ns("Bx_SeI1"),
-                label = div(class="m-input-box--align-center m-input-box--font-size","زمان ابتدا"),
+                label = "زمان ابتدا",
                 choices = colnames(Data()),selected = colnames(Data())[1])
   })
   

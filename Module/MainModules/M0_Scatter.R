@@ -7,59 +7,77 @@ M0_ScatterUI <- function(id){
            icon=icon("line-chart",class="tabPanel-icon"),
 ###
 
-            fluidRow(
+fluidRow(
 
-             column(1,
-                    div(class="dropdown--margin-top",
-                    dropdownButton(
-                      label = div(class="dropdown__title","دانش آموزان مورد نظر را انتخاب کنید"), 
-                      status = "default", width = "130%",
-                          checkboxInput(ns('St_all'), 
-                           div(class="dropdown__text",style="color: #607D8B ;",'تمام / هیچ')),
-                      div(class="dropdown__text",
-                      uiOutput(ns("St_ChG"))
-                               )))
+div(style="text-align:center;",
+column(width = 2, 
+br(),  
+box(width="100%",status="primary",  
+              
+              #wellPanel(
 
-             ),
+    
+    wellPanel(
+      uiOutput(ns("St_ChG"))
+    ),
+               
+    
+
+                
+                
+                
+      
+                    # dropdownButton(
+                    #   label = div(class="dropdown__title","دانش آموزان"), 
+                    #   status = "default", #width = "130%",
+                    #   checkboxInput(ns('St_all'), 
+                    #   div(class="dropdown__text",style="color: #607D8B ;",
+                    #       'تمام / هیچ')),
+                    #   div(class="dropdown__text",
+                    #   uiOutput(ns("St_ChG"))
+                    #            ))),
              
-             
-             column(1,offset = 2,
-                    div(class="action-button--mtop__scatter action-button--mleft__scatter",
+             # ),
+    
+            wellPanel(             
+               
+                div(class="check-box--general",
+                    checkboxInput(inputId = ns("St_Mean"),
+                                  label=div(class="check-box--font-size","میانگین"),value = TRUE)),
+           
+                div(class="check-box--general",
+                    checkboxInput(inputId = ns("St_chbI"),
+                                  label = div(class="check-box--font-size","تجمیع نمودارها"),value = TRUE))),
+
+            wellPanel(      
+              
+                div(class="check-box--general",
+                    radioButtons(ns('St_rb'), inline = F,
+                                 div(class="check-box--font-size","نوع تخمین"),
+                                 choices = c("خطی"="lm","غیرخطی"="loess"),selected = "loess"
+                    ))),
+                
+    
+            wellPanel(      
                         actionButton(inputId = ns("St_Ac"),
                                      label = div(class="action-button--font-size","آنالیز"),
-                                     class="action-button--color--yellow",
-                                     width="180%")
-                        )
-             ),
-             
-             column(1,offset=1,
-                    div(class="check-box--general check-box--mleft check-box--mtop",
-                        checkboxInput(inputId = ns("St_Mean"),
-                                      label=div(class="check-box--font-size","میانگین"),value = TRUE))
-             ),
-
-             column(1,offset=1,
-                    div(class="check-box--general check-box--mleft check-box--mtop",
-                        checkboxInput(inputId = ns("St_chbI"),
-                          label = div(class="check-box--font-size","تجمیع نمودارها"),value = TRUE))
-             ),
-
-             column(1,offset=1,
-                    div(class="check-box--general check-box--mtop radio-button--mleft",
-                        radioButtons(ns('St_rb'), inline = FALSE,
-                                 div(class="check-box--font-size","نوع تخمین"),
-                       choices = c("خطی"="lm","غیرخطی"="loess"),selected = "loess"
-                       ))
-             )
-             
+                                     class="action-button--color--yellow"))
+                        
 
 
-           ),
 
+))),
+
+column(width = 10,
+br(),  
+box(status="primary",width="100%",collapsible = TRUE,collapsed = FALSE,
 
    withSpinner(plotlyOutput(ns("St")),type=5,color = "#006E6D",size = 0.6)
 
-  )
+  ))
+
+))
+
 }
 
 
@@ -90,13 +108,34 @@ M0_Scatter <- function(input,output,session,Vals){
 
     
   output$St_ChG <- renderUI({
-    checkboxGroupInput(inputId = ns("St_ChG"), label = "", choices = c(rownames(Data())))
-  })
+
+    # pickerInput(inputId = ns("St_ChG"),
+    #             label = '',
+    #             choices = c(rownames(Data())),
+    #             options = list(`style` = "btn-info"))
+    dropdown(label = div(style="font-size:72%; color:black; font-weight:bold;","لیست دانش آموزان"),
+    
+    div(style="text-align:left;",  
+    checkboxInput(ns('St_all'),
+    div(style="text-align:left;,color: #607D8B;",
+    'تمام / هیچ'))),
+             
+      div(style="text-align:left;",
+      checkboxGroupInput(inputId = ns("St_ChG"), label = "", choices = c(rownames(Data())))
+      ),
+      style = "unite", icon = div(style="color:black;",icon("list")),
+      status = "default", width = "150%"
+       # animate = animateOptions(
+       #   enter = animations$fading_entrances$fadeInLeftBig,
+       #   exit = animations$fading_exits$fadeOutRightBig
+       # )
+    )
+    })
 
 
 
 
-  observe({
+  observeEvent(input$St_all,{
     updateCheckboxGroupInput(
       session, 'St_ChG', choices = rownames(Data()),
       selected = if (input$St_all) rownames(Data())
