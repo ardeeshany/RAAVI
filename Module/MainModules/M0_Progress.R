@@ -24,10 +24,8 @@ box(width="100%",status="primary",
                         uiOutput(ns("Pr_bin2"))),
                     
                     #div(class="action-button--general--left", #action-button--mtop__Pr action-button--mleft__Pr",
-                        actionButton(inputId = ns("DT_AC3"),
-                              label = div(class="action-button--font-size","پیشرفت گروهی"),
-                              class="action-button--color--yellow"
-                        )
+                        actionBttn(inputId = ns("DT_AC3"),style = "jelly",color = "warning",
+                              label = div(class="action-button--widget","پیشرفت گروهی"))
               ),
 
 ########################################
@@ -36,9 +34,8 @@ box(width="100%",status="primary",
 
                     #div(class="action-button--general--left",
                        #style="margin-left:-40%; margin-top:80%;",
-                        actionButton(inputId = ns("Pr_AC1"),
-                            label = div(class="action-button--font-size","پیشرفت فردی"),
-                            class="action-button--color--yellow")
+                        actionBttn(inputId = ns("Pr_AC1"),style = "jelly",color = "warning",
+                            label = div(class="action-button--widget","پیشرفت فردی"))
              
            )
   ))),
@@ -78,6 +75,8 @@ M0_Prog <- function(input,output,session,Vals){
   
   ns <- session$ns  
   
+  ch_opt <- list(content = c("<div> </div>"))
+  
   Data <- reactive({
     M <- Vals[["now"]]
     rownames(M) <- Vals[["names"]]
@@ -87,9 +86,19 @@ M0_Prog <- function(input,output,session,Vals){
   
 
   output$Pr_numI <- renderUI({
-    if(is.null(Data())) ch <- ""
-    else ch <- 1:ncol(Data())
-    selectInput(ns("Pr_numI"),label = "میانگین وزنی",choices = ch)
+    if(is.null(Data())){
+      ch <- ""
+      pickerInput(ns("Pr_numI"),label = "میانگین وزنی",choices = ch,
+                  selected=1,
+                  options = list(style = "btn"),
+                  choicesOpt = ch_opt)
+    } else{
+      ch <- 1:ncol(Data())
+      pickerInput(ns("Pr_numI"),label = "میانگین وزنی",choices = ch,
+                  selected=1,
+                  options = list(style = "btn"))
+    } 
+    
   })
   
   
@@ -102,15 +111,18 @@ M0_Prog <- function(input,output,session,Vals){
     if(is.null(Data())) {
       ch <- ""
       ch_select <- ""
-      }else{
-    ch <- 1:min(ch_bin(),20)
-    ch_select <- min(2,ch_bin())
+      pickerInput(ns("Pr_bin2"),label = "تعداد گروه",choices = ch,selected = ch_select,
+                  options = list(
+                    style = "btn"),
+                  choicesOpt = ch_opt)
+    }else{
+      ch <- 1:min(ch_bin(),5)
+      ch_select <- min(2,ch_bin())
+      pickerInput(ns("Pr_bin2"),label = "تعداد گروه",choices = ch,selected = ch_select,
+                  options = list(style = "btn"))
     }
-    selectInput(ns("Pr_bin2"),label = "تعداد گروه",choices = ch,selected = ch_select)
+    
   })
-
-  
-
   
   
   ## Variable (like trigger) for selecting which React_DT should be shown in output
@@ -135,7 +147,7 @@ M0_Prog <- function(input,output,session,Vals){
   React_Pr1 <- eventReactive(input$Pr_AC1, {
 
     validate(
-      need(!is.null(Data()),"هنوز داده ای وارد نشده است"),errorClass = "Pr_right"
+      need(!is.null(Data()),"هنوز داده ای وارد نشده است"),errorClass = "Hist_l"
     )
     
     Mean <- apply(Data(),2,mean)
@@ -231,7 +243,7 @@ M0_Prog <- function(input,output,session,Vals){
     
     
     validate(
-      need(!is.null(Data()),"هنوز داده ای وارد نشده است"),errorClass = "Pr_left"
+      need(!is.null(Data()),"هنوز داده ای وارد نشده است"),errorClass = "Hist_l"
     )
     
     bin2 <- as.numeric(input$Pr_bin2)

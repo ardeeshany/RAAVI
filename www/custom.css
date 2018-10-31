@@ -1,3 +1,10 @@
+.action-button--widget{
+  text-align:center;
+  font-size:82%;
+  color:black;
+}
+
+
 .shiny-output-error-box {
       color: red;
       font-size: 130%;
@@ -9,7 +16,6 @@
 .shiny-output-error-scatter {
       color: red;
       font-size: 130%;
-      margin-top: 0%;
       margin-left:3%;
       font-weight:bold;
 }
@@ -17,7 +23,6 @@
 .shiny-output-error-scatter_min {
       color: red;
       font-size: 130%;
-      margin-top: 0%;
       margin-left:2.5%;
       font-weight:bold;
 }
@@ -88,6 +93,10 @@
 
 .right{
 text-align:right; 
+}
+
+.left{
+text-align:left; 
 }
 
 .bold{
@@ -316,7 +325,7 @@ margin-top:28%;
 }
 
 .action-button--font-size__make{
-  font-size:105downlaod-button--general%;
+  font-size:105%;
   font-weight:bold;
 }
 
@@ -445,7 +454,7 @@ margin-top:40%;
 }
 
 .action-button--font-size{
-  font-size:120%;
+  font-size:105%;
 }
 
 

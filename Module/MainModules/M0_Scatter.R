@@ -41,27 +41,63 @@ box(width="100%",status="primary",
     
             wellPanel(             
                
-                div(class="check-box--general",
-                    checkboxInput(inputId = ns("St_Mean"),
-                                  label=div(class="check-box--font-size","میانگین"),value = TRUE)),
-           
-                div(class="check-box--general",
-                    checkboxInput(inputId = ns("St_chbI"),
-                                  label = div(class="check-box--font-size","تجمیع نمودارها"),value = TRUE))),
+                # div(class="check-box--general",
+                #     checkboxInput(inputId = ns("St_Mean"),
+                #        label=div(class="check-box--font-size","میانگین"),value = TRUE)),
+           div(style="text-align:left;",
+                prettyToggle(shape = "round",value = T,
+                  inputId = ns("St_Mean"),
+                  label_on = "میانگین", 
+                  icon_on = icon("check"),
+                  status_on = "primary",
+                  status_off = "default", 
+                  label_off = "میانگین"
+                )),
+                
+           div(style="text-align:left;",
+                prettyToggle(shape = "round",value = T,
+                  inputId = ns("St_chbI"),
+                  label_on = "تجمیع نمودارها", 
+                  icon_on = icon("check"),
+                  status_on = "primary",
+                  status_off = "default", 
+                  label_off = "تجمیع نمودارها"
+                ))
+                
+                # div(class="check-box--general",
+                #     checkboxInput(inputId = ns("St_chbI"),
+                #                   label = div(class="check-box--font-size","تجمیع نمودارها"),value = TRUE))
+                
+                
+                ),
 
             wellPanel(      
               
-                div(class="check-box--general",
-                    radioButtons(ns('St_rb'), inline = F,
-                                 div(class="check-box--font-size","نوع تخمین"),
-                                 choices = c("خطی"="lm","غیرخطی"="loess"),selected = "loess"
-                    ))),
+                # div(class="check-box--general",
+                #     radioButtons(ns('St_rb'), inline = F,
+                #                  div(class="check-box--font-size","نوع تخمین"),
+                #                  choices = c("خطی"="lm","غیرخطی"="loess"),selected = "loess"
+                #     ))
+                
+                
+               div(style="text-align:left;",
+                prettyRadioButtons(
+                  inputId = ns('St_rb'),inline = T,
+                  label = div(class="check-box--font-size","نوع تخمین"),
+                  choices = c("خطی"="lm","غیرخطی"="loess"),
+                  selected = "loess"
+                ))
+                
+                
+                
+                ),
                 
     
             wellPanel(      
-                        actionButton(inputId = ns("St_Ac"),
-                                     label = div(class="action-button--font-size","آنالیز"),
-                                     class="action-button--color--yellow"))
+                        actionBttn(inputId = ns("St_Ac"),style = "jelly",color = "warning",
+                                     label = div(class="action-button--widget","در طول زمان"))
+                                   
+            )
                         
 
 
@@ -123,8 +159,8 @@ M0_Scatter <- function(input,output,session,Vals){
       div(style="text-align:left;",
       checkboxGroupInput(inputId = ns("St_ChG"), label = "", choices = c(rownames(Data())))
       ),
-      style = "unite", icon = div(style="color:black;",icon("list")),
-      status = "default", width = "150%"
+      style = "unite", icon = div(style="color:black;",icon("user-circle-o")),
+      status = "warning", width = "150%"
        # animate = animateOptions(
        #   enter = animations$fading_entrances$fadeInLeftBig,
        #   exit = animations$fading_exits$fadeOutRightBig
@@ -147,7 +183,7 @@ M0_Scatter <- function(input,output,session,Vals){
   Reac_CP2_Sc <- eventReactive(input$St_Ac, {
 
     validate(
-      need(!is.null(Data()),"هنوز داده ای وارد نشده است"),errorClass = "scatter"
+      need(!is.null(Data()),"هنوز داده ای وارد نشده است"),errorClass = "Hist_l"
     )
     
     validate(

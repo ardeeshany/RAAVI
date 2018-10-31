@@ -18,11 +18,16 @@ div(style="text-align:center;",
                     div(class="input-box--general",
                         uiOutput(ns("Bx_SeI1"))),
 
+                    br(),
                     div(class="input-box--general",
                         uiOutput(ns("Bx_SeI2"))),
                     #div(class="action-button--general action-button--mleft action-button--mtop",
-                    actionBttn(inputId = ns("Bx_Ac"),style = "jelly",
-                                     label = div(class="action-button--font-size","آنالیز"))
+                    
+                    br(),
+                    
+                    actionBttn(inputId = ns("Bx_Ac"),style = "jelly",color = "warning",
+                          label= div(class="action-button--widget","در طول زمان"))
+                          #٫label = div(class="action-button--font-size",style="color:black","آنالیز"))
                                      #class="action-button--color--yellow")
            )))),
 
@@ -49,6 +54,8 @@ M0_Box <- function(input,output,session,Vals){
   
   ns <- session$ns  
   
+  ch_opt <- list(content = c("<div> </div>"))
+  
   Data <- reactive({
     M <- Vals[["now"]]
     rownames(M) <- Vals[["names"]]
@@ -56,33 +63,54 @@ M0_Box <- function(input,output,session,Vals){
     return(M)
   })
   
- 
-  
+
   output$Bx_SeI1 <- renderUI({
-    selectInput(inputId = ns("Bx_SeI1"),
-                label = "زمان ابتدا",
-                choices = colnames(Data()),selected = colnames(Data())[1])
+    if(is.null(Data())) {
+      ch <- ""
+      ch_select <- ""
+      pickerInput(inputId = ns("Bx_SeI1"),label = "زمان ابتدا",choices = ch,
+                  selected =ch_select,
+                  options = list(style = "btn"),
+                  choicesOpt = ch_opt)
+    }else{
+      ch <- colnames(Data())
+      ch_select <- colnames(Data())[1]
+      pickerInput(inputId = ns("Bx_SeI1"),label = "زمان ابتدا",choices = ch,
+                  selected =ch_select,
+                  options = list(style = "btn"))
+    }
   })
   
   
   output$Bx_SeI2 <- renderUI({
-    selectInput(inputId = ns("Bx_SeI2"),
-                label = div(class="m-input-box--align-center m-input-box--font-size","زمان انتها"),choices =  colnames(Data()),
-                selected = tail( colnames(Data()),1))
+    if(is.null(Data())) {
+      ch <- ""
+      ch_select <- ""
+      pickerInput(inputId = ns("Bx_SeI2"),label = "زمان انتها",choices = ch,
+                  selected =ch_select,
+                  options = list(style = "btn"),
+                  choicesOpt = ch_opt)
+    }else{
+      ch <- colnames(Data())
+      ch_select <- tail(colnames(Data()),1)
+      pickerInput(inputId = ns("Bx_SeI2"),label = "زمان انتها",choices = ch,
+                  selected =ch_select,
+                  options = list(style = "btn"))
+    }
   })
   
 
   Reac_CP2M_Bx <- eventReactive(input$Bx_Ac, {
     
     validate(
-      need(!is.null(Data()),"هنوز داده ای وارد نشده است"),errorClass = "box"
+      need(!is.null(Data()),"هنوز داده ای وارد نشده است"), errorClass = "Hist_l"
     )
     
     min=which(colnames(Data())==input$Bx_SeI1)
     max=which(colnames(Data())==input$Bx_SeI2)
 
     validate(
-      need(min <= max,"زمان ابتدا نباید بعد از زمان انتها باشد")
+      need(min <= max,"زمان ابتدا نباید بعد از زمان انتها باشد"), errorClass = "Hist_l"
     )
     
     if(min < max){

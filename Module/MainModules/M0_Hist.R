@@ -7,6 +7,7 @@ M0_HistUI <- function(id){
   #### Histogram
   ################
   
+  
   tabPanel(title = div(class="tabPanel--font-size center",
                        "گروه بندی"),
            icon = icon("group",class="tabPanel-icon"),
@@ -30,9 +31,9 @@ box(width="100%",status="primary",
                     div(class="input-box--general",
                         uiOutput(ns("Hg_bin"))),
 
-                        actionButton(inputId = ns("Hg_Ac"),
-                                     label = div(class="action-button--font-size","در یک زمان"),
-                                     class="action-button--color--yellow")
+                        actionBttn(inputId = ns("Hg_Ac"),style = "jelly",color = "warning",
+                                     label = div(class="action-button--widget","در یک زمان"))
+                                     
 
 ),
              
@@ -48,9 +49,9 @@ box(width="100%",status="primary",
                  uiOutput(ns("Pr_bin2"))),
 
 
-                 actionButton(inputId = ns("DT_AC3"),
-                              label = div(class="action-button--font-size", "در طول زمان"),
-                              class="action-button--color--yellow")
+                 actionBttn(inputId = ns("DT_AC3"),style = "jelly",color = "warning",
+                              label = div(class="action-button--widget", "در طول زمان"))
+                              #class="action-button--color--yellow")
 
 )
 
@@ -75,6 +76,8 @@ M0_Hist <- function(input,output,session,Vals){
   
   ns <- session$ns  
   
+  ch_opt <- list(content = c("<div> </div>"))
+  
   Data <- reactive({
     M <- Vals[["now"]]
     rownames(M) <- Vals[["names"]]
@@ -84,13 +87,42 @@ M0_Hist <- function(input,output,session,Vals){
   
   
   output$Hg_SeI <- renderUI({
-    selectInput(inputId = ns("Hg_SeI"),label = "تاریخ",choices = colnames(Data()),selected =length(colnames(Data())))
-  })
+    
+    if(is.null(Data())) {
+      ch <- ""
+      ch_select <- ""
+      pickerInput(inputId = ns("Hg_SeI"),label = "تاریخ",choices = ch,
+                  selected =ch_select,
+                  options = list(style = "btn"),
+                  choicesOpt = ch_opt)
+    }else{
+      ch <- colnames(Data())
+      ch_select <- tail(ch,1)
+      pickerInput(inputId = ns("Hg_SeI"),label = "تاریخ",choices = ch,
+                  selected =ch_select,
+                  options = list(style = "btn"))
+    }
+
+  
+    })
   
 
   output$Hg_bin <- renderUI({
-    ch <- length(unique(Data()[,input$Hg_SeI]))
-    selectInput(inputId = ns("Hg_bin"),label = "تعداد گروه",choices = 1:ch,selected = min(2,ch))
+    if(is.null(Data())) {
+      ch <- ""
+      ch_select <- ""
+      pickerInput(ns("Hg_bin"),label = "تعداد گروه",choices = ch,selected = ch_select,
+                  options = list(style = "btn"),
+                  choicesOpt = ch_opt)
+    }else{
+      ch <- 1:min(ch_bin(),5)
+      ch_select <- min(2,ch_bin())
+      pickerInput(ns("Hg_bin"),label = "تعداد گروه",choices = ch,selected = ch_select,
+                  options = list(style = "btn"))
+    }
+    
+
+    
   })
   
   
@@ -230,8 +262,6 @@ M0_Hist <- function(input,output,session,Vals){
 
   
   D_Table <- reactive({
-    
-    
     n <- dim(Reac_Hg()$group_names)[2]
     column <- 1:n
     color <- rep('black',n)
@@ -257,9 +287,7 @@ M0_Hist <- function(input,output,session,Vals){
     
   })
   
-  
-  
-  
+
   D_Table2 <- reactive({
     
     n <- dim(Reac_Hg()$gr_names)[2]
@@ -281,7 +309,7 @@ M0_Hist <- function(input,output,session,Vals){
     for(i in 1:n){
       DT <- DT %>%
         formatStyle(column[i],  color = color[i], backgroundColor = backColor[i], fontWeight = font[i])
-    }
+  }
     
     return(DT)
     
@@ -290,7 +318,6 @@ M0_Hist <- function(input,output,session,Vals){
   
   table_ind <- reactiveValues(a=0)
   
-
   observeEvent(input$Hg_Ac, {
     table_ind$a = 1
   })
@@ -298,7 +325,7 @@ M0_Hist <- function(input,output,session,Vals){
   observeEvent(input$DT_AC3, {
     table_ind$a = 2
   })
-  
+
   
   
   React_out_table_l <- reactive({
@@ -311,9 +338,8 @@ M0_Hist <- function(input,output,session,Vals){
     
   })
 
-  
 
-  
+
 ##################################################  
 ##################################################
 ##################################################  
@@ -330,9 +356,19 @@ M0_Hist <- function(input,output,session,Vals){
   
   
   output$Pr_numI <- renderUI({
-    if(is.null(Data())) ch <- ""
-    else ch <- 1:ncol(Data())
-    selectInput(ns("Pr_numI"),label = "میانگین وزنی",choices = ch )
+    if(is.null(Data())){
+      ch <- ""
+      pickerInput(ns("Pr_numI"),label = "میانگین وزنی",choices = ch,
+                  selected=1,
+                  options = list(style = "btn"),
+                  choicesOpt = ch_opt)
+    } else{
+      ch <- 1:ncol(Data())
+      pickerInput(ns("Pr_numI"),label = "میانگین وزنی",choices = ch,
+                  selected=1,
+                  options = list(style = "btn"))
+    } 
+
   })
   
   
@@ -364,12 +400,19 @@ M0_Hist <- function(input,output,session,Vals){
     if(is.null(Data())) {
       ch <- ""
       ch_select <- ""
+      pickerInput(ns("Pr_bin2"),label = "تعداد گروه",choices = ch,selected = ch_select,
+                  options = list(
+                    style = "btn"),
+                  choicesOpt = ch_opt)
     }else{
-      ch <- 1:min(ch_bin(),20)
+      ch <- 1:min(ch_bin(),5)
       ch_select <- min(2,ch_bin())
+      pickerInput(ns("Pr_bin2"),label = "تعداد گروه",choices = ch,selected = ch_select,
+                  options = list(
+                    style = "btn"))
     }
-    selectInput(ns("Pr_bin2"),label = "تعداد گروه",choices = ch,selected = ch_select)
-  })  
+
+  })
   
   
 ####################################  
@@ -663,7 +706,7 @@ React_DT3 <-eventReactive(input$DT_AC3, {
 
     bin <- Reac_Hg()$c
 
-    if(input$density_1){
+    if(input$density){
       
       p <- Reac_Hg()$p + geom_density(aes(y=100*..density..),alpha=0.3, fill="#9B2335",colour="#9B2335",lwd=1.5)+
         stat_bin(aes(label=lapply(round(..count../(0.01*sum(..count..)),1),FUN= lab_hist)),geom="text",
@@ -681,7 +724,7 @@ React_DT3 <-eventReactive(input$DT_AC3, {
   React_GrCat_final <- reactive({
     
     
-    if(input$density_2){
+    if(input$density){
       
       p <- React_DT3()$gg_hist0 + geom_density(aes(y=100*..density..),alpha=0.3, fill="#9B2335",colour="#9B2335",lwd=1.5)+
         stat_bin(aes(label=lapply(round(..count../(0.01*sum(..count..)),1),FUN= lab_hist)),geom="text",
@@ -743,21 +786,34 @@ React_DT3 <-eventReactive(input$DT_AC3, {
         need(!is.null(Data()),"هنوز داده ای وارد نشده است"),errorClass = "Hist_l"
       )
       
-      A <- div(class="inline check-box--font-size", style="text-align:right;",
-               checkboxInput(inputId = ns("density_1"),label = "توزیع",value = FALSE))
-       B <- plotlyOutput(ns("Hg_1"))
+      A <- dropdown(
+        div(style="text-align:right; font-size :110%; font-weight:bold;", ":تنظیمات نمودار"),
+        materialSwitch(inputId = ns("density"), label = "نمودار توزیع", status = "danger", right = TRUE),
+        circle = TRUE, status = "default", icon = icon("gear"),style = "unite",width = "25%"
+      ) 
+      
+      
+      B <- withSpinner(plotlyOutput(ns("Hg_1")),type=5,color = "#006E6D",size = 0.6)
        
-       C <- radioButtons(inputId = ns("table"),label = "",choices = c("گروه"="G","دسته"="D"),
-                         selected = "G",inline = TRUE)
+      C <- dropdown(
+        div(style="text-align:right; font-size :110%; font-weight:bold;", ":تنظیمات جدول"),
+        radioGroupButtons(inputId = ns("table"),label = "",choices = c("گروه"="G","دسته"="D"),
+                          selected = "G",individual = TRUE,
+                          checkIcon = list(
+                            yes = tags$i(class = "fa fa-circle", 
+                                         style = "color: steelblue"),
+                            no = tags$i(class = "fa fa-circle-o", 
+                                        style = "color: steelblue"))),
+        circle = TRUE, status = "default", icon = icon("gear"),style = "unite", width = "25%")
        
-       D <- tags$div(
+      D <- tags$div(
          tags$table(
            DT::dataTableOutput(ns("Gr_N_1"))
          ))
        
-       out <- withSpinner(list(A,B,C,D),type=5,color = "#006E6D",size = 0.6)
-       
-       return(out)
+      out <- list(A,B,C,D)
+      
+      return(out)
        
     }
     
@@ -768,15 +824,14 @@ React_DT3 <-eventReactive(input$DT_AC3, {
     )  
     
    
-      
     A <- dropdown(
-        div(style="text-align:right; font-size :120%; font-weight:bold;", ":تنظیمات نمودار"),
+        div(style="text-align:right; font-size :110%; font-weight:bold;", ":تنظیمات نمودار"),
         div(style="text-align:left",
             noUiSliderInput(inputId = ns("slider_width"),
                             label =div(style="font-size:80%;","مقیاس نمودارها"),tooltips = F,
                             inline = T, min = 15,max = 75,value = 35,step = 1,
                             width = "100%",color = "#578CA9")),
-        materialSwitch(inputId = ns("density_2"), label = "نمودار توزیع", status = "primary", right = TRUE),
+        materialSwitch(inputId = ns("density"), label = "نمودار توزیع", status = "danger", right = TRUE),
         circle = TRUE, status = "default", icon = icon("gear"),style = "unite",width = "25%"
       )  
       
@@ -785,16 +840,18 @@ React_DT3 <-eventReactive(input$DT_AC3, {
     
     
     C <- dropdown(
-      div(style="text-align:right; font-size :120%; font-weight:bold;", ":تنظیمات جدول"),
-      awesomeRadio(inputId = ns("table"),label = "",choices = c("گروه"="G","دسته"="D"),
-                   checkbox = T,status = "primary", selected = "G",inline = TRUE),
-      circle = TRUE, status = "default", icon = icon("gear"),style = "unite",width = "25%"
+      div(style="text-align:right; font-size :110%; font-weight:bold;", ":تنظیمات جدول"),
+      radioGroupButtons(inputId = ns("table"),label = "",choices = c("گروه"="G","دسته"="D"),
+                   selected = "G",individual = TRUE,
+                   checkIcon = list(
+                     yes = tags$i(class = "fa fa-circle", 
+                                  style = "color: steelblue"),
+                     no = tags$i(class = "fa fa-circle-o", 
+                                 style = "color: steelblue"))),
+      circle = TRUE, status = "default", icon = icon("gear"),style = "unite", width = "25%"
     )
     
-    D <- tags$div(
-      tags$table(
-        DT::dataTableOutput(ns("Gr_N_2"))
-      ))
+    D <- DT::dataTableOutput(ns("Gr_N_2"))
     
 
     

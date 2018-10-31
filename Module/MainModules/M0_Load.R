@@ -8,7 +8,7 @@ M0_LoadUI <- function(id){
   tabPanel(title = div(class="tabPanel--font-size center",
                        "وارد کردن داده"),
            icon=icon("download",class="tabPanel-icon"),
-       
+                  
            fluidRow(
 
 ### Left Panel - Add/Delete/Save   ----             
@@ -43,18 +43,23 @@ M0_LoadUI <- function(id){
 
 
 div(style="text-align:center;",
-column(width = 3,
+column(width = 2,
 br(),
 box(width="100%",
     #title = div(class="load__title--font-size",""),
     status="primary",
 
     wellPanel(
-        #radioButtons(inputId = ns("up_rmv"),label = "",choices = c("آپلود","پاک"),selected = "آپلود",inline = TRUE),
-        uiOutput(outputId = ns("f_upload"))),
-        #uiOutput(ns("message2"), inline=TRUE),
+      fileInput(inputId = ns("f_new"),
+                label = div(class="load__subtitle--font-size",'آپلود فایل'),
+                buttonLabel = list(icon("file-excel-o")),
+                placeholder = 'ورود داده',
+                width = "100%",
+                accept=".xlsx")
+      ),
+      
+
     wellPanel(
-      #radioButtons(inputId = ns("up_rmv"),label = "",choices = c("آپلود","پاک"),selected = "آپلود",inline = TRUE),
 
     div(class="numeric-box--general__Pr",
                  numericInput(inputId = ns("num_row"),
@@ -63,32 +68,36 @@ box(width="100%",
                  numericInput(inputId = ns("num_col"),
                   label = "تعداد امتحان",min = 1,value = 1,step = 1)),
       
-      uiOutput(outputId = ns("f_make"))
-      #"این فایل را ذخیره کرده، تغییر داده و دوباره آپلود کنید"
+    actionBttn(inputId = ns("f_make"),style = "jelly",color = "warning",
+               label = div(class="action-button--widget","ساختن فایل"))
     ),
     
     
     wellPanel(
-      #h5("ذخیره کردن دیتا"),
-      div(class='row',
-          uiOutput(ns("save_name")),
-          #actionButton(ns("save"), "ذخیره کردن دیتا"),
-          div(style="height:150%;",
-              downloadButton(ns("downloadData"),
-                             div(class="action-button--font-size","ذخیره کردن داده"),
-                             class="downlaod-button--general action-button--color--yellow")),
-          uiOutput(ns("message"), inline=TRUE)
-          #div(class="col-sm-6",
-          #radioButtons(ns("fileType"), "File type", c("R", "xlsx")))
-      )
+          
+          div(class="load--font-size_add",
+              textAreaInput(inputId = ns("save_name"),label = "", value ="",
+                            height = "2.4em",resize = "none",width = "100%",
+                            placeholder = 'نام فایل مورد نظر')),
+          
+          #div(style="height:150%;",
+              # downloadBttn(ns("downloadData"),style = "material-circle",color = "warning",
+              #                div(class="action-button--widget","ذخیره کردن داده"))
+              downloadBttn(ns("downloadData"),color = "warning", 
+                           style ="jelly",size = "md",label=div(class="inline",style="font-size:82%;color:black;","ذخیره"))
+                             
+          #uiOutput(ns("message"), inline=TRUE)
+          
     ),
     
       wellPanel(
-        #radioButtons(inputId = ns("up_rmv"),label = "",choices = c("آپلود","پاک"),selected = "آپلود",inline = TRUE),
-        uiOutput(outputId = ns("f_test"))
-        #"این فایل را ذخیره کرده، تغییر داده و دوباره آپلود کنید"
+        div(style="align:center; tet-align:center;",
+        actionBttn(inputId = ns("f_test"),style = "jelly",color = "warning",
+                   label = div(class="action-button--widget","فایل نمونه")))
+        
+        
         )
-        #uiOutput(ns("message2"), inline=TRUE),
+
 
    ))),
 
@@ -144,7 +153,7 @@ box(width="100%",
 
 
 div(style="text-align:center;",         
-    column(width = 9,
+    column(width = 10,
 br(),
     box(status="primary",width="100%",collapsible = TRUE,collapsed = FALSE,
                    # fluidRow(
@@ -291,19 +300,6 @@ M0_Load <- function(input,output,session,outputDir){
     #              rHandsontableOutput(session$ns("hot"))))
     # }
     
-  
-
-
-  
-  
-  output$f_make <- renderUI({
-    
-    actionButton(inputId = session$ns("f_make"),
-                 label = div(class="action-button--font-size","ساختن فایل جدید"),
-                 class="action-button--color--yellow")
-    
-  })
-
   observeEvent(input$f_make,{
     D_new <- data.frame("تاریخ آزمون"="",matrix("",nrow = input$num_row,ncol = input$num_col),stringsAsFactors = FALSE)
     colnames(D_new)[1] <- "تاریخ آزمون"
@@ -346,35 +342,26 @@ M0_Load <- function(input,output,session,outputDir){
   #    selectInput(inputId = session$ns("f_set"),label = "دیتا برای آنالیز",choices = File()$name)
   #    })
 
-   output$f_upload <- renderUI({
-     #if(input$up_rmv=="آپلود"){
-       #Date <- as.OtherDate(Sys.Date(),"persian")[1:3]
-       #A <- textInput(inputId = session$ns("f_name"),label = "نام دیتا",
-       #            value = sprintf("%s-%s-%s",Date[3],Date[2],Date[1]))
-     #includeScript("progress.js")
-     div(style="padding-top:0.5%;",
-     fileInput(inputId = session$ns("f_new"),
-                      label = div(class="load__subtitle--font-size","آپلود کردن فایل جدید"),
-                      #buttonLabel = list(div(style="font-size:130%;","جستجو",icon("folder"))),
-                      buttonLabel = list(icon("folder")),
-                      placeholder = "هنوز فایلی وارد نشده است",
-                      width = "100%",
-                      accept=".xlsx"))
-     # }else{
-     #   A <- selectInput(inputId = session$ns("f_remove"),label = "نام دیتا",choices = File()$name) 
-     #   B <- actionButton(session$ns("remove_f"), "پاک کردن")
-     #   return(list(A,B))
-     # }
-   })
-   
-   
-   output$f_test <- renderUI({
-     actionButton(inputId = session$ns("f_test"),
-                  label = div(class="action-button--font-size","فایل جهت تست"),
-                  class="action-button--color--yellow")
-   })
-   
-  
+   # output$f_upload <- renderUI({
+   #   #if(input$up_rmv=="آپلود"){
+   #     #Date <- as.OtherDate(Sys.Date(),"persian")[1:3]
+   #     #A <- textInput(inputId = session$ns("f_name"),label = "نام دیتا",
+   #     #            value = sprintf("%s-%s-%s",Date[3],Date[2],Date[1]))
+   #   #includeScript("progress.js")
+   #   fileInput(inputId = session$ns("f_new"),
+   #                    label = div(class="load__subtitle--font-size",'آپلود فایل'),
+   #                    #buttonLabel = list(div(style="font-size:130%;","جستجو",icon("folder"))),
+   #                    buttonLabel = list(icon("file-excel-o")),
+   #                    placeholder = 'ورود داده',
+   #                    width = "100%",
+   #                    accept=".xlsx")
+   #   # }else{
+   #   #   A <- selectInput(inputId = session$ns("f_remove"),label = "نام دیتا",choices = File()$name) 
+   #   #   B <- actionButton(session$ns("remove_f"), "پاک کردن")
+   #   #   return(list(A,B))
+   #   # }
+   # })
+   # 
   
   values <- reactiveValues(tot=NULL)
 
@@ -549,21 +536,9 @@ M0_Load <- function(input,output,session,outputDir){
       
       }
   })
-
-  
-  output$message <- renderUI({
-      helpText(sprintf(""))
-  })
   
 ## Save 
 
-   output$save_name <- renderUI({
-     div(class="load--font-size_add",
-     textAreaInput(inputId = session$ns("save_name"),label = "", value ="",
-               height = "2.4em",resize = "none",width = "100%",
-               placeholder = "نام فایل ذخیره شده را وارد کنید"))
-   })
-   
    # observeEvent(save_name,{
    #   output$message <- renderUI({
    #     div(style="text-align:right;",
