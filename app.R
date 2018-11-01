@@ -45,6 +45,7 @@ library(shinycssloaders)
 #library(gridExtra)
 library(DT)
 library(shinyWidgets)
+library(colourpicker)
 
 
 #font_import()

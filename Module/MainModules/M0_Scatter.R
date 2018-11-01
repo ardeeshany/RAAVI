@@ -21,29 +21,8 @@ box(width="100%",status="primary",
       uiOutput(ns("St_ChG"))
     ),
                
-    
-
-                
-                
-                
-      
-                    # dropdownButton(
-                    #   label = div(class="dropdown__title","دانش آموزان"), 
-                    #   status = "default", #width = "130%",
-                    #   checkboxInput(ns('St_all'), 
-                    #   div(class="dropdown__text",style="color: #607D8B ;",
-                    #       'تمام / هیچ')),
-                    #   div(class="dropdown__text",
-                    #   uiOutput(ns("St_ChG"))
-                    #            ))),
-             
-             # ),
-    
-            wellPanel(             
+    wellPanel(             
                
-                # div(class="check-box--general",
-                #     checkboxInput(inputId = ns("St_Mean"),
-                #        label=div(class="check-box--font-size","میانگین"),value = TRUE)),
            div(style="text-align:left;",
                 prettyToggle(shape = "round",value = T,
                   inputId = ns("St_Mean"),
@@ -63,23 +42,12 @@ box(width="100%",status="primary",
                   status_off = "default", 
                   label_off = "تجمیع نمودارها"
                 ))
-                
-                # div(class="check-box--general",
-                #     checkboxInput(inputId = ns("St_chbI"),
-                #                   label = div(class="check-box--font-size","تجمیع نمودارها"),value = TRUE))
-                
-                
+
                 ),
 
             wellPanel(      
               
-                # div(class="check-box--general",
-                #     radioButtons(ns('St_rb'), inline = F,
-                #                  div(class="check-box--font-size","نوع تخمین"),
-                #                  choices = c("خطی"="lm","غیرخطی"="loess"),selected = "loess"
-                #     ))
-                
-                
+               
                div(style="text-align:left;",
                 prettyRadioButtons(
                   inputId = ns('St_rb'),inline = T,

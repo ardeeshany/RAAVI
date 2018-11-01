@@ -833,7 +833,7 @@ React_DT3 <-eventReactive(input$DT_AC3, {
                             width = "100%",color = "#578CA9")),
         materialSwitch(inputId = ns("density"), label = "نمودار توزیع", status = "danger", right = TRUE),
         circle = TRUE, status = "default", icon = icon("gear"),style = "unite",width = "25%"
-      )  
+      )
       
          
     B <- withSpinner(plotlyOutput(ns("Hg_2")),type=5,color = "#006E6D",size = 0.6)
