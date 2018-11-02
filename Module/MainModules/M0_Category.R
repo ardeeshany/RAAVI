@@ -559,8 +559,8 @@ if(table_ind$a==1){
     
     div(class="right",
     colourInput(ns("color_text"),label = div(style="font-size:80%;","انتخاب رنگ متن"),
-                value =  "black",palette = "limited",
-                allowedCols = c("black","white","#B93A32"),showColour = "background")),
+                value =  "black",showColour = "background")),
+                #palette = "limited" , allowedCols = c("black","white","#B93A32"))),
     
     circle = TRUE, status = "default", icon = icon("gear"),style = "unite",width = "18%"
   )

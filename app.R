@@ -1,5 +1,5 @@
-#    159.65.170.96
-#  sudo su - -c "R -e \"install.packages('devtools', repos='http://cran.rstudio.com/')\""
+#  ssh root@159.65.170.96
+#  sudo su - -c "R -e \"install.packages('colourpicker', repos='http://cran.rstudio.com/')\""
 #  sudo su - -c "R -e \"devtools::install_github('daattali/shinyjs')\""
 
 
