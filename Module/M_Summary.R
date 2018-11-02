@@ -40,7 +40,8 @@ fluidRow(
            #            div(style="color:red;","راوی"),
            #            div(style="display:inline-block;","آن قصه ها را برایتان می خواند"),
            #            sep="<br/>")))
-            div(style="font-size: 2em; text-align:center; font-family:'dastnevis';margin-top:1%;", #padding-bottom: 5%;",
+           br(),br(),br(), 
+           div(style="font-size: 2em; text-align:center;margin-top:1%;", #padding-bottom: 5%;",
            "داده های شما قصه های زیادی برای گفتن دارند",
            div(style="margin-top:1%;"),
            "آن قصه ها را برایتان می خواند",

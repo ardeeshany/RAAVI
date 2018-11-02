@@ -1,5 +1,5 @@
 #  ssh root@159.65.170.96
-#  sudo su - -c "R -e \"install.packages('colourpicker', repos='http://cran.rstudio.com/')\""
+#  sudo su - -c "R -e \"install.packages('Cairo', repos='http://cran.rstudio.com/')\""
 #  sudo su - -c "R -e \"devtools::install_github('daattali/shinyjs')\""
 
 
@@ -46,11 +46,19 @@ library(shinycssloaders)
 library(DT)
 library(shinyWidgets)
 library(colourpicker)
+# library(Cairo)
+# 
+# CairoFonts(
+#   regular="FreeSans:style=Medium",
+#   bold="FreeSans:style=Bold",
+#   italic="FreeSans:style=Oblique",
+#   bolditalic="FreeSans:style=BoldOblique"
+# )
 
 
 #font_import()
 Sys.setlocale(category = 'LC_ALL','en_US.UTF-8')
-
+#options(shiny.usecairo=FALSE)
 
 
 ## modules ##
