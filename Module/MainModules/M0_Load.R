@@ -170,45 +170,16 @@ br(),
                    
         
         
-                #uiOutput(ns("Text")),
 
         
-        conditionalPanel(
-          condition = " input.hot == null ", ns=ns,
-          div(style="color:grey; font-size:150%;",br(), br(),
-          "هنوز فایلی وارد نشده است",
-          br(),
-          br(),
-          "فایل خود را از منوی سمت چپ وارد کرده یا فایل جدید بسازید",
-          br(),br(),br())
-        ),
-        
-                # 
-                # 
-                # output$Text <- renderUI({
-                #     #print(is.null(input$hot))
-                #   if(is.null(input$hot)){
-                #   A <- div(style="color:grey; font-size:150%;",br(), br(),
-                #   "هنوز فایلی وارد نشده است",
-                #   br(),br(),
-                #   "فایل خود را از منوی سمت چپ وارد کرده یا بسازید",
-                #   br(),br(),br())
-                #     }
-                #   else{
-                #   A <-  div(class="green2 right",style="font-size:120%;",
-                #       "فایل با موفقیت وارد شد",
-                #       br())
-                #       }
-                # 
-                #   return(A)
-                # 
-                #     })
-                  
-        
-        
-        
-        
-        
+                 conditionalPanel(
+                   condition = " input.hot == null ", ns=ns,
+                   div(style="color:grey; font-size:150%;",br(), br(),
+                  "هنوز فایلی وارد نشده است",br(),br(),
+                  "فایل خود را از منوی سمت چپ وارد کرده یا فایل جدید بسازید",
+                  br(),br(),br())
+                                ),
+
         
                    div(class="data-table--general",
                        rHandsontableOutput(ns("hot"))),
@@ -219,32 +190,36 @@ br(),
                    box(collapsible = TRUE,title = "تغییر دیتا",collapsed = TRUE,width = "200%",status = "info",
                        fluidRow(
                          column(width = 3,
-                            wellPanel(div(style="width:100%;",
+                            wellPanel(div(class="inline load_add",
                                  uiOutput(ns("ui_newcolname"))),
-                                 actionButton(ns("addcolumn"), "اضافه کردن ستون",
-                                  class="action-button--color--yellow inline",
-                                  style="margin-top:6%;"))),
-                         #radioButtons(ns("newcolumntype"), "Type", c("integer", "double", "character")),
+                                 div(style="margin-top:-1%",
+                                 actionBttn(ns("addcolumn"), 
+                                            div(class="action-button--widget","اضافه ستون"),
+                                            style = "jelly",color = "warning")))),
                          
                          column(width = 3,       
-                                wellPanel(div(style="width:100%;",
+                                wellPanel(div(class="inline load_add",
                                   uiOutput(ns("ui_removecolname"))),
-                                  actionButton(ns("removecolumn"),"حذف کردن ستون",
-                                    class="action-button--color--yellow inline"))),
+                                  div(style="margin-top:-6%",
+                                  actionBttn(ns("removecolumn"),
+                                    div(class="action-button--widget","حذف ستون"),
+                                    style = "jelly",color = "warning")))),
                          
                          column(width = 3,
-                                wellPanel(div(style="display:inline-block;width:100%;",
+                                wellPanel(div(class="inline load_add",
                                    uiOutput(ns("ui_newrowname"))),
-                                   actionButton(ns("addrow"),"اضافه کردن سطر",
-                                     class="action-button--color--yellow inline",
-                                     style="margin-top:6%;"))),
-                         #radioButtons(ns("newrowtype"), "Type", c("integer", "double", "character")),
+                                   div(style="margin-top:-1%",
+                                   actionBttn(ns("addrow"),
+                                    div(class="action-button--widget","اضافه سطر"),
+                                    style = "jelly",color = "warning")))),
+                         
                          column(width = 3,       
-                                wellPanel(div(style="display:inline-block;width:100%;height:60%;",
+                                wellPanel(div(class="inline load_add", 
                                     uiOutput(ns("ui_removerowname"))),
-                                    actionButton(ns("removerow"),"حذف کردن سطر",
-                                      class="action-button--color--yellow inline",
-                                      style="margin-top:1%;")))
+                                    div(style="margin-top:-6%",
+                                    actionBttn(ns("removerow"),
+                                      div(class="action-button--widget","حذف سطر"),
+                                      style = "jelly",color = "warning"))))
                        ))
                )))
 
@@ -256,12 +231,8 @@ br(),
 
 M0_Load <- function(input,output,session,outputDir){
   
-  # output$f_new_ready <- reactive({
-  #   return(!is.null(input$f_new))
-  # })
-  # outputOptions(output, "f_new_ready", suspendWhenHidden = FALSE)
-  
-  Date_US <- as.OtherDate(Sys.Date(),"modpersian")[1:3]
+
+  Date_US <- as.OtherDate(Sys.Date(),"persian")[1:3]
   Date_Persian = sprintf("%s-%s-%s",Date_US[3],Date_US[2],Date_US[1])
   
   
@@ -279,14 +250,12 @@ M0_Load <- function(input,output,session,outputDir){
      values[["now"]] <- D_new[,-1]
      values[["names"]] <-D_new[,1]
      values[["dates"]] <- colnames(D_new)[-1]
-     output$f_new_ready <- reactive({2})
      #saveData(D_new,input$f_name)
      })
   
   
   
   observeEvent(input$f_test,{
-    #D_new <- read.xlsx("/Users/ardalanmirshani/Dropbox/RAAVI/RAAVI-Released/www/Data.xlsx")
     D_new <- read.xlsx(file.path(getwd(),"www/Data.xlsx"))
     values[["now"]] <- D_new[,-1]
     values[["names"]] <- D_new[,1]
@@ -318,34 +287,6 @@ M0_Load <- function(input,output,session,outputDir){
   #output$Table <- renderUI({React_out()})
   
 
-  # output$Text <- renderUI({
-  #   #print(is.null(input$hot))
-  #   if(is.null(input$hot)){
-  #     A <- div(style="color:grey; font-size:150%;",br(), br(),
-  #              "هنوز فایلی وارد نشده است",
-  #              br(),br(),
-  #             "فایل خود را از منوی سمت چپ وارد کرده یا بسازید",
-  #              br(),br(),br())
-  #   }
-  #   else{
-  #     A <-  div(class="green2 right",style="font-size:120%;",
-  #             "فایل با موفقیت وارد شد",
-  #              br())
-  #   }
-  # 
-  #   return(A)
-  # 
-  # })
-
-    
-    # if(outvar$a==1){        # Does not need have () for input$x .... I mean, input$x() is wrong.
-    #   return(h2("هنوز فایلی وارد نشده است"))   # return is important here. Without it does not work
-    # }
-    # 
-    # if(outvar$a==2){
-    #   return(div(class="data-table--general",
-    #              rHandsontableOutput(session$ns("hot"))))
-    # }
     
   observeEvent(input$f_make,{
     D_new <- data.frame("تاریخ آزمون"="",matrix("",nrow = input$num_row,ncol = input$num_col),stringsAsFactors = FALSE)
@@ -447,7 +388,6 @@ M0_Load <- function(input,output,session,outputDir){
   #   # valign works when colHeaders is not NULL!
   #   hot_cell(1,1,readOnly=TRUE)
   # 
-  
   
   persian <- "\u0660\u0661\u0662\u0663\u0664\u0665\u0666\u0667\u0668\u0669\u06F0\u06F1\u06F2\u06F3\u06F4\u06F5\u06F6\u06F7\u06F8\u06F9"
   english <- "01234567890123456789"
@@ -604,9 +544,10 @@ M0_Load <- function(input,output,session,outputDir){
         paste(Date_Persian, ".xlsx", sep = "")  
       },
       content = function(file) {
+        print("Ardal")
+        #print(cbind(values[["names"]],values[["now"]]))
         finalDF <- cbind(values[["names"]],values[["now"]])
-        colnames(finalDF)[1] <- "تاریخ آزمون"
-        colnames(finalDF)[-1] <- values[["dates"]]
+        colnames(finalDF) <- c("تاریخ آزمون",values[["dates"]])
         write.xlsx(finalDF, file, row.names = FALSE)
       }
     )

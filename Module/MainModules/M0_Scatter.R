@@ -128,7 +128,7 @@ M0_Scatter <- function(input,output,session,Vals){
       checkboxGroupInput(inputId = ns("St_ChG"), label = "", choices = c(rownames(Data())))
       ),
       style = "unite", icon = div(style="color:black;",icon("user-circle-o")),
-      status = "warning", width = "150%"
+      status = "warning", width = "168%"
        # animate = animateOptions(
        #   enter = animations$fading_entrances$fadeInLeftBig,
        #   exit = animations$fading_exits$fadeOutRightBig
