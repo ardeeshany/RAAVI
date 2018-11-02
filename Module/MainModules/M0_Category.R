@@ -43,7 +43,7 @@ box(width="100%",status="primary",
                       min = 0,max = 20,value = c(0,20),step = 0.25), 
 
             actionBttn(inputId = ns("DT_AC2"),style = "jelly",color = "warning",
-            label = div(class="action-button--widget", "بازه انتخابی"))
+            label = div(class="action-button--widget", "جدول نمرات"))
              
           )
     

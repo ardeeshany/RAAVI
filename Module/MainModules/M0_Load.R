@@ -61,10 +61,10 @@ box(width="100%",
 
     wellPanel(
 
-    div(class="numeric-box--general__Pr",
+    div(class="input-box--general",
                  numericInput(inputId = ns("num_row"),
                   label =  "تعداد دانش آموز",min = 1,value = 1,step = 1)),
-    div(class="numeric-box--general__Pr", 
+    div(class="input-box--general", 
                  numericInput(inputId = ns("num_col"),
                   label = "تعداد امتحان",min = 1,value = 1,step = 1)),
       
@@ -78,14 +78,15 @@ box(width="100%",
           div(class="load--font-size_add",
               textAreaInput(inputId = ns("save_name"),label = "", value ="",
                             height = "2.4em",resize = "none",width = "100%",
-                            placeholder = 'نام فایل مورد نظر')),
+                            placeholder ='نام فایل ذخیره')),
           
           #div(style="height:150%;",
               # downloadBttn(ns("downloadData"),style = "material-circle",color = "warning",
               #                div(class="action-button--widget","ذخیره کردن داده"))
-              downloadBttn(ns("downloadData"),color = "warning", 
-                           style ="jelly",size = "md",label=div(class="inline",style="font-size:82%;color:black;","ذخیره"))
-                             
+             div(style="color:black", 
+             downloadBttn(ns("downloadData"),color = "warning", 
+              style ="jelly",size = "md",label=div(class="inline",style="font-size:82%;color:black;","ذخیره"))
+             )            
           #uiOutput(ns("message"), inline=TRUE)
           
     ),
@@ -167,8 +168,48 @@ br(),
                    #   
                    #   ),
                    
-                   uiOutput(ns("Text")),
+        
+        
+                #uiOutput(ns("Text")),
+
+        
+        conditionalPanel(
+          condition = " input.hot == null ", ns=ns,
+          div(style="color:grey; font-size:150%;",br(), br(),
+          "هنوز فایلی وارد نشده است",
+          br(),
+          br(),
+          "فایل خود را از منوی سمت چپ وارد کرده یا فایل جدید بسازید",
+          br(),br(),br())
+        ),
+        
+                # 
+                # 
+                # output$Text <- renderUI({
+                #     #print(is.null(input$hot))
+                #   if(is.null(input$hot)){
+                #   A <- div(style="color:grey; font-size:150%;",br(), br(),
+                #   "هنوز فایلی وارد نشده است",
+                #   br(),br(),
+                #   "فایل خود را از منوی سمت چپ وارد کرده یا بسازید",
+                #   br(),br(),br())
+                #     }
+                #   else{
+                #   A <-  div(class="green2 right",style="font-size:120%;",
+                #       "فایل با موفقیت وارد شد",
+                #       br())
+                #       }
+                # 
+                #   return(A)
+                # 
+                #     })
                   
+        
+        
+        
+        
+        
+        
                    div(class="data-table--general",
                        rHandsontableOutput(ns("hot"))),
                    
@@ -215,6 +256,11 @@ br(),
 
 M0_Load <- function(input,output,session,outputDir){
   
+  # output$f_new_ready <- reactive({
+  #   return(!is.null(input$f_new))
+  # })
+  # outputOptions(output, "f_new_ready", suspendWhenHidden = FALSE)
+  
   Date_US <- as.OtherDate(Sys.Date(),"modpersian")[1:3]
   Date_Persian = sprintf("%s-%s-%s",Date_US[3],Date_US[2],Date_US[1])
   
@@ -233,6 +279,7 @@ M0_Load <- function(input,output,session,outputDir){
      values[["now"]] <- D_new[,-1]
      values[["names"]] <-D_new[,1]
      values[["dates"]] <- colnames(D_new)[-1]
+     output$f_new_ready <- reactive({2})
      #saveData(D_new,input$f_name)
      })
   
@@ -270,26 +317,26 @@ M0_Load <- function(input,output,session,outputDir){
   # }) 
   #output$Table <- renderUI({React_out()})
   
-  
-  output$Text <- renderUI({
-    #print(is.null(input$hot))
-    if(is.null(input$hot)){
-      A <- div(style="color:grey; font-size:150%;",br(), br(),
-               "هنوز فایلی وارد نشده است",
-               br(),br(),
-              "فایل خود را از منوی سمت چپ وارد کرده یا بسازید",
-               br(),br(),br())
-    }
-    else{
-      A <-  div(class="green2 right",style="font-size:120%;",
-              "فایل با موفقیت وارد شد",
-               br())
-    }
 
-    return(A)
+  # output$Text <- renderUI({
+  #   #print(is.null(input$hot))
+  #   if(is.null(input$hot)){
+  #     A <- div(style="color:grey; font-size:150%;",br(), br(),
+  #              "هنوز فایلی وارد نشده است",
+  #              br(),br(),
+  #             "فایل خود را از منوی سمت چپ وارد کرده یا بسازید",
+  #              br(),br(),br())
+  #   }
+  #   else{
+  #     A <-  div(class="green2 right",style="font-size:120%;",
+  #             "فایل با موفقیت وارد شد",
+  #              br())
+  #   }
+  # 
+  #   return(A)
+  # 
+  # })
 
-  })
-  
     
     # if(outvar$a==1){        # Does not need have () for input$x .... I mean, input$x() is wrong.
     #   return(h2("هنوز فایلی وارد نشده است"))   # return is important here. Without it does not work
@@ -565,14 +612,15 @@ M0_Load <- function(input,output,session,outputDir){
     )
     #})
   
-  
+    
+    
   ## Cancel last action    
   observeEvent(input$cancel, {
     if(!is.null(isolate(values[["previous"]]))) values[["now"]] <- isolate(values[["previous"]])
   })
   
-  
-  
   return(values)
+  
+  
   
 }
