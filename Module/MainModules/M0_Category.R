@@ -82,7 +82,7 @@ box(width="100%",status="primary",
 #   Group_name_iso[i] = paste("گروه",i,sep="")
 # }
 
-M0_Cat <- function(input,output,session,Vals){
+M0_Cat <- function(input,output,session,Vals,font_plot){
 
   ns <- session$ns  
   
@@ -462,7 +462,7 @@ React_DT2 <-eventReactive(input$DT_AC2,{
           axis.title=element_text(size=14,face="bold"),
           plot.title = element_text(size=14,face="bold"),
           legend.title = element_text(size=12,face="bold"),
-          text=element_text(family="dastnevis"),
+          text=element_text(family=font_plot),
           legend.position="none")
   
   

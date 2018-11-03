@@ -56,10 +56,13 @@ library(colourpicker)
 # )
 
 
-#font_import()
+# font_import(paths = "www/",prompt = FALSE)
+# loadfonts()
 Sys.setlocale(category = 'LC_ALL','en_US.UTF-8')
 #options(shiny.usecairo=FALSE)
 
+#font_import(pattern="dastnevis",prompt=FALSE)
+#loadfonts()
 
 ## modules ##
 #source('Module/Extra/ui_color.R')
@@ -91,7 +94,7 @@ source('Module/I1_Info.R')
   source('Module/MainModules/I0_Contact.R')
 
     ui <- dashboardPage(
-      
+
       HeaderUI("mod_header"),                   
       SidebarUI("mod_sidebar"),
       BodyUI("mod_body",theme=theme_RAAVI)

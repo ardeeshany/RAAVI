@@ -72,7 +72,7 @@ box(status="primary",width="100%",collapsible = TRUE,collapsed = FALSE,
 
 
 
-M0_Hist <- function(input,output,session,Vals){
+M0_Hist <- function(input,output,session,Vals,font_plot){
   
   ns <- session$ns  
   
@@ -247,7 +247,7 @@ M0_Hist <- function(input,output,session,Vals){
             plot.title = element_text(size=14,face="bold"),
             legend.title = element_text(size=12,face="bold"),
             legend.text=element_text(size=12),
-            text=element_text(family="dastnevis"))+
+            text=element_text(family=font_plot))+
       scale_fill_manual(values=rev(cc1),guide = guide_legend(reverse = TRUE,title = "",size=20))
     
     
@@ -537,7 +537,7 @@ React_DT3 <-eventReactive(input$DT_AC3, {
           plot.title = element_text(size=14,face="bold"),
           legend.title = element_text(size=12,face="bold"),
           legend.text=element_text(size=12),
-          text=element_text(family="dastnevis"))+
+          text=element_text(family=font_plot))+
     scale_fill_manual(aes(breaks=clr),values=rev(cc1),guide = guide_legend(title = "",size=20))+
     coord_flip()
   
@@ -567,7 +567,7 @@ React_DT3 <-eventReactive(input$DT_AC3, {
           plot.title = element_text(size=14,face="bold"),
           legend.title = element_text(size=12,face="bold"),
           legend.text=element_text(size=12),
-          text=element_text(family="dastnevis"))+
+          text=element_text(family=font_plot))+
     scale_fill_manual(aes(breaks=clr),values=rev(cc1),guide = guide_legend(title = "",size=20))
   
   

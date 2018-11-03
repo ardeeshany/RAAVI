@@ -16,7 +16,6 @@ tagList(
 #   )
 # ),
 
-
 # layout based on column priority; "column" 
 fluidRow(
   
@@ -83,7 +82,7 @@ fluidRow(
 
 
 M_Summary <- function(input,output,session){
- 
+  
   #callModule(M_Info,"info")
   
   # infoBox

@@ -16,13 +16,13 @@ M3_ClassUI <- function(id){
   )}
 
 
-M3_Class <- function(input,output,session,outputDir,class,level,course){
+M3_Class <- function(input,output,session,outputDir,class,level,course,font_plot){
 
-        callModule(M0_Box,"Box",vals)
-        callModule(M0_Hist,"Hist",vals)
-        callModule(M0_Scatter,"Scatter",vals)
-        callModule(M0_Cat,"Category",vals)
-        callModule(M0_Prog,"Progress",vals)
+        callModule(M0_Box,"Box",vals,font_plot)
+        callModule(M0_Hist,"Hist",vals,font_plot)
+        callModule(M0_Scatter,"Scatter",vals,font_plot)
+        callModule(M0_Cat,"Category",vals,font_plot)
+        callModule(M0_Prog,"Progress",vals,font_plot)
 vals <- callModule(M0_Load,"Load",outputDir)
 
 V <- reactive({

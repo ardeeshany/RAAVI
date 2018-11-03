@@ -19,9 +19,13 @@ SidebarUI <- function(id){
       #menuItem("ورود", tabName="Login", icon = icon("sign-in")),
       
       
+      
       div(style="margin-top:1em;",br()),
       
-      div(style="font-family:'dastnevis'; text-align:center; margin-left:10%;",
+      # tags$head(tags$link(href = "https://fonts.googleapis.com/css?family=Lalezar", 
+      #                     rel = "stylesheet")),
+      
+      div(style=" text-align:center; margin-left:10%;",
           div(style="margin-top:25%;",
           menuItem(div(class="sidebar--font","معرفی"), tabName= "Summary",icon = icon("home",class="sidebar-icon"))),
           div(style="margin-top:72%;",

@@ -49,7 +49,7 @@ box(status="primary",width="100%",collapsible = TRUE,collapsed = FALSE,
 #
 ######################
 
-M0_Box <- function(input,output,session,Vals){
+M0_Box <- function(input,output,session,Vals,font_plot){
   
   
   ns <- session$ns  
@@ -137,7 +137,7 @@ M0_Box <- function(input,output,session,Vals){
               axis.title=element_text(size=14,face="bold"),
               plot.title = element_text(size=14,face="bold"),
               legend.title = element_text(size=12,face="bold"),
-              text=element_text(family="dastnevis"))
+              text=element_text(family=font_plot))
         
 
      gg <- ggplotly(p)

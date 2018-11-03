@@ -70,7 +70,7 @@ box(status="primary",width="100%",collapsible = TRUE,collapsed = FALSE,
 #
 ######################
 
-M0_Prog <- function(input,output,session,Vals){
+M0_Prog <- function(input,output,session,Vals,font_plot){
   
   
   ns <- session$ns  
@@ -208,7 +208,7 @@ M0_Prog <- function(input,output,session,Vals){
             plot.title = element_text(size=14,face="bold"),
             legend.title = element_text(size=12,face="bold"),
             legend.text=element_text(size=12),
-            text=element_text(family="dastnevis"))+
+            text=element_text(family=font_plot))+
             scale_fill_manual(values=col)+
             coord_flip()
     
@@ -536,7 +536,7 @@ M0_Prog <- function(input,output,session,Vals){
             plot.title = element_text(size=14,face="bold"),
             legend.title = element_text(size=12,face="bold"),
             legend.text=element_text(size=12),
-            text=element_text(family="dastnevis"))+
+            text=element_text(family=font_plot))+
             #aes(stringr::str_wrap(YLAB, 15))+
       #aes(fill = clr)+
       #scale_fill_manual(values= slope$clr,guide = guide_legend(title = "",size=20))+
