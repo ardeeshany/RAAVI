@@ -16,14 +16,7 @@ theme,
   # tags$head( 
   #   tags$style(HTML(".main-sidebar { color: #f4b943; }")) 
   # )
-tags$head(tags$link(href = "https://fonts.googleapis.com/css?family=Reem+Kufi|El+Messiri|Lalezar|Scheherazade|Amiri", rel = "stylesheet")),
-
- tags$head(
-   tags$style(
-       HTML("@font-face { font-family: dast_nevis; src: url(dastnevis.ttf);}")
-  )
- ),
-
+#tags$head(tags$link(href = "https://fonts.googleapis.com/css?family=Reem+Kufi|El+Messiri|Lalezar|Scheherazade", rel = "stylesheet")),
 #tags$head(tags$link(href = "/IranNastaliq.ttf", rel = "stylesheet")),
 
 #tags$head(tags$link(href = "IranNastaliq.ttf", rel = "stylesheet")), 
@@ -81,7 +74,7 @@ Body <- function(input,output,session, outputadrs="RAAVI/RAAVI-Released/DATA/Tes
   
           callModule(M_Summary,"summary")
           callModule(I1_Info,"info")
-          callModule(M3_Class,"cls",outputDir = outputadrs,class="0",level="0",course="0",font_plot = "dast_nevis")
+          callModule(M3_Class,"cls",outputDir = outputadrs,class="0",level="0",course="0",font_plot = "dastnevis")
   
   # vals <- callModule(M1_Class,"c12",outputcls = sprintf("%s/12",outputadrs),class="12") 
   #         callModule(M1_Class,"c11",outputcls = sprintf("%s/11",outputadrs),class="11")

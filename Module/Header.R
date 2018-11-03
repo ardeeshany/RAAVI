@@ -33,7 +33,7 @@ HeaderUI <- function(id){
    
     
     
-    title =  helpText(div(style=" color : #9C9A40; text-align:center ;font-size: 120%; font-weight: bold;font-family:'dast_nevis'",
+    title =  helpText(div(style=" color : #9C9A40; text-align:center ;font-size: 120%; font-weight: bold;font-family:'dastnevis';",
                                         "راوی")),
   
     
@@ -44,7 +44,7 @@ HeaderUI <- function(id){
                 dropdownMenu(type = "messages",
                              messageItem(
                                from = "راوی",
-                               message = "ورژن ۰.۱",
+                               message = "ورژن ۱.۰۱",
                                icon = icon("life-ring")
                              ),
                              # messageItem(
