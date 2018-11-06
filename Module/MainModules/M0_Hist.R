@@ -235,6 +235,33 @@ M0_Hist <- function(input,output,session,Vals,font_plot){
     # lab_legend <- sapply(1:gr_num, function(x){
     #   paste("گروه",x)
     #   })
+    lab_legend_bar <- sapply(1:gr_num, function(x){
+      paste("گروه",x)
+    })
+    
+    
+    gg_bar <- ggplot(melt_Data_Hg,aes(x = reorder(Student,value),y = value))+
+      geom_bar(stat="identity",aes(fill=factor(clr,labels=lab_legend_bar)),color="black")+
+      geom_text(data=melt_Data_Hg,aes(x = Student,y = value, label= value),
+                position = position_stack(vjust = 0.5),color="black",size=4.5)+
+      labs(title ="", x = "", y = "")+
+      theme(axis.text.x = element_text(size=12,colour="black",angle=0, hjust=1,vjust=.5),
+            axis.text.y = element_text(size=9,colour="black"),
+            axis.title=element_text(size=14,face="bold"),
+            plot.title = element_text(size=14,face="bold"),
+            legend.title = element_text(size=12,face="bold"),
+            legend.text=element_text(size=12),
+            text=element_text(family=font_plot))+
+      scale_fill_manual(aes(breaks=clr),values=rev(cc1),guide = guide_legend(title = "",size=20))+
+      coord_flip()
+    
+    
+    
+    
+    gg_bar <- ggplotly(gg_bar) %>% layout(annotations = text_bar1)
+    
+    
+    
     
     p <- ggplot(melt_Data_Hg,aes(value)) + 
       geom_histogram(aes(y = round(..count../(0.01*sum(..count..)),1),
@@ -253,7 +280,11 @@ M0_Hist <- function(input,output,session,Vals,font_plot){
     
     gg <- ggplotly(p)
     
-    out <- list(p=p,gg=gg,group_names=group_names,gr_names=Gr_names,color_count = color_count ,cc1 = cc1,c=c)
+    
+    
+    
+    
+    out <- list(p=p,gg=gg,gg_bar=gg_bar,group_names=group_names,gr_names=Gr_names,color_count = color_count ,cc1 = cc1,c=c)
     
     return(out)
     
@@ -675,6 +706,19 @@ React_DT3 <-eventReactive(input$DT_AC3, {
     showarrow = FALSE
   )
   
+  text_bar1 <- list(
+    text = "نمره دانش آموزان",
+    font=f,
+    xref = "paper",
+    yref = "paper",
+    yanchor = "bottom",
+    xanchor = "center",
+    align = "center",
+    x = 0.5,
+    y = 1,
+    showarrow = FALSE
+  )
+  
   text_hist_date <- list(
     text = "فراوانی نمره ها در یک زمان مشخص",
     font=f,
@@ -702,6 +746,7 @@ React_DT3 <-eventReactive(input$DT_AC3, {
     showarrow = FALSE
   )
   
+  
   Reac_Hg_final <- reactive({
 
     bin <- Reac_Hg()$c
@@ -712,11 +757,24 @@ React_DT3 <-eventReactive(input$DT_AC3, {
         stat_bin(aes(label=lapply(round(..count../(0.01*sum(..count..)),1),FUN= lab_hist)),geom="text",
                  bins = bin ,color="black", size=4.5)
       
-      return(ggplotly(p) %>% layout(annotations = text_hist_date) )
+      p <- ggplotly(p) %>% layout(annotations = text_hist_date)
+      
+      A <- subplot(Reac_Hg()$gg_bar, p,
+                   widths=c(input$slider_width/100,1-input$slider_width/100),
+                   titleX=TRUE)  %>% layout(showlegend = FALSE) 
+      
+     return(A)
+      
     }else{
       p <- Reac_Hg()$p + stat_bin(aes(label=lapply(round(..count../(0.01*sum(..count..)),1),FUN=lab_hist)),geom="text",
                         bins = bin,color="black", size=4.5)
-      return(ggplotly(p) %>% layout(annotations = text_hist_date) )
+      p <- ggplotly(p) %>% layout(annotations = text_hist_date)
+      
+      A <- subplot(Reac_Hg()$gg_bar, p,
+                   widths=c(input$slider_width/100,1-input$slider_width/100),
+                   titleX=TRUE)  %>% layout(showlegend = FALSE) 
+     return(A)
+      
     }
   })
   
@@ -788,6 +846,11 @@ React_DT3 <-eventReactive(input$DT_AC3, {
       
       A <- dropdown(
         div(style="text-align:right; font-size :110%; font-weight:bold;", ":تنظیمات نمودار"),
+        div(style="text-align:left",
+            noUiSliderInput(inputId = ns("slider_width"),
+                            label =div(style="font-size:80%;","مقیاس نمودارها"),tooltips = F,
+                            inline = T, min = 15,max = 75,value = 35,step = 1,
+                            width = "100%",color = "#578CA9")),
         materialSwitch(inputId = ns("density"), label = "نمودار توزیع", status = "danger", right = TRUE),
         circle = TRUE, status = "default", icon = icon("gear"),style = "unite",width = "25%"
       ) 
