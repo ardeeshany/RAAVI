@@ -1,4 +1,17 @@
 
+appCSS <- "
+#loading-content {
+position: absolute;
+background: #000000;
+opacity: 0.9;
+z-index: 100;
+left: 0;
+right: 0;
+height: 100%;
+text-align: center;
+color: #FFFFFF;
+}"
+
 
 BodyUI <- function(id,theme){
   
@@ -7,6 +20,8 @@ ns <- NS(id)
 # tags$head(
 #   tags$link(rel = "stylesheet", type = "text/css", href = "custom.css")
 # )
+
+
 
 dashboardBody(
 #tags$head(tags$script(HTML("$('body').addClass('sidebar-mini');"))),
@@ -35,6 +50,18 @@ tags$head(tags$link(href = "custom.css", rel = "stylesheet")),
 #             href = "IranNastaliq")
 # ),
 #tags$head( includeCSS(path = "www/style.css") ),
+
+
+useShinyjs(),
+inlineCSS(appCSS),
+
+# Loading message
+div(
+  id = ns("loading-content"),
+  div(style="text-align:center",
+  h2("اپلیکیشن راوی در حال باز شدن است"))
+),
+
 
 tabItems(
 #### Login ####      
@@ -73,11 +100,14 @@ tabItem(tabName = "Class", M3_ClassUI(ns("cls"))),
 tabItem(tabName = "Summary", M_SummaryUI(ns("summary"))),
 tabItem(tabName = "Info", I1_InfoUI(ns("info")))
        ),
-tags$head(includeHTML(("www/google-analytics.html")))    
+tags$head(includeHTML(("www/google-analytics.html")))
 )
 }
 
 Body <- function(input,output,session, outputadrs="RAAVI/RAAVI-Released/DATA/Test"){
+  
+          hide(id = "loading-content", anim = TRUE, animType = "fade")    
+          #show("app-content")
   
           callModule(M_Summary,"summary")
           callModule(I1_Info,"info")
