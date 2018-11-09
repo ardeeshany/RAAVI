@@ -1,16 +1,16 @@
-
-appCSS <- "
-#loading-content {
-position: absolute;
-background: #000000;
-opacity: 0.9;
-z-index: 100;
-left: 0;
-right: 0;
-height: 100%;
-text-align: center;
-color: #FFFFFF;
-}"
+# 
+# appCSS <- "
+# #loading-content {
+# position: absolute;
+# background: #000000;
+# opacity: 0.9;
+# z-index: 100;
+# left: 0;
+# right: 0;
+# height: 100%;
+# text-align: center;
+# color: #FFFFFF;
+# }"
 
 
 BodyUI <- function(id,theme){
@@ -45,15 +45,15 @@ tags$head(tags$link(href = "custom.css", rel = "stylesheet")),
 #tags$head( includeCSS(path = "www/style.css") ),
 
 
-useShinyjs(),
-inlineCSS(appCSS),
-
-# Loading message
-div(
-  id = ns("loading-content"),
-  div(style="text-align:center",
-  h2("اپلیکیشن راوی در حال باز شدن است"))
-),
+# useShinyjs(),
+# inlineCSS(appCSS),
+# 
+# # Loading message
+# div(
+#   id = ns("loading-content"),
+#   div(style="text-align:center",
+#   h2("اپلیکیشن راوی در حال باز شدن است"))
+# ),
 
 
 tabItems(
@@ -99,7 +99,7 @@ tags$head(includeHTML(("www/google-analytics.html")))
 
 Body <- function(input,output,session, outputadrs="RAAVI/RAAVI-Released/DATA/Test"){
   
-          hide(id = "loading-content", anim = TRUE, animType = "fade")    
+          #hide(id = "loading-content", anim = TRUE, animType = "fade")    
           #show("app-content")
   
           callModule(M_Summary,"summary")

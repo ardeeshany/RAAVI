@@ -45,9 +45,8 @@ library(shinycssloaders)
 #library(gridExtra)
 library(DT)
 library(shinyWidgets)
-library(colourpicker)
 library(shinyjs)
-
+library(colourpicker)
 
 # library(Cairo)
 # 

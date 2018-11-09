@@ -554,11 +554,11 @@ if(table_ind$a==1){
   A <- dropdown(
     
     div(class="right",
-    colourInput(ns("color_bg"),label = div(style="font-size:80%;","انتخاب رنگ پس زمینه"),
+        colourpicker::colourInput(ns("color_bg"),label = div(style="font-size:80%;","انتخاب رنگ پس زمینه"),
                 value = "#55B4B0",showColour = "background")),
     
     div(class="right",
-    colourInput(ns("color_text"),label = div(style="font-size:80%;","انتخاب رنگ متن"),
+        colourpicker::colourInput(ns("color_text"),label = div(style="font-size:80%;","انتخاب رنگ متن"),
                 value =  "black",showColour = "background")),
                 #palette = "limited" , allowedCols = c("black","white","#B93A32"))),
     
