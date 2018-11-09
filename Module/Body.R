@@ -1,6 +1,5 @@
 
-
-BodyUI <- function(id,theme){
+BodyUI <- function(id){
   
 ns <- NS(id)
 
@@ -10,8 +9,9 @@ ns <- NS(id)
 
 dashboardBody(
 #tags$head(tags$script(HTML("$('body').addClass('sidebar-mini');"))),
-theme,
 
+theme_RAAVI(font="dast_nevis"),
+uiOutput(ns("theme")),
 #ColorUI("mode_color"),  
   # tags$head( 
   #   tags$style(HTML(".main-sidebar { color: #f4b943; }")) 
@@ -29,13 +29,27 @@ tags$head(tags$link(href = "https://fonts.googleapis.com/css?family=Reem+Kufi|El
 #tags$head(tags$link(href = "IranNastaliq.ttf", rel = "stylesheet")), 
 
 tags$head(tags$link(href = "custom.css", rel = "stylesheet")), 
-
+#tags$head(tags$style(".main-header .navbar{ margin-left: 0px !important;}")),
+#tags$head(tags$style(".navbar-custom-menu, .main-header .navbar-right {float: left !important;}")),
 # tags$head(
 #   tags$link(rel="stylesheet", type = "text/css",
 #             href = "IranNastaliq")
 # ),
 #tags$head( includeCSS(path = "www/style.css") ),
 
+useShinyjs(),
+#inlineCSS(appCSS),
+
+# Loading message
+div( id = ns("loading-content"),
+  div(class="loading",
+      "...راوی در حال بارگذاری اطلاعات است ")
+),
+
+
+hidden(
+  div(
+    id = ns("app-content"),
 tabItems(
 #### Login ####      
       
@@ -75,14 +89,29 @@ tabItem(tabName = "Info", I1_InfoUI(ns("info")))
        ),
 tags$head(includeHTML(("www/google-analytics.html")))    
 )
+))
 }
 
-Body <- function(input,output,session, outputadrs="RAAVI/RAAVI-Released/DATA/Test"){
+Body <- function(input,output,session, outputadrs="RAAVI/RAAVI-Released/DATA/Test",l){
   
-          callModule(M_Summary,"summary")
-          callModule(I1_Info,"info")
-          callModule(M3_Class,"cls",outputDir = outputadrs,class="0",level="0",course="0",font_plot = "dast_nevis")
   
+  
+  output$theme <- renderUI({
+    if(l()=="pr")
+    A <- theme_RAAVI(font="dast_nevis")
+    else
+    A <- theme_RAAVI(font="Gabriola")
+    
+    return(A)
+  })
+  
+          callModule(M_Summary,"summary",l)
+          callModule(I1_Info,"info",l)
+          callModule(M3_Class,"cls",outputDir = outputadrs,class="0",level="0",course="0",font_plot = "dast_nevis",l)
+  
+          hide(id = "loading-content", anim = TRUE, animType = "fade")    
+          show("app-content")
+          
   # vals <- callModule(M1_Class,"c12",outputcls = sprintf("%s/12",outputadrs),class="12") 
   #         callModule(M1_Class,"c11",outputcls = sprintf("%s/11",outputadrs),class="11")
   #         callModule(M1_Class,"c10",outputcls = sprintf("%s/10",outputadrs),class="10")

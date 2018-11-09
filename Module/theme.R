@@ -1,7 +1,10 @@
-theme_RAAVI <- shinyDashboardThemeDIY(
+theme_RAAVI <- function(font){
+  
+  
+  shinyDashboardThemeDIY(
   
   ### general
-   appFontFamily = "dast_nevis"
+   appFontFamily = font
   ,appFontColor = "rgb(0,0,0)"
   #,bodyBackColor = "rgb(248,248,248)"
   ,bodyBackColor = "white"
@@ -125,4 +128,4 @@ theme_RAAVI <- shinyDashboardThemeDIY(
   ,tableBorderTopSize = 1
   ,tableBorderRowSize = 1
   
-)
+)}

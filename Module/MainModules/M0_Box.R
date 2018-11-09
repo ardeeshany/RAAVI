@@ -4,7 +4,7 @@ M0_BoxUI <- function(id,date,names){
   ns <- NS(id)
         
   tabPanel(title =div(class="tabPanel--font-size center",
-                       "روند کلاس"),
+                      uiOutput(ns("tab_title"))),
            icon=icon("archive",class="tabPanel-icon"),
            
 fluidRow(
@@ -49,10 +49,20 @@ box(status="primary",width="100%",collapsible = TRUE,collapsed = FALSE,
 #
 ######################
 
-M0_Box <- function(input,output,session,Vals,font_plot){
+M0_Box <- function(input,output,session,Vals,font_plot,l){
   
   
   ns <- session$ns  
+  
+  output$tab_title <- renderUI({
+    if(l()=="pr"){
+      A = "روند کلاس"
+    }else{
+      A = "Class"
+    }
+    return(A)
+  })
+  
   
   ch_opt <- list(content = c("<div> </div>"))
   

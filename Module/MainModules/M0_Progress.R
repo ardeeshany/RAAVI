@@ -3,7 +3,7 @@ M0_ProgUI <- function(id){
   ns <- NS(id)
   
   tabPanel(title = div(class="tabPanel--font-size center",
-                       "پیشرفت"),
+                       uiOutput(ns("tab_title"))),
            icon=icon("arrow-circle-up",class="tabPanel-icon"),
            
            #tags$style(HTML(".js-irs-0 .irs-single, .js-irs-0 .irs-bar-edge, .js-irs-0 .irs-bar {background: #485167}")),         
@@ -70,10 +70,19 @@ box(status="primary",width="100%",collapsible = TRUE,collapsed = FALSE,
 #
 ######################
 
-M0_Prog <- function(input,output,session,Vals,font_plot){
+M0_Prog <- function(input,output,session,Vals,font_plot,l){
   
   
   ns <- session$ns  
+  
+  output$tab_title <- renderUI({
+    if(l()=="pr"){
+      A = "پیشرفت"
+    }else{
+      A = "Progress"
+    }
+    return(A)
+  })
   
   ch_opt <- list(content = c("<div> </div>"))
   

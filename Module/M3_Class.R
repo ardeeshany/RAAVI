@@ -16,14 +16,14 @@ M3_ClassUI <- function(id){
   )}
 
 
-M3_Class <- function(input,output,session,outputDir,class,level,course,font_plot){
+M3_Class <- function(input,output,session,outputDir,class,level,course,font_plot,l){
 
-        callModule(M0_Box,"Box",vals,font_plot)
-        callModule(M0_Hist,"Hist",vals,font_plot)
-        callModule(M0_Scatter,"Scatter",vals,font_plot)
-        callModule(M0_Cat,"Category",vals,font_plot)
-        callModule(M0_Prog,"Progress",vals,font_plot)
-vals <- callModule(M0_Load,"Load",outputDir)
+        callModule(M0_Box,"Box",vals,font_plot,l)
+        callModule(M0_Hist,"Hist",vals,font_plot,l)
+        callModule(M0_Scatter,"Scatter",vals,font_plot,l)
+        callModule(M0_Cat,"Category",vals,font_plot,l)
+        callModule(M0_Prog,"Progress",vals,font_plot,l)
+vals <- callModule(M0_Load,"Load",outputDir,l)
 
 V <- reactive({
   M <- tidyr::gather(cbind(name=vals[["names"]],vals[["now"]],class=class,level=level,course=course),date,grade,-name,-class,-level,-course)

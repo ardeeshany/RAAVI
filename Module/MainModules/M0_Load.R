@@ -6,7 +6,7 @@ M0_LoadUI <- function(id){
 
   
   tabPanel(title = div(class="tabPanel--font-size center",
-                       "وارد کردن داده"),
+                       uiOutput(ns("tab_title"))),
            icon=icon("download",class="tabPanel-icon"),
                   
            fluidRow(
@@ -51,9 +51,9 @@ box(width="100%",
 
     wellPanel(
       fileInput(inputId = ns("f_new"),
-                label = div(class="load__subtitle--font-size",'آپلود فایل'),
+                label = div(class="load__subtitle--font-size",uiOutput(ns("upload"))),
                 buttonLabel = list(icon("file-excel-o")),
-                placeholder = 'ورود داده',
+                placeholder = "......",
                 width = "100%",
                 accept=".xlsx")
       ),
@@ -63,13 +63,13 @@ box(width="100%",
 
     div(class="input-box--general",
                  numericInput(inputId = ns("num_row"),
-                  label =  "تعداد دانش آموز",min = 1,value = 1,step = 1)),
+                  label =  uiOutput(ns("num_student")),min = 1,value = 1,step = 1)),
     div(class="input-box--general", 
                  numericInput(inputId = ns("num_col"),
-                  label = "تعداد امتحان",min = 1,value = 1,step = 1)),
+                  label = uiOutput(ns("num_exam")),min = 1,value = 1,step = 1)),
       
     actionBttn(inputId = ns("f_make"),style = "jelly",color = "warning",
-               label = div(class="action-button--widget","ساختن فایل"))
+               label = div(class="action-button--widget", uiOutput(ns("create"))))
     ),
     
     
@@ -85,7 +85,8 @@ box(width="100%",
               #                div(class="action-button--widget","ذخیره کردن داده"))
              div(style="color:black", 
              downloadBttn(ns("downloadData"),color = "warning", 
-              style ="jelly",size = "md",label=div(class="inline",style="font-size:82%;color:black;","ذخیره"))
+              style ="jelly",size = "md",
+              label=div(class="inline",style="font-size:82%;color:black;",uiOutput(ns("save"))))
              )            
           #uiOutput(ns("message"), inline=TRUE)
           
@@ -94,7 +95,7 @@ box(width="100%",
       wellPanel(
         div(style="align:center; tet-align:center;",
         actionBttn(inputId = ns("f_test"),style = "jelly",color = "warning",
-                   label = div(class="action-button--widget","فایل نمونه")))
+                   label = div(class="action-button--widget",uiOutput(ns("sample")))))
         
         
         )
@@ -229,11 +230,31 @@ br(),
 }
 
 
-M0_Load <- function(input,output,session,outputDir){
+M0_Load <- function(input,output,session,outputDir,l){
   
 
   Date_US <- as.OtherDate(Sys.Date(),"persian")[1:3]
   Date_Persian = sprintf("%s-%s-%s",Date_US[3],Date_US[2],Date_US[1])
+  
+  observe({
+  if(l()=="pr"){
+  output$tab_title <- renderUI({ "وارد کردن داده" })
+  output$upload <- renderUI({ "آپلود فایل" })
+  output$num_student <- renderUI({ "تعداد دانش آموزان" })
+  output$num_exam <- renderUI({ "تعداد امتحان" })
+  output$create <- renderUI({ "ساختن فایل" })
+  output$save <- renderUI({ "ذخیره" })
+  output$sample <- renderUI({ "فایل نمونه" })
+  }else{
+  output$tab_title <- renderUI({  "Insert Data" })
+  output$upload <- renderUI({ "Upload a file" })
+  output$num_student <- renderUI({ "number of students" })
+  output$num_exam <- renderUI({ "number of exams" })
+  output$create <- renderUI({ "create a file" })
+  output$save <- renderUI({ "save" })
+  output$sample <- renderUI({ "sample" })
+  }})
+  
   
   
   # saveData <- function(data,fileName){

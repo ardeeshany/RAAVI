@@ -3,7 +3,7 @@ M0_ScatterUI <- function(id){
    ns <- NS(id)
 
   tabPanel(title = div(class="tabPanel--font-size center",
-                       "روند دانش آموزان"),
+                       uiOutput(ns("tab_title"))),
            icon=icon("line-chart",class="tabPanel-icon"),
 ###
 
@@ -96,11 +96,18 @@ box(status="primary",width="100%",collapsible = TRUE,collapsed = FALSE,
 #
 ######################
 
-M0_Scatter <- function(input,output,session,Vals,font_plot){
+M0_Scatter <- function(input,output,session,Vals,font_plot,l){
 
   ns <- session$ns
 
-
+  output$tab_title <- renderUI({
+    if(l()=="pr"){
+      A = "روند دانش آموزان"
+    }else{
+      A = "Students"
+    }
+    return(A)
+  })
 
   
     Data <- reactive({

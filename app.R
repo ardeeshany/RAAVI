@@ -46,6 +46,7 @@ library(shinycssloaders)
 library(DT)
 library(shinyWidgets)
 library(colourpicker)
+library(shinyjs)
 # library(Cairo)
 # 
 # CairoFonts(
@@ -95,9 +96,11 @@ source('Module/I1_Info.R')
 
     ui <- dashboardPage(
 
+
+      
       HeaderUI("mod_header"),                   
       SidebarUI("mod_sidebar"),
-      BodyUI("mod_body",theme=theme_RAAVI)
+      BodyUI("mod_body")
       #rightsidebar = RightSidebarUI("mod_rightsidebar")
       
     )
@@ -105,13 +108,13 @@ source('Module/I1_Info.R')
     
     server <- function(input, output,session) {
       
-      callModule(Header,"mod_header")
-      callModule(Sidebar,"mod_sidebar")
-      # callModule(RightSidebar,"mod_rightsidebar")
-      callModule(Body,"mod_body")
+                  callModule(Header,"mod_header",l=l)
+             l <- callModule(Sidebar,"mod_sidebar")
+                  # callModule(RightSidebar,"mod_rightsidebar")
+                  callModule(Body,"mod_body",l = l)
+                  
     }
-      
-    
+
+
   shinyApp(ui=ui,server=server)
-  
   

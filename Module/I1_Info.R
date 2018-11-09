@@ -9,10 +9,10 @@ I1_InfoUI <- function(id){
 }
 
 
-I1_Info <- function(input,output,server){
+I1_Info <- function(input,output,server,l){
   
-  callModule(I0_Card,"card")
-  callModule(I0_Contact,"contact")
+  callModule(I0_Card,"card",l)
+  callModule(I0_Contact,"contact",l)
   
   
 }

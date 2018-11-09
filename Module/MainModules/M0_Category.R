@@ -4,7 +4,7 @@ M0_CatUI <- function(id){
   ns <- NS(id)
   
   tabPanel(title = div(class="tabPanel--font-size center",
-                       "فیلتر"),
+                       uiOutput(ns("tab_title"))),
            icon = icon("filter",class="tabPanel-icon"),
            
            
@@ -82,9 +82,19 @@ box(width="100%",status="primary",
 #   Group_name_iso[i] = paste("گروه",i,sep="")
 # }
 
-M0_Cat <- function(input,output,session,Vals,font_plot){
+M0_Cat <- function(input,output,session,Vals,font_plot,l){
 
   ns <- session$ns  
+  
+  output$tab_title <- renderUI({
+    if(l()=="pr"){
+      A = "فیلتر"
+    }else{
+      A = "Filter"
+    }
+    return(A)
+  })
+  
   
   ch_opt <- list(content = c("<div> </div>"))
   

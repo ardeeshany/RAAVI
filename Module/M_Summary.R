@@ -39,21 +39,9 @@ fluidRow(
            #            div(style="color:red;","راوی"),
            #            div(style="display:inline-block;","آن قصه ها را برایتان می خواند"),
            #            sep="<br/>")))
-           br(),br(),br(), 
-           div(style="font-size: 2em; text-align:center;margin-top:1%;", #padding-bottom: 5%;",
-           "داده های شما قصه های زیادی برای گفتن دارند",
-           div(style="margin-top:1%;"),
-           "آن قصه ها را برایتان می خواند",
-           div(class="name","راوی")
-          #                 )
-          # ))
-         
-         # box(
-         #   title = "Title 5", width = NULL, background = "light-blue",
-         #   "A box with a solid light-blue background"
-         # )
-  )
-  
+ 
+ br(),br(),br(), 
+ uiOutput(ns("text"))  
   
   #M_InfoUI(ns("info"))
   
@@ -81,7 +69,33 @@ fluidRow(
 
 
 
-M_Summary <- function(input,output,session){
+M_Summary <- function(input,output,session,l){
+  
+  
+   output$text <- renderUI({
+     
+     if(l()=="pr"){
+       A <- div(style="font-size: 2em; text-align:center;margin-top:1%;", #padding-bottom: 5%;",
+           "داده های شما قصه های زیادی برای گفتن دارند",
+           div(style="margin-top:1%;"),
+           "آن قصه ها را برایتان می خواند",
+           div(class="name","راوی"))
+     }else{
+       
+       A <- div(style="font-size: 2em; text-align:center;margin-top:1%;font-family:Chalkduster", #padding-bottom: 5%;",
+        "Your Data has some story to tell!",
+        br(),
+        div(class="name_en", "Raavi"),
+        div(class="inline","helps you to hear them."))
+     }
+     
+     return(A)
+     
+   })
+   
+  
+  
+  
   
   #callModule(M_Info,"info")
   

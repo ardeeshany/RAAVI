@@ -25,18 +25,37 @@ SidebarUI <- function(id){
       # tags$head(tags$link(href = "https://fonts.googleapis.com/css?family=Lalezar", 
       #                     rel = "stylesheet")),
       
+      
+      conditionalPanel(condition="input.language=='pr'",ns=ns,
       div(style=" text-align:center; margin-left:10%;",
           div(style="margin-top:25%;",
-          menuItem(div(class="sidebar--font","معرفی"), tabName= "Summary",icon = icon("home",class="sidebar-icon"))),
+              menuItem(div(class="sidebar--font","معرفی"), tabName= "Summary",icon = icon("home",class="sidebar-icon"))),
           div(style="margin-top:72%;",
-          menuItem(div(class="sidebar--font", "تحلیل"),  tabName= "Class",icon  =icon("database",class="sidebar-icon"))),
+              menuItem(div(class="sidebar--font", "تحلیل"),  tabName= "Class",icon  =icon("database",class="sidebar-icon"))),
           div(style="margin-top:72%;",
               menuItem(div(class="sidebar--font", style="font-size:90%;", "تیم راوی"),  tabName= "Info",icon=icon("users",class="sidebar-icon")))
-          ),
+      )),
       
-      div(style="text-align:center; margin-top:242%;",
+      conditionalPanel(condition="input.language=='en'",ns=ns,
+                       div(style=" text-align:center; margin-left:10%;",
+                           div(style="margin-top:25%;",
+                               menuItem(div(class="sidebar--font","Home"), tabName= "Summary",icon = icon("home",class="sidebar-icon"))),
+                           div(style="margin-top:72%;",
+                               menuItem(div(class="sidebar--font", "Analysis"),  tabName= "Class",icon  =icon("database",class="sidebar-icon"))),
+                           div(style="margin-top:72%;",
+                               menuItem(div(class="sidebar--font", style="font-size:90%;", "About us"),  tabName= "Info",icon=icon("users",class="sidebar-icon")))
+                       )),
+      
+      
+      
+     div(style="text-align:center; margin-top:152%;",
+     radioGroupButtons(inputId = ns("language"),size = "xs",individual = TRUE,
+                                choices = c("en"="en","fa"="pr"),
+                                selected = "pr",label = div(style="color:white; text-align:center; font-size:80%","Language"))),
+     
+     
       tags$img(src='logogrey.svg')
-      )
+      
       
       # div(style="font-family:'dastnevis'; font-size:1.5em; margin-top:5%; margin-left:5%;",
       #     menuItem("معرفی", tabName= "Summary",icon = icon("list-ul")),
@@ -68,6 +87,10 @@ SidebarUI <- function(id){
 
 Sidebar <- function(input,output,session){
   
+  
+  
+  
+  
   # output$menuitem <- renderMenu({
   #   sidebarMenu(
   #     menuItem("Menu item", icon = icon("calendar"))
@@ -84,4 +107,6 @@ Sidebar <- function(input,output,session){
   # })
   
   #return(list())
+  return(reactive(input$language))
+  
 }

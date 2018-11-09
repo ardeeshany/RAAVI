@@ -9,7 +9,7 @@ M0_HistUI <- function(id){
   
   
   tabPanel(title = div(class="tabPanel--font-size center",
-                       "گروه بندی"),
+                       uiOutput(ns("tab_title"))),
            icon = icon("group",class="tabPanel-icon"),
            
     # tags$style(HTML(".js-irs-0 .irs-single, .js-irs-0 .irs-bar-edge, .js-irs-0 .irs-bar {background: #485167}")), 
@@ -72,9 +72,19 @@ box(status="primary",width="100%",collapsible = TRUE,collapsed = FALSE,
 
 
 
-M0_Hist <- function(input,output,session,Vals,font_plot){
+M0_Hist <- function(input,output,session,Vals,font_plot,l){
   
   ns <- session$ns  
+  
+  output$tab_title <- renderUI({
+    if(l()=="pr"){
+      A = "گروه بندی"
+    }else{
+      A = "Categorization"
+    }
+    return(A)
+  })
+  
   
   ch_opt <- list(content = c("<div> </div>"))
   
