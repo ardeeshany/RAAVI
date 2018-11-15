@@ -526,7 +526,14 @@ React_out <- reactive({
   }
   
   if(var$a==2){
-    return(ggplotly(React_DT2()))
+    return(ggplotly(React_DT2()) %>% config(displaylogo = FALSE,collaborate = FALSE,
+                                        modeBarButtonsToRemove = list(
+                                          'zoom2d','pan2d','select2d','lasso2d','zoomIn2d','zoomOut2d',
+                                          'sendDataToCloud',
+                                          'autoScale2d',
+                                          'hoverClosestCartesian',
+                                          'hoverCompareCartesian'
+                                        )))
 }
  
   # if(var$a==3){
@@ -588,7 +595,14 @@ output$download <- downloadHandler(
     file.copy("report/filter.Rmd",tempReport,overwrite = TRUE)
     tempImage <- file.path(tempdir(),"logogrey.svg")
     file.copy("report/logogrey.svg",tempImage,overwrite = TRUE)
-    params <- list(n = ggplotly(React_DT2()))
+    params <- list(n = ggplotly(React_DT2()) %>% config(displaylogo = FALSE,collaborate = FALSE,
+                                                        modeBarButtonsToRemove = list(
+                                                          'zoom2d','pan2d','select2d','lasso2d','zoomIn2d','zoomOut2d',
+                                                          'sendDataToCloud',
+                                                          'autoScale2d',
+                                                          'hoverClosestCartesian',
+                                                          'hoverCompareCartesian'
+                                                        )))
     rmarkdown::render(tempReport,output_file = file,
                       params = params,
                       envir = new.env(parent = globalenv()))

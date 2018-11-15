@@ -76,6 +76,7 @@ M0_Hist <- function(input,output,session,Vals,font_plot){
   
   ns <- session$ns  
   
+  
   ch_opt <- list(content = c("<div> </div>"))
   
   Data <- reactive({
@@ -258,7 +259,14 @@ M0_Hist <- function(input,output,session,Vals,font_plot){
     
     
     
-    gg_bar <- ggplotly(gg_bar) %>% layout(annotations = text_bar1)
+    gg_bar <- ggplotly(gg_bar) %>% layout(annotations = text_bar1) %>% config(displaylogo = FALSE,collaborate = FALSE,
+                                                                              modeBarButtonsToRemove = list(
+                                                                                'zoom2d','pan2d','select2d','lasso2d','zoomIn2d','zoomOut2d',
+                                                                                'sendDataToCloud',
+                                                                                'autoScale2d',
+                                                                                'hoverClosestCartesian',
+                                                                                'hoverCompareCartesian'
+                                                                              ))
     
     
     
@@ -278,7 +286,14 @@ M0_Hist <- function(input,output,session,Vals,font_plot){
       scale_fill_manual(values=rev(cc1),guide = guide_legend(reverse = TRUE,title = "",size=20))
     
     
-    gg <- ggplotly(p)
+    gg <- ggplotly(p) %>% config(displaylogo = FALSE,collaborate = FALSE,
+                                 modeBarButtonsToRemove = list(
+                                   'zoom2d','pan2d','select2d','lasso2d','zoomIn2d','zoomOut2d',
+                                   'sendDataToCloud',
+                                   'autoScale2d',
+                                   'hoverClosestCartesian',
+                                   'hoverCompareCartesian'
+                                 ))
     
     
     
@@ -575,7 +590,14 @@ React_DT3 <-eventReactive(input$DT_AC3, {
   
 
   
-  gg_bar <- ggplotly(gg_bar) %>% layout(annotations = text_bar)
+  gg_bar <- ggplotly(gg_bar) %>% layout(annotations = text_bar) %>% config(displaylogo = FALSE,collaborate = FALSE,
+                                                                           modeBarButtonsToRemove = list(
+                                                                             'zoom2d','pan2d','select2d','lasso2d','zoomIn2d','zoomOut2d',
+                                                                             'sendDataToCloud',
+                                                                             'autoScale2d',
+                                                                             'hoverClosestCartesian',
+                                                                             'hoverCompareCartesian'
+                                                                           ))
   
   ########
   
@@ -757,7 +779,14 @@ React_DT3 <-eventReactive(input$DT_AC3, {
         stat_bin(aes(label=lapply(round(..count../(0.01*sum(..count..)),1),FUN= lab_hist)),geom="text",
                  bins = bin ,color="black", size=4.5)
       
-      p <- ggplotly(p) %>% layout(annotations = text_hist_date)
+      p <- ggplotly(p) %>% layout(annotations = text_hist_date) %>% config(displaylogo = FALSE,collaborate = FALSE,
+                                                                           modeBarButtonsToRemove = list(
+                                                                             'zoom2d','pan2d','select2d','lasso2d','zoomIn2d','zoomOut2d',
+                                                                             'sendDataToCloud',
+                                                                             'autoScale2d',
+                                                                             'hoverClosestCartesian',
+                                                                             'hoverCompareCartesian'
+                                                                           ))
       
       A <- subplot(Reac_Hg()$gg_bar, p,
                    widths=c(input$slider_width/100,1-input$slider_width/100),
@@ -768,7 +797,14 @@ React_DT3 <-eventReactive(input$DT_AC3, {
     }else{
       p <- Reac_Hg()$p + stat_bin(aes(label=lapply(round(..count../(0.01*sum(..count..)),1),FUN=lab_hist)),geom="text",
                         bins = bin,color="black", size=4.5)
-      p <- ggplotly(p) %>% layout(annotations = text_hist_date)
+      p <- ggplotly(p) %>% layout(annotations = text_hist_date) %>% config(displaylogo = FALSE,collaborate = FALSE,
+                                                                           modeBarButtonsToRemove = list(
+                                                                             'zoom2d','pan2d','select2d','lasso2d','zoomIn2d','zoomOut2d',
+                                                                             'sendDataToCloud',
+                                                                             'autoScale2d',
+                                                                             'hoverClosestCartesian',
+                                                                             'hoverCompareCartesian'
+                                                                           ))
       
       A <- subplot(Reac_Hg()$gg_bar, p,
                    widths=c(input$slider_width/100,1-input$slider_width/100),
@@ -788,7 +824,14 @@ React_DT3 <-eventReactive(input$DT_AC3, {
         stat_bin(aes(label=lapply(round(..count../(0.01*sum(..count..)),1),FUN= lab_hist)),geom="text",
                  bins = React_DT3()$c,color="black", size=4.5)
       
-      p <- ggplotly(p) %>% layout(annotations = text_hist_mean) 
+      p <- ggplotly(p) %>% layout(annotations = text_hist_mean) %>% config(displaylogo = FALSE,collaborate = FALSE,
+                                                                           modeBarButtonsToRemove = list(
+                                                                             'zoom2d','pan2d','select2d','lasso2d','zoomIn2d','zoomOut2d',
+                                                                             'sendDataToCloud',
+                                                                             'autoScale2d',
+                                                                             'hoverClosestCartesian',
+                                                                             'hoverCompareCartesian'
+                                                                           ))
       
       A <- subplot(React_DT3()$gg_bar, p,
                      widths=c(input$slider_width/100,1-input$slider_width/100),
@@ -800,7 +843,14 @@ React_DT3 <-eventReactive(input$DT_AC3, {
       p <- React_DT3()$gg_hist0 + stat_bin(aes(label=lapply(round(..count../(0.01*sum(..count..)),1),FUN=lab_hist)),geom="text",
                                              bins = React_DT3()$c,color="black", size=4.5)
       
-      p <- ggplotly(p) %>% layout(annotations = text_hist_mean)
+      p <- ggplotly(p) %>% layout(annotations = text_hist_mean) %>% config(displaylogo = FALSE,collaborate = FALSE,
+                                                                           modeBarButtonsToRemove = list(
+                                                                             'zoom2d','pan2d','select2d','lasso2d','zoomIn2d','zoomOut2d',
+                                                                             'sendDataToCloud',
+                                                                             'autoScale2d',
+                                                                             'hoverClosestCartesian',
+                                                                             'hoverCompareCartesian'
+                                                                           ))
       
       A <- subplot(React_DT3()$gg_bar, p,
                    widths=c(input$slider_width/100,1-input$slider_width/100),

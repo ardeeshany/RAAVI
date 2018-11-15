@@ -140,7 +140,14 @@ M0_Box <- function(input,output,session,Vals,font_plot){
               text=element_text(family=font_plot))
         
 
-     gg <- ggplotly(p)
+     gg <- ggplotly(p) %>% config(displaylogo = FALSE,collaborate = FALSE,
+                                  modeBarButtonsToRemove = list(
+                                    'zoom2d','pan2d','select2d','lasso2d','zoomIn2d','zoomOut2d',
+                                    'sendDataToCloud',
+                                    'autoScale2d',
+                                    'hoverClosestCartesian',
+                                    'hoverCompareCartesian'
+                                  ))
      gg
   })
   

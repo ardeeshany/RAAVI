@@ -212,7 +212,14 @@ M0_Prog <- function(input,output,session,Vals,font_plot){
             scale_fill_manual(values=col)+
             coord_flip()
     
-    gg1 <- ggplotly(s1)
+    gg1 <- ggplotly(s1) %>% config(displaylogo = FALSE,collaborate = FALSE,
+                                   modeBarButtonsToRemove = list(
+                                     'zoom2d','pan2d','select2d','lasso2d','zoomIn2d','zoomOut2d',
+                                     'sendDataToCloud',
+                                     'autoScale2d',
+                                     'hoverClosestCartesian',
+                                     'hoverCompareCartesian'
+                                   ))
     gg1
     
     })
@@ -542,7 +549,14 @@ M0_Prog <- function(input,output,session,Vals,font_plot){
       #scale_fill_manual(values= slope$clr,guide = guide_legend(title = "",size=20))+
       coord_flip()
     
-    gg_slope_gr <- ggplotly(gg_slope_gr)
+    gg_slope_gr <- ggplotly(gg_slope_gr) %>% config(displaylogo = FALSE,collaborate = FALSE,
+                                                    modeBarButtonsToRemove = list(
+                                                      'zoom2d','pan2d','select2d','lasso2d','zoomIn2d','zoomOut2d',
+                                                      'sendDataToCloud',
+                                                      'autoScale2d',
+                                                      'hoverClosestCartesian',
+                                                      'hoverCompareCartesian'
+                                                    ))
     
     
     
