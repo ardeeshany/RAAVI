@@ -87,9 +87,7 @@ dropdown(
                       width = "100%",color = "#578CA9")),
   materialSwitch(inputId = ns("add_date"),label = "اضافه شدن تاریخ", 
                  status = "danger", right = TRUE,value = FALSE),
-
   numericInput(ns("number_col"),min = 1,max = 20,value = 3,label = "تعداد ستون ها",width = "28%"),
-
   circle = TRUE, status = "default", icon = icon("gear"),style = "unite",width = "32%"),
   uiOutput(ns("output"))
 
