@@ -2,7 +2,6 @@
 #  sudo su - -c "R -e \"install.packages('Cairo', repos='http://cran.rstudio.com/')\""
 #  sudo su - -c "R -e \"devtools::install_github('daattali/shinyjs')\""
 
-
 # lib <- c("shiny","stats","openxlsx","ConvCalendar","shinydashboard","graphics",
 #          "reshape2","plotly","ggplot2","rhandsontable","tidyr","stringr","extrafont",
 #          "dashboardthemes","shinydashboardPlus","mailR")
@@ -10,6 +9,9 @@
 # # "networkD3","visNetwork","profvis"
 # 
 # lapply(lib,library,character.only=TRUE)
+
+
+
 
 
 # ## app.R ##f

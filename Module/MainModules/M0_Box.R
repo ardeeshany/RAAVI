@@ -35,7 +35,7 @@ column(width = 10,
 br(),  
 box(status="primary",width="100%",collapsible = TRUE,collapsed = FALSE,
 
-           withSpinner(plotlyOutput(ns("Bx")),type=5,color = "#006E6D",size = 0.6)
+    uiOutput(ns("output"))       
   ))
 
 ))
@@ -144,5 +144,55 @@ M0_Box <- function(input,output,session,Vals,font_plot){
      gg
   })
   
+  
+  out_ind <- reactiveValues(a=0)
+  
+  observeEvent(input$Bx_Ac, {
+    out_ind$a = 1
+  })
+  
+  
+  output$output <- renderUI({
+    
+    if(out_ind$a==1){
+    
+    A <- div(style="text-align:right",downloadBttn(ns("download"),
+                                                   label = "دانلود",size = "sm"))
+    
+    B <- withSpinner(plotlyOutput(ns("Bx")),type=5,color = "#006E6D",size = 0.6)
+    
+    return(list(A,br(),B))
+    }
+    
+  })
+  
+  
   output$Bx <- renderPlotly(Reac_CP2M_Bx())
+  
+  
+  output$download <- downloadHandler(
+    filename = paste0("روند کلاس",".html"),
+    content=function(file){ 
+      
+      tempReport <- file.path(tempdir(),"box.Rmd")
+      file.copy("report/box.Rmd",tempReport,overwrite = TRUE)
+      tempImage <- file.path(tempdir(),"logogrey.svg")
+      file.copy("report/logogrey.svg",tempImage,overwrite = TRUE)
+      params <- list(n = Reac_CP2M_Bx())
+      rmarkdown::render(tempReport,output_file = file,
+                        params = params,
+                        envir = new.env(parent = globalenv()))
+      #pdf(file,width=7,height=5) 
+      #ggsave(filename = file,plot = React_DT2(),device = cairo_pdf)
+      #export(p = ggplotly(React_DT2()),file = file)
+      #htmlwidgets::saveWidget(widget = ggplotly(React_DT2()),file = file)
+      #webshot::webshot(sprintf("file://%s", file),file = file,selector="#htmlwidget_container")
+      #plotly_IMAGE(x = ggplotly(React_DT2()),out_file = file,format = "jpeg")
+      #orca(ggplotly(React_DT2()),file)
+      #dev.off() 
+    }
+  )
+  
+  
+  
 }

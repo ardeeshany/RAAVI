@@ -496,6 +496,7 @@ M0_Load <- function(input,output,session,outputDir){
 # class(C)
 # sapply(C,class)
 ## Output  
+
   output$hot <- renderRHandsontable({
       if (!is.null(values[["now"]])){
       #values[["now"]] <- data.frame(lapply(values[["now"]], as.character), stringsAsFactors=FALSE)
@@ -503,10 +504,10 @@ M0_Load <- function(input,output,session,outputDir){
       r2 <- data.frame(cbind(values[["names"]],values[["now"]]),stringsAsFactors = FALSE)
       names(r2) <- names(r1)
       Tot <- rbind(r1,r2)
-       rhandsontable(Tot, useTypes = TRUE, stretchH = "all",
+       rhandsontable(Tot, useTypes = TRUE, stretchH = "all",columnSorting=TRUE,
        colHeaders = 1:dim(Tot)[2]  ,rowHeaders = NULL,search = TRUE) %>%
        #colHeaders = NULL  ,rowHeaders = NULL) %>%
-       hot_cols(colWidths = 120, fixedColumnsLeft = 1,manualColumnMove = FALSE,manualColumnResize = FALSE) %>%
+       hot_cols(colWidths = 120, fixedColumnsLeft = 1,manualColumnMove = TRUE,manualColumnResize = FALSE) %>%
        hot_cols(renderer = "function(instance, td, row, col, prop, value, cellProperties) {
           Handsontable.renderers.TextRenderer.apply(this, arguments);
             if (col==0) {td.style.background = '#DCDCDC'; td.style.color = 'black';}
@@ -514,12 +515,10 @@ M0_Load <- function(input,output,session,outputDir){
        #manualColumnMove and manualColumnResize works when colHeaders is not NULL!
        hot_rows(rowHeights = 40, fixedRowsTop = 1) %>%
        hot_col(col = 1:dim(Tot)[2] , valign = "htMiddle") %>%
-        hot_validate_numeric( cols = 2:dim(Tot)[2] , min = 0, max = 20, 
+       hot_validate_numeric( cols = 2:dim(Tot)[2] , min = 0, max = 20, 
                               allowInvalid = TRUE) %>%
       # valign works when colHeaders is not NULL!
        hot_cell(1,1,readOnly=TRUE)
-      
-      
       
       }
   })

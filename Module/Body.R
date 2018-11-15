@@ -38,6 +38,8 @@ theme,
 
 tags$head(tags$link(href = "custom.css", rel = "stylesheet")), 
 
+tags$head(tags$style(HTML("@font-face { font-family: dastnevis; src: url(dastnevis.ttf);}") )), 
+
 # tags$head(
 #   tags$link(rel="stylesheet", type = "text/css",
 #             href = "IranNastaliq")

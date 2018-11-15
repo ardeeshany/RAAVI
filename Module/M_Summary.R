@@ -39,19 +39,16 @@ fluidRow(
            #            div(style="color:red;","راوی"),
            #            div(style="display:inline-block;","آن قصه ها را برایتان می خواند"),
            #            sep="<br/>")))
-           br(),br(),br(), 
-           div(style="font-size: 2em; text-align:center;margin-top:1%;", #padding-bottom: 5%;",
-           "داده های شما قصه های زیادی برای گفتن دارند",
-           div(style="margin-top:1%;"),
-           "آن قصه ها را برایتان می خواند",
-           div(class="name","راوی")
-          #                 )
-          # ))
-         
-         # box(
-         #   title = "Title 5", width = NULL, background = "light-blue",
-         #   "A box with a solid light-blue background"
-         # )
+           #br(),br(),br(), 
+  #          div(style="font-size: 2em; text-align:center;margin-top:1%;", #padding-bottom: 5%;",
+  #          "داده های شما قصه های زیادی برای گفتن دارند",
+  #          div(style="margin-top:1%;"),
+  #          "آن قصه ها را برایتان می خواند",
+  #          div(class="name","راوی")
+  # )
+  
+  div(style="text-align:center;",
+      tags$img(src='logogrey.svg',width = "58%", height = "58%")
   )
   
   
