@@ -87,7 +87,9 @@ dropdown(
                       width = "100%",color = "#578CA9")),
   materialSwitch(inputId = ns("add_date"),label = "اضافه شدن تاریخ", 
                  status = "danger", right = TRUE,value = FALSE),
-  numericInput(ns("number_col"),min = 1,max = 20,value = 3,label = "تعداد ستون ها",width = "25%"),
+
+  numericInput(ns("number_col"),min = 1,max = 20,value = 3,label = "تعداد ستون ها",width = "28%"),
+
   circle = TRUE, status = "default", icon = icon("gear"),style = "unite",width = "32%"),
   uiOutput(ns("output"))
 
@@ -211,7 +213,7 @@ M0_Scatter <- function(input,output,session,Vals,font_plot){
               plot.title = element_text(size=14,face="bold"),
               legend.title = element_text(size=12,face="bold"),
               text=element_text(family=font_plot))+
-        labs(title="روند دانش آموزان در طول زمان",
+        labs(title="",
              color="دانش آموزان") +
         #scale_x_discrete(name ="", limits=colnames(Data())) +
         #annotate('text',x = 9,y = 18,label= text())+
@@ -229,7 +231,7 @@ M0_Scatter <- function(input,output,session,Vals,font_plot){
               plot.title = element_text(size=14,face="bold"),
               legend.title = element_text(size=12,face="bold"),
               text=element_text(family=font_plot))+
-        labs(title="روند دانش آموزان در طول زمان",
+        labs(title="",
              color="دانش آموزان") +
         #scale_x_discrete(name ="", limits=colnames(Data())) +
         #annotate('text',x = 9,y = 18,label= text())+
@@ -250,7 +252,9 @@ M0_Scatter <- function(input,output,session,Vals,font_plot){
     color = "black")
   
   text_scatter <- list(
+
     text = "روند دانش آموزان در طول زمان",
+
     font=f,
     xref = "paper",
     yref = "paper",
@@ -275,14 +279,18 @@ M0_Scatter <- function(input,output,session,Vals,font_plot){
         scale_x_discrete(name ="", limits=colnames(Data()))
       
       A <- ggplotly(p)   %>% 
+
         layout(height = height, width = width,autosize=TRUE) #,annotations = text_scatter)
+
       
     }else{
       p <- Reac_CP2_Sc()$p + facet_wrap( ~ Student,as.table = FALSE,ncol=colnum,scales = "free_x")+ #,ncol=colnum,)+
         scale_x_discrete(name ="", limits=1:ncol(Data()))
     
       A <- ggplotly(p)  %>% 
+
         layout(height = height, width = width,autosize=TRUE) #,annotations = text_scatter)
+
       
     }}else{
       p <- Reac_CP2_Sc()$p+
@@ -291,7 +299,9 @@ M0_Scatter <- function(input,output,session,Vals,font_plot){
       #A <- ggplotly(p) %>% layout(annotations = text_scatter)
       
       A <- ggplotly(p)  %>% 
+
         layout(height = height, width = width,autosize=TRUE) #,annotations = text_scatter)
+
   
     }
     # A$x$layout$width <- NULL
