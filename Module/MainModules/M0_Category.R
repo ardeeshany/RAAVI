@@ -465,13 +465,13 @@ React_DT2 <-eventReactive(input$DT_AC2,{
           text=element_text(family=font_plot),
           legend.position="none")
   
+  return(p)
   
-  
-  gg <- ggplotly(p
-                 #,tooltip=c("y","x")           for showing a subset on each point in plot
-  )
-  
-  gg
+  # gg <- ggplotly(p
+  #                #,tooltip=c("y","x")           for showing a subset on each point in plot
+  # )
+  # 
+  # gg
   
 })
 
@@ -526,7 +526,7 @@ React_out <- reactive({
   }
   
   if(var$a==2){
-    return(React_DT2())
+    return(ggplotly(React_DT2()))
 }
  
   # if(var$a==3){
@@ -551,7 +551,8 @@ output$full_out <- renderUI({
   
 if(table_ind$a==1){
   
-  A <- dropdown(
+  A <- 
+    dropdown(
     
     div(class="right",
         colourpicker::colourInput(ns("color_bg"),label = div(style="font-size:80%;","انتخاب رنگ پس زمینه"),
@@ -565,14 +566,42 @@ if(table_ind$a==1){
     circle = TRUE, status = "default", icon = icon("gear"),style = "unite",width = "18%"
   )
   
-  B <- withSpinner(plotlyOutput(ns("DT")),type=5,color = "#006E6D",size = 0.6)  
+  B <- div(style="text-align:right",downloadBttn(ns("download"),
+                label = "دانلود",size = "sm"))
   
-  out <- list(A,B)
+  C <- withSpinner(plotlyOutput(ns("DT")),type=5,color = "#006E6D",size = 0.6)  
+  
+  
+  
+  out <- list(A,B,br(),C)
   return(out)
 }
   
 })
 
+
+output$download <- downloadHandler(
+  filename =  paste0("فیلتر",".html"),
+  content=function(file){ 
+    
+    tempReport <- file.path(tempdir(),"filter.Rmd")
+    file.copy("report/filter.Rmd",tempReport,overwrite = TRUE)
+    tempImage <- file.path(tempdir(),"logogrey.svg")
+    file.copy("report/logogrey.svg",tempImage,overwrite = TRUE)
+    params <- list(n = ggplotly(React_DT2()))
+    rmarkdown::render(tempReport,output_file = file,
+                      params = params,
+                      envir = new.env(parent = globalenv()))
+    #pdf(file,width=7,height=5) 
+    #ggsave(filename = file,plot = React_DT2(),device = cairo_pdf)
+    #export(p = ggplotly(React_DT2()),file = file)
+    #htmlwidgets::saveWidget(widget = ggplotly(React_DT2()),file = file)
+    #webshot::webshot(sprintf("file://%s", file),file = file,selector="#htmlwidget_container")
+    #plotly_IMAGE(x = ggplotly(React_DT2()),out_file = file,format = "jpeg")
+    #orca(ggplotly(React_DT2()),file)
+    #dev.off() 
+  }
+)
 
 
 }

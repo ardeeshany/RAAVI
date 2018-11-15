@@ -60,7 +60,6 @@ box(width="100%",status="primary",
                 
                 ),
                 
-    
             wellPanel(      
                         actionBttn(inputId = ns("St_Ac"),style = "jelly",color = "warning",
                                      label = div(class="action-button--widget","در طول زمان"))
@@ -74,11 +73,26 @@ box(width="100%",status="primary",
 
 column(width = 10,
 br(),  
-box(status="primary",width="100%",collapsible = TRUE,collapsed = FALSE,
+#box(status="primary",width="100%",collapsible = TRUE,collapsed = FALSE,
 
-   withSpinner(plotlyOutput(ns("St")),type=5,color = "#006E6D",size = 0.6)
+dropdown(
+  div(style="text-align:right; font-size :110%; font-weight:bold;", ":تنظیمات نمودار"),         
+  div(style="text-align:left",
+      noUiSliderInput(ns("height"),label = "ارتفاع نمودار",     
+                      inline = T, min = 50,max = 2000,value = 450,step = 50,tooltips = F,
+                      width = "100%",color = "#578CA9")),
+  div(style="text-align:left",
+      noUiSliderInput(ns("width"),label = "عرض نمودار",     
+                      inline = T, min = 50,max = 2000,value = 950,step = 50,tooltips = F,
+                      width = "100%",color = "#578CA9")),
+  materialSwitch(inputId = ns("add_date"),label = "اضافه شدن تاریخ", 
+                 status = "danger", right = TRUE,value = FALSE),
+  numericInput(ns("number_col"),min = 1,max = 20,value = 3,label = "تعداد ستون ها",width = "25%"),
+  circle = TRUE, status = "default", icon = icon("gear"),style = "unite",width = "32%"),
+  uiOutput(ns("output"))
 
-  ))
+#  )
+)
 
 ))
 
@@ -98,10 +112,9 @@ box(status="primary",width="100%",collapsible = TRUE,collapsed = FALSE,
 
 M0_Scatter <- function(input,output,session,Vals,font_plot){
 
+  font_plot <- "A Dast Nevis"
+  
   ns <- session$ns
-
-
-
   
     Data <- reactive({
     M <- Vals[["now"]]
@@ -113,10 +126,6 @@ M0_Scatter <- function(input,output,session,Vals,font_plot){
     
   output$St_ChG <- renderUI({
 
-    # pickerInput(inputId = ns("St_ChG"),
-    #             label = '',
-    #             choices = c(rownames(Data())),
-    #             options = list(`style` = "btn-info"))
     dropdown(label = div(style="font-size:72%; color:black; font-weight:bold;","لیست دانش آموزان"),
     
     div(style="text-align:left;",  
@@ -136,9 +145,6 @@ M0_Scatter <- function(input,output,session,Vals,font_plot){
     )
     })
 
-
-
-
   observeEvent(input$St_all,{
     updateCheckboxGroupInput(
       session, 'St_ChG', choices = rownames(Data()),
@@ -147,9 +153,8 @@ M0_Scatter <- function(input,output,session,Vals,font_plot){
   })
 
 
-
   Reac_CP2_Sc <- eventReactive(input$St_Ac, {
-
+    
     validate(
       need(!is.null(Data()),"هنوز داده ای وارد نشده است"),errorClass = "Hist_l"
     )
@@ -172,10 +177,12 @@ M0_Scatter <- function(input,output,session,Vals,font_plot){
       
       colnames(d) <- 1:dim(d)[2]
       
-    }else{
+    }
+    else{
       d <- as.data.frame(Data()[which(rownames(Data()) %in% input$St_ChG),,drop=FALSE])
       colnames(d) <- 1:dim(d)[2]
     }
+    
     melt_Data_St <- melt(as.matrix(d))
     colnames(melt_Data_St) <- c("Student","Day","value")
     
@@ -195,7 +202,7 @@ M0_Scatter <- function(input,output,session,Vals,font_plot){
       
       p <- ggplot(melt_Data_St, aes(Day, value)) + geom_point(aes(color = Student)) +
         stat_smooth(aes(color = Student),method = input$St_rb) +
-        facet_wrap( ~ Student,as.table = FALSE, scales = "free_x")+
+        #facet_wrap( ~ Student,as.table = FALSE,ncol=3)+
         # theme(axis.line = element_line(colour = "darkblue", size = 1, linetype = "solid"),
         #       axis.text.x  = element_text(face="bold",angle=45, vjust=0.5, size=5)) +
         theme(axis.text.x = element_text(size=x_size,colour="black",angle=x_angle, hjust=1,vjust=.5),
@@ -206,7 +213,7 @@ M0_Scatter <- function(input,output,session,Vals,font_plot){
               text=element_text(family=font_plot))+
         labs(title="روند دانش آموزان در طول زمان",
              color="دانش آموزان") +
-        scale_x_discrete(name ="", limits=colnames(Data())) +
+        #scale_x_discrete(name ="", limits=colnames(Data())) +
         #annotate('text',x = 9,y = 18,label= text())+
         xlab("زمان") + ylab("نمره")
     }
@@ -224,18 +231,164 @@ M0_Scatter <- function(input,output,session,Vals,font_plot){
               text=element_text(family=font_plot))+
         labs(title="روند دانش آموزان در طول زمان",
              color="دانش آموزان") +
-        scale_x_discrete(name ="", limits=colnames(Data())) +
+        #scale_x_discrete(name ="", limits=colnames(Data())) +
         #annotate('text',x = 9,y = 18,label= text())+
         #geom_text(aes(color=Student),position = position_dodge(width = 1),label = text(), parse = TRUE)+
         xlab("زمان") + ylab("نمره")
     }
 
-
-    gg <- ggplotly(p)
-    gg
+    return(list(p=p,melt=melt_Data_St))
+    #gg <- ggplotly(p)
+    #gg
 
   })
+  
+  f <- list(
+    #family = "Courier New, monospace",
+    size = 16,
+    weight = 'bold',
+    color = "black")
+  
+  text_scatter <- list(
+    text = "روند دانش آموزان در طول زمان",
+    font=f,
+    xref = "paper",
+    yref = "paper",
+    yanchor = "bottom",
+    xanchor = "bottom",
+    align = "center",
+    x = 0.5,
+    y = 1,
+    showarrow = FALSE
+  )
+  
+  Reac_out <- reactive({
+    
+  
+    colnum <- input$number_col
+    height <- input$height
+    width <- input$width
+    
+    if(isolate(!input$St_chbI)){
+      if(input$add_date){
+      p <- Reac_CP2_Sc()$p + facet_wrap( ~ Student,as.table = FALSE,ncol=colnum,scales = "free_x")+
+        scale_x_discrete(name ="", limits=colnames(Data()))
+      
+      A <- ggplotly(p)   %>% 
+        layout(height = height, width = width,autosize=TRUE) #,annotations = text_scatter)
+      
+    }else{
+      p <- Reac_CP2_Sc()$p + facet_wrap( ~ Student,as.table = FALSE,ncol=colnum,scales = "free_x")+ #,ncol=colnum,)+
+        scale_x_discrete(name ="", limits=1:ncol(Data()))
+    
+      A <- ggplotly(p)  %>% 
+        layout(height = height, width = width,autosize=TRUE) #,annotations = text_scatter)
+      
+    }}else{
+      p <- Reac_CP2_Sc()$p+
+        scale_x_discrete(name ="", limits=colnames(Data()))
+      
+      #A <- ggplotly(p) %>% layout(annotations = text_scatter)
+      
+      A <- ggplotly(p)  %>% 
+        layout(height = height, width = width,autosize=TRUE) #,annotations = text_scatter)
+  
+    }
+    # A$x$layout$width <- NULL
+    # A$x$layout$height <- NULL
+    # A$width <- NULL
+    # A$height <- NULL
+    
+    return(A)
+    
+  })
+  
+  
+  
+  out_ind <- reactiveValues(a=0)
+  
+  observeEvent(input$St_Ac, {
+    out_ind$a = 1
+  })
+  
+  # observeEvent(input$St_Ac,{
+  #   # pdf("plot.pdf")
+  #   # Reac_out()
+  #   # dev.off()
+  #   if(!input$St_chbI){
+  #   #dir <- file.path(getwd(),"/www")
+  #   #cairo_pdf("www/plot2.pdf",family = font_plot)
+  #   #Reac_out()
+  #   #dev.off()
+  #   #ggsave(plot =Reac_out(),filename = "www/plot2.pdf", device = cairo_pdf)
+  #   # cairo_pdf(filename = "www/plot.pdf")
+  #   # #pdf("www/plot.pdf")
+  #   # Reac_out()
+  #   # dev.off()
+  #     }
+  # })
+  
+  output$St <- renderPlotly(Reac_out())
+  
+  height_max <- reactive({
+    (ceiling(length(unique(Reac_CP2_Sc()$melt[,1]))/3)+1)*200
+  })
+  
+  output$output <- renderUI({
 
-  output$St <- renderPlotly(Reac_CP2_Sc())
+    if(out_ind$a==1){
+      # A <- dropdown(
+      #   div(style="text-align:right; font-size :110%; font-weight:bold;", ":تنظیمات نمودار"),         
+      #   div(style="text-align:left",
+      #       noUiSliderInput(ns("ratio"),label = "مقیاس نمودارها",     
+      #                       inline = T, min = 100,max = height_max(),value = 500,step = 100,
+      #                       width = "100%",color = "#578CA9")),
+      #   materialSwitch(inputId = ns("add_date"),label = "اضافه شدن تاریخ", 
+      #                  status = "danger", right = TRUE,value = FALSE),
+      #   circle = TRUE, status = "default", icon = icon("gear"),style = "unite",width = "32%")
+      
+      
+      B <- div(style="text-align:right",downloadBttn(ns("download"),
+                                                     label = "دانلود",size = "sm"))
+      
+       #if(isolate(input$St_chbI)){
+       C <- withSpinner(plotlyOutput(ns("St")),type=5,color = "#006E6D",size = 0.6)
+       #else{
+       #C <- tags$iframe(src="plot2.pdf")}   #style="height:600px; width:100%"   
+       #C <- withSpinner(plotOutput(ns("St"),height = input$ratio),type=5,color = "#006E6D",size = 0.6)}
+      #C <- plotlyOutput(ns("St"),height = input$ratio)
+      
+      M <- list(B,br(),C)
+      return(M)
+    }
+    })
+
+  
+  output$download <- downloadHandler(
+    filename = paste0("روند دانش آموزان",".html"),
+    content=function(file){ 
+      
+      tempReport <- file.path(tempdir(),"scatter.Rmd")
+      file.copy("report/scatter.Rmd",tempReport,overwrite = TRUE)
+      tempImage <- file.path(tempdir(),"logogrey.svg")
+      file.copy("report/logogrey.svg",tempImage,overwrite = TRUE)
+      params <- list(n = Reac_out())
+      rmarkdown::render(tempReport,output_file = file,
+                        params = params,
+                        envir = new.env(parent = globalenv()))
+      #pdf(file,width=7,height=5) 
+      #ggsave(filename = file,plot = React_DT2(),device = cairo_pdf)
+      #export(p = ggplotly(React_DT2()),file = file)
+      #htmlwidgets::saveWidget(widget = ggplotly(React_DT2()),file = file)
+      #webshot::webshot(sprintf("file://%s", file),file = file,selector="#htmlwidget_container")
+      #plotly_IMAGE(x = ggplotly(React_DT2()),out_file = file,format = "jpeg")
+      #orca(ggplotly(React_DT2()),file)
+      #dev.off() 
+    }
+  )
+  
+  
+  
+  
 
 }
