@@ -317,7 +317,8 @@ M0_Hist <- function(input,output,session,Vals,font_plot){
     DT <- datatable(Reac_Hg()$group_names,
                     options = list(
                       pageLength = 10, orderClasses = TRUE,
-                      searching = FALSE, paging = FALSE
+                      searching = FALSE, paging = FALSE,
+                      columnDefs = list(list(className = 'dt-right', targets = "_all"))
                       # initComplete = DT::JS(
                       #   "function(settings, json) {",
                       #   "$(this.api().table().header()).css({'background-color': 'gray', 'color': 'black'});",
@@ -345,7 +346,8 @@ M0_Hist <- function(input,output,session,Vals,font_plot){
     DT <- datatable(Reac_Hg()$gr_names,
                     options = list(
                       pageLength = 10, orderClasses = TRUE,
-                      searching = FALSE, paging = FALSE
+                      searching = FALSE, paging = FALSE,
+                      columnDefs = list(list(className = 'dt-right', targets = "_all"))
                       # initComplete = DT::JS(
                       #   "function(settings, json) {",
                       #   "$(this.api().table().header()).css({'background-color': 'gray', 'color': 'black'});",
@@ -643,7 +645,8 @@ React_DT3 <-eventReactive(input$DT_AC3, {
     DT <- datatable(React_DT3()$group_names,
                     options = list(
                       pageLength = 10, orderClasses = TRUE,
-                      searching = FALSE, paging = FALSE
+                      searching = FALSE, paging = FALSE,
+                      columnDefs = list(list(className = 'dt-right', targets = "_all"))
                     ))
     
     for(i in 1:n){
@@ -669,7 +672,8 @@ React_DT3 <-eventReactive(input$DT_AC3, {
     DT <- datatable(React_DT3()$gr_names,
                     options = list(
                       pageLength = 10, orderClasses = TRUE,
-                      searching = FALSE, paging = FALSE
+                      searching = FALSE, paging = FALSE,
+                      columnDefs = list(list(className = 'dt-right', targets = "_all"))
                       # initComplete = DT::JS(
                       #   "function(settings, json) {",
                       #   "$(this.api().table().header()).css({'background-color': 'gray', 'color': 'black'});",

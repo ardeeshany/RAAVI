@@ -342,10 +342,6 @@ M0_Scatter <- function(input,output,session,Vals,font_plot){
   
   output$St <- renderPlotly(Reac_out())
   
-  height_max <- reactive({
-    (ceiling(length(unique(Reac_CP2_Sc()$melt[,1]))/3)+1)*200
-  })
-  
   output$output <- renderUI({
 
     if(out_ind$a==1){

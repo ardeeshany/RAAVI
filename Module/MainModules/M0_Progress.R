@@ -603,7 +603,8 @@ M0_Prog <- function(input,output,session,Vals,font_plot){
     DT <- datatable(React_DT3()$gr_names,
                     options = list(
                       pageLength = 10, orderClasses = TRUE,
-                      searching = FALSE, paging = FALSE
+                      searching = FALSE, paging = FALSE,
+                      columnDefs = list(list(className = 'dt-right', targets = "_all"))
                       # initComplete = DT::JS(
                       #   "function(settings, json) {",
                       #   "$(this.api().table().header()).css({'background-color': 'gray', 'color': 'black'});",
