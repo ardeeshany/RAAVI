@@ -990,19 +990,16 @@ React_DT3 <-eventReactive(input$DT_AC3, {
       file.copy("report/hist.Rmd",tempReport,overwrite = TRUE)
       tempImage <- file.path(tempdir(),"logogrey.svg")
       file.copy("report/logogrey.svg",tempImage,overwrite = TRUE)
-      
       if(table_ind$a==1)
       params <- list(n = Reac_Hg_final(),m= React_out_table_l())
       if(table_ind$a==2)
       params <- list(n = React_GrCat_final(),
                      m= React_out_table_r())
-      
       rmarkdown::render(tempReport,output_file = file,
                         params = params,
                         envir = new.env(parent = globalenv()))
     }
   )
-  
   
   
 }
