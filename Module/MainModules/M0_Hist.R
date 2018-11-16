@@ -880,8 +880,11 @@ React_DT3 <-eventReactive(input$DT_AC3, {
     
   })
   
-  output$Gr_N_1 <- DT::renderDataTable( React_out_table_l() )
-  output$Gr_N_2 <- DT::renderDataTable( React_out_table_r() )
+   output$Gr_N_1 <- DT::renderDataTable( React_out_table_l() )
+   output$Gr_N_2 <- DT::renderDataTable( React_out_table_r() )
+  
+  #output$Gr_N_1 <- renderRHandsontable( React_out_table_l() )
+  #output$Gr_N_2 <- renderRHandsontable( React_out_table_r() )
   
   
   output$Hg_full <- renderUI({
@@ -905,10 +908,12 @@ React_DT3 <-eventReactive(input$DT_AC3, {
         circle = TRUE, status = "default", icon = icon("gear"),style = "unite",width = "25%"
       ) 
       
+      B <- div(style="text-align:right",downloadBttn(ns("download"),
+                                                     label = "دانلود",size = "sm"))
       
-      B <- withSpinner(plotlyOutput(ns("Hg_1")),type=5,color = "#006E6D",size = 0.6)
+      C <- withSpinner(plotlyOutput(ns("Hg_1")),type=5,color = "#006E6D",size = 0.6)
        
-      C <- dropdown(
+      D <- dropdown(
         div(style="text-align:right; font-size :110%; font-weight:bold;", ":تنظیمات جدول"),
         radioGroupButtons(inputId = ns("table"),label = "",choices = c("گروه"="G","دسته"="D"),
                           selected = "G",individual = TRUE,
@@ -919,12 +924,10 @@ React_DT3 <-eventReactive(input$DT_AC3, {
                                         style = "color: steelblue"))),
         circle = TRUE, status = "default", icon = icon("gear"),style = "unite", width = "25%")
        
-      D <- tags$div(
-         tags$table(
-           DT::dataTableOutput(ns("Gr_N_1"))
-         ))
+      E <- DT::dataTableOutput(ns("Gr_N_1"))
+      #E <- rHandsontableOutput(ns("Gr_N_1"))  
        
-      out <- list(A,B,C,D)
+      out <- list(A,B,br(),C,D,E)
       
       return(out)
        
@@ -948,11 +951,13 @@ React_DT3 <-eventReactive(input$DT_AC3, {
         circle = TRUE, status = "default", icon = icon("gear"),style = "unite",width = "25%"
       )
       
+    B <- div(style="text-align:right",downloadBttn(ns("download"),
+                                                   label = "دانلود",size = "sm"))
          
-    B <- withSpinner(plotlyOutput(ns("Hg_2")),type=5,color = "#006E6D",size = 0.6)
+    C <- withSpinner(plotlyOutput(ns("Hg_2")),type=5,color = "#006E6D",size = 0.6)
     
     
-    C <- dropdown(
+    D <- dropdown(
       div(style="text-align:right; font-size :110%; font-weight:bold;", ":تنظیمات جدول"),
       radioGroupButtons(inputId = ns("table"),label = "",choices = c("گروه"="G","دسته"="D"),
                    selected = "G",individual = TRUE,
@@ -964,17 +969,40 @@ React_DT3 <-eventReactive(input$DT_AC3, {
       circle = TRUE, status = "default", icon = icon("gear"),style = "unite", width = "25%"
     )
     
-    D <- DT::dataTableOutput(ns("Gr_N_2"))
-    
+    E <- DT::dataTableOutput(ns("Gr_N_2"))
+    #E <- rHandsontableOutput(ns("Gr_N_2"))
 
     
-    out <- list(A,B,C,D)
+    out <- list(A,B,br(),C,D,E)
     
     return(out)
     
     }
     
   })
+  
+  
+  output$download <- downloadHandler(
+    filename = paste0("گروه بندی",".html"),
+    content=function(file){ 
+      
+      tempReport <- file.path(tempdir(),"hist.Rmd")
+      file.copy("report/hist.Rmd",tempReport,overwrite = TRUE)
+      tempImage <- file.path(tempdir(),"logogrey.svg")
+      file.copy("report/logogrey.svg",tempImage,overwrite = TRUE)
+      
+      if(table_ind$a==1)
+      params <- list(n = Reac_Hg_final(),m= div(style=paste0("font-family:",font_plot,"; text-align:right"),React_out_table_l()))
+      if(table_ind$a==2)
+      params <- list(n = React_GrCat_final(),
+                     m=div(style=paste0("font-family:",font_plot,"; text-align:right"),React_out_table_r()))
+      
+      rmarkdown::render(tempReport,output_file = file,
+                        params = params,
+                        envir = new.env(parent = globalenv()))
+    }
+  )
+  
   
   
 }
