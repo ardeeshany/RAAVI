@@ -21,8 +21,8 @@ params:
 
 .table{
   width:90%;
-  float : left;
-  text-align: left;
+  float : right;
+  text-align: right;
   font-family: dastnevis;
 }
 
