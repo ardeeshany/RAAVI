@@ -73,25 +73,11 @@ box(width="100%",status="primary",
 
 column(width = 10,
 br(),  
-#box(status="primary",width="100%",collapsible = TRUE,collapsed = FALSE,
+box(status="primary",width="100%",collapsible = TRUE,collapsed = FALSE,
 
-dropdown(
-  div(style="text-align:right; font-size :110%; font-weight:bold;", ":تنظیمات نمودار"),         
-  div(style="text-align:left",
-      noUiSliderInput(ns("height"),label = "ارتفاع نمودار",     
-                      inline = T, min = 50,max = 2000,value = 450,step = 50,tooltips = F,
-                      width = "100%",color = "#578CA9")),
-  div(style="text-align:left",
-      noUiSliderInput(ns("width"),label = "عرض نمودار",     
-                      inline = T, min = 50,max = 2000,value = 950,step = 50,tooltips = F,
-                      width = "100%",color = "#578CA9")),
-  materialSwitch(inputId = ns("add_date"),label = "اضافه شدن تاریخ", 
-                 status = "danger", right = TRUE,value = FALSE),
-  numericInput(ns("number_col"),min = 1,max = 20,value = 3,label = "تعداد ستون ها",width = "28%"),
-  circle = TRUE, status = "default", icon = icon("gear"),style = "unite",width = "32%"),
   uiOutput(ns("output"))
 
-#  )
+  )
 )
 
 ))
@@ -112,8 +98,6 @@ dropdown(
 
 M0_Scatter <- function(input,output,session,Vals,font_plot){
 
-  font_plot <- "A Dast Nevis"
-  
   ns <- session$ns
   
     Data <- reactive({
@@ -211,7 +195,7 @@ M0_Scatter <- function(input,output,session,Vals,font_plot){
               plot.title = element_text(size=14,face="bold"),
               legend.title = element_text(size=12,face="bold"),
               text=element_text(family=font_plot))+
-        labs(title="",
+        labs(title="روند دانش آموزان در طول زمان",
              color="دانش آموزان") +
         #scale_x_discrete(name ="", limits=colnames(Data())) +
         #annotate('text',x = 9,y = 18,label= text())+
@@ -229,7 +213,7 @@ M0_Scatter <- function(input,output,session,Vals,font_plot){
               plot.title = element_text(size=14,face="bold"),
               legend.title = element_text(size=12,face="bold"),
               text=element_text(family=font_plot))+
-        labs(title="",
+        labs(title="روند دانش آموزان در طول زمان",
              color="دانش آموزان") +
         #scale_x_discrete(name ="", limits=colnames(Data())) +
         #annotate('text',x = 9,y = 18,label= text())+
@@ -269,7 +253,7 @@ M0_Scatter <- function(input,output,session,Vals,font_plot){
   
     colnum <- input$number_col
     height <- input$height
-    width <- input$width
+    #width <- input$width
     
     if(isolate(!input$St_chbI)){
       if(input$add_date){
@@ -277,8 +261,14 @@ M0_Scatter <- function(input,output,session,Vals,font_plot){
         scale_x_discrete(name ="", limits=colnames(Data()))
       
       A <- ggplotly(p)   %>% 
-
-        layout(height = height, width = width,autosize=TRUE) #,annotations = text_scatter)
+        layout(height = height, autosize=TRUE) %>% config(displaylogo = FALSE,collaborate = FALSE,
+                                                          modeBarButtonsToRemove = list(
+                                                            'zoom2d','pan2d','select2d','lasso2d','zoomIn2d','zoomOut2d',
+                                                            'sendDataToCloud',
+                                                            'autoScale2d',
+                                                            'hoverClosestCartesian',
+                                                            'hoverCompareCartesian'
+                                                          )) #,annotations = text_scatter)
 
       
     }else{
@@ -287,8 +277,15 @@ M0_Scatter <- function(input,output,session,Vals,font_plot){
     
       A <- ggplotly(p)  %>% 
 
-        layout(height = height, width = width,autosize=TRUE) #,annotations = text_scatter)
-
+        layout(height = height,autosize=TRUE) %>% config(displaylogo = FALSE,collaborate = FALSE,
+                                                         modeBarButtonsToRemove = list(
+                                                           'zoom2d','pan2d','select2d','lasso2d','zoomIn2d','zoomOut2d',
+                                                           'sendDataToCloud',
+                                                           'autoScale2d',
+                                                           'hoverClosestCartesian',
+                                                           'hoverCompareCartesian'
+                                                         )) #,annotations = text_scatter)
+        
       
     }}else{
       p <- Reac_CP2_Sc()$p+
@@ -298,7 +295,14 @@ M0_Scatter <- function(input,output,session,Vals,font_plot){
       
       A <- ggplotly(p)  %>% 
 
-        layout(height = height, width = width,autosize=TRUE) #,annotations = text_scatter)
+        layout(height = height, autosize=TRUE) %>% config(displaylogo = FALSE,collaborate = FALSE,
+                                                          modeBarButtonsToRemove = list(
+                                                            'zoom2d','pan2d','select2d','lasso2d','zoomIn2d','zoomOut2d',
+                                                            'sendDataToCloud',
+                                                            'autoScale2d',
+                                                            'hoverClosestCartesian',
+                                                            'hoverCompareCartesian'
+                                                          )) #,annotations = text_scatter)
 
   
     }
@@ -345,28 +349,31 @@ M0_Scatter <- function(input,output,session,Vals,font_plot){
   output$output <- renderUI({
 
     if(out_ind$a==1){
-      # A <- dropdown(
-      #   div(style="text-align:right; font-size :110%; font-weight:bold;", ":تنظیمات نمودار"),         
-      #   div(style="text-align:left",
-      #       noUiSliderInput(ns("ratio"),label = "مقیاس نمودارها",     
-      #                       inline = T, min = 100,max = height_max(),value = 500,step = 100,
-      #                       width = "100%",color = "#578CA9")),
-      #   materialSwitch(inputId = ns("add_date"),label = "اضافه شدن تاریخ", 
-      #                  status = "danger", right = TRUE,value = FALSE),
-      #   circle = TRUE, status = "default", icon = icon("gear"),style = "unite",width = "32%")
+    A <- dropdown(
+        div(style="text-align:right; font-size :110%; font-weight:bold;", ":تنظیمات نمودار"),         
+        div(style="text-align:left",
+              noUiSliderInput(ns("height"),label = "ارتفاع نمودار",     
+                      inline = T, min = 50,max = 2000,value = 450,step = 50,tooltips = F,
+                      width = "100%",color = "#578CA9")),
+
+      materialSwitch(inputId = ns("add_date"),label = "تاریخ", 
+                 status = "danger", right = TRUE,value = FALSE),
+      numericInput(ns("number_col"),min = 1,max = 20,value = 3,label = "تعداد ستون ها",width = "100%"),
+      circle = TRUE, status = "default", icon = icon("gear"),style = "unite",width = "38%")
       
       
       B <- div(style="text-align:right",downloadBttn(ns("download"),
                                                      label = "دانلود",size = "sm"))
       
        #if(isolate(input$St_chbI)){
-       C <- withSpinner(plotlyOutput(ns("St")),type=5,color = "#006E6D",size = 0.6)
+       C <- withSpinner(plotlyOutput(ns("St"),height = isolate(input$height)),type=5,color = "#006E6D",size = 0.6)
        #else{
        #C <- tags$iframe(src="plot2.pdf")}   #style="height:600px; width:100%"   
        #C <- withSpinner(plotOutput(ns("St"),height = input$ratio),type=5,color = "#006E6D",size = 0.6)}
       #C <- plotlyOutput(ns("St"),height = input$ratio)
       
-      M <- list(B,br(),C)
+      M <- list(A,B,br(),C)
+      
       return(M)
     }
     })

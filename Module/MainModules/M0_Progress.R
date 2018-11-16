@@ -43,15 +43,8 @@ box(width="100%",status="primary",
 column(width = 10,
 br(),
 box(status="primary",width="100%",collapsible = TRUE,collapsed = FALSE,
-
-    withSpinner(plotlyOutput(ns("Pr")),type=5,color = "#006E6D",size = 0.6),
-
-    # fluidRow(
-    #      uiOutput(ns("table")),
-      tags$div(
-        tags$table(
-          withSpinner( DT::dataTableOutput(ns("Gr_N")),type=5,color = "#006E6D",size = 0.4)
-        )))
+    uiOutput(ns("output"))       
+    )
      ))
 
 )
@@ -679,6 +672,71 @@ M0_Prog <- function(input,output,session,Vals,font_plot){
   ###
   
   output$Pr <- renderPlotly(React_out())
+ 
   
+  out_ind <- reactiveValues(a=0)
+  
+  observeEvent(input$DT_AC3, {
+    out_ind$a = 1
+  })
+  
+  observeEvent(input$Pr_AC1, {
+    out_ind$a = 2
+  })
+  
+  output$output <- renderUI({
+    
+    if(out_ind$a==1){
+    
+    A <- div(style="text-align:right",downloadBttn(ns("download"),
+                                   label = "دانلود",size = "sm"))
+      
+    B <- withSpinner(plotlyOutput(ns("Pr")),type=5,color = "#006E6D",size = 0.6)
+    
+    C <- withSpinner( DT::dataTableOutput(ns("Gr_N")),type=5,color = "#006E6D",size = 0.4)
+    
+    M <- list(A,B,C)
+    
+    return(M)
+    }
+    if(out_ind$a==2){
+      
+      A <- div(style="text-align:right",downloadBttn(ns("download"),
+                                     label = "دانلود",size = "sm"))
+      
+      B <- withSpinner(plotlyOutput(ns("Pr")),type=5,color = "#006E6D",size = 0.6)
+      
+      M <- list(A,B)
+      
+      return(M)
+    }
+    
+    
+  })
+  
+  
+  
+  output$download <- downloadHandler(
+    filename = paste0("پیشرفت",".html"),
+    content=function(file){ 
+      
+      tempReport <- file.path(tempdir(),"progress.Rmd")
+      file.copy("report/progress.Rmd",tempReport,overwrite = TRUE)
+      tempImage <- file.path(tempdir(),"logogrey.svg")
+      file.copy("report/logogrey.svg",tempImage,overwrite = TRUE)
+      if(out_ind$a==1)
+        params <- list(n = React_out(),m= D_Table2())
+      if(out_ind$a==2)
+        params <- list(n = React_out(),m=NULL)
+
+      rmarkdown::render(tempReport,output_file = file,
+                        params = params,
+                        envir = new.env(parent = globalenv()))
+    }
+  )
+  
+  
+  
+   
 }
 
