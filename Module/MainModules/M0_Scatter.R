@@ -139,9 +139,9 @@ M0_Scatter <- function(input,output,session,Vals,font_plot){
 
   Reac_CP2_Sc <- eventReactive(input$St_Ac, {
     
-    validate(
-      need(!is.null(Data()),"هنوز داده ای وارد نشده است"),errorClass = "Hist_l"
-    )
+    # validate(
+    #   need(!is.null(Data()),"هنوز داده ای وارد نشده است"),errorClass = "Hist_l"
+    # )
     
     validate(
       need((input$St_Mean==TRUE)||!is.null(input$St_ChG),
@@ -345,7 +345,10 @@ M0_Scatter <- function(input,output,session,Vals,font_plot){
   output$output <- renderUI({
 
     if(out_ind$a==1){
-    A <- dropdown(
+    
+      validate(need(!is.null(Data()),"هنوز داده ای وارد نشده است"),errorClass = "Hist_l")
+      
+      A <- dropdown(
         div(style="text-align:right; font-size :110%; font-weight:bold;", ":تنظیمات نمودار"),         
         div(style="text-align:left",
               noUiSliderInput(ns("height"),label = "ارتفاع نمودار",     

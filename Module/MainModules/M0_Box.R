@@ -103,9 +103,9 @@ M0_Box <- function(input,output,session,Vals,font_plot){
 
   Reac_CP2M_Bx <- eventReactive(input$Bx_Ac, {
     
-    validate(
-      need(!is.null(Data()),"هنوز داده ای وارد نشده است"), errorClass = "Hist_l"
-    )
+    # validate(
+    #   need(!is.null(Data()),"هنوز داده ای وارد نشده است"), errorClass = "Hist_l"
+    # )
     
     min=which(colnames(Data())==input$Bx_SeI1)
     max=which(colnames(Data())==input$Bx_SeI2)
@@ -163,6 +163,8 @@ M0_Box <- function(input,output,session,Vals,font_plot){
   output$output <- renderUI({
     
     if(out_ind$a==1){
+      
+    validate(need(!is.null(Data()),"هنوز داده ای وارد نشده است"),errorClass = "Hist_l")  
     
     A <- div(style="text-align:right",downloadBttn(ns("download"),
                                                    label = "دانلود",size = "sm"))

@@ -139,9 +139,9 @@ M0_Prog <- function(input,output,session,Vals,font_plot){
   
   React_Pr1 <- eventReactive(input$Pr_AC1, {
 
-    validate(
-      need(!is.null(Data()),"هنوز داده ای وارد نشده است"),errorClass = "Hist_l"
-    )
+    # validate(
+    #   need(!is.null(Data()),"هنوز داده ای وارد نشده است"),errorClass = "Hist_l"
+    # )
     
     Mean <- apply(Data(),2,mean)
     Data_tot1 <- rbind(Data(),Mean)
@@ -248,9 +248,9 @@ M0_Prog <- function(input,output,session,Vals,font_plot){
   React_DT3 <-eventReactive(input$DT_AC3, {
     
     
-    validate(
-      need(!is.null(Data()),"هنوز داده ای وارد نشده است"),errorClass = "Hist_l"
-    )
+    # validate(
+    #   need(!is.null(Data()),"هنوز داده ای وارد نشده است"),errorClass = "Hist_l"
+    # )
     
     bin2 <- as.numeric(input$Pr_bin2)
     numI <- as.numeric(input$Pr_numI)
@@ -695,6 +695,8 @@ M0_Prog <- function(input,output,session,Vals,font_plot){
     
     if(out_ind$a==1){
     
+    validate(need(!is.null(Data()),"هنوز داده ای وارد نشده است"),errorClass = "Hist_l")  
+      
     A <- div(style="text-align:right",downloadBttn(ns("download"),
                                    label = "دانلود",size = "sm"))
       
@@ -707,6 +709,8 @@ M0_Prog <- function(input,output,session,Vals,font_plot){
     return(M)
     }
     if(out_ind$a==2){
+      
+      validate(need(!is.null(Data()),"هنوز داده ای وارد نشده است"),errorClass = "Hist_l")
       
       A <- div(style="text-align:right",downloadBttn(ns("download"),
                                      label = "دانلود",size = "sm"))

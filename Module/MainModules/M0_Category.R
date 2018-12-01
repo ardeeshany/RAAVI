@@ -367,9 +367,9 @@ M0_Cat <- function(input,output,session,Vals,font_plot){
 
 React_DT2 <-eventReactive(input$DT_AC2,{
   
-  validate(
-    need(!is.null(Data()),"هنوز داده ای وارد نشده است"), errorClass = "Hist_l"
-  )
+  # validate(
+  #   need(!is.null(Data()),"هنوز داده ای وارد نشده است"), errorClass = "Hist_l"
+  # )
   
   # min <- input$DT_sl[1]
   # max <- input$DT_sl[2]
@@ -540,8 +540,9 @@ output$full_out <- renderUI({
   
 if(table_ind$a==1){
   
-  A <- 
-    dropdown(
+  validate(need(!is.null(Data()),"هنوز داده ای وارد نشده است"),errorClass = "Hist_l")
+  
+  A <- dropdown(
     
     div(class="right",
         colourpicker::colourInput(ns("color_bg"),label = div(style="font-size:80%;","انتخاب رنگ پس زمینه"),
