@@ -7,7 +7,7 @@ M0_LoadUI <- function(id){
   
   tabPanel(title = div(class="tabPanel--font-size center",
                        "وارد کردن داده"),
-           icon=icon("download",class="tabPanel-icon"),
+          icon=icon("download",class="tabPanel-icon"),
                   
            fluidRow(
 
@@ -53,7 +53,7 @@ box(width="100%",
       fileInput(inputId = ns("f_new"),
                 label = div(class="load__subtitle--font-size",'آپلود فایل'),
                 buttonLabel = list(icon("file-excel-o")),
-                placeholder = 'ورود داده',
+                placeholder = "ورود",
                 width = "100%",
                 accept=".xlsx")
       ),
@@ -77,7 +77,7 @@ box(width="100%",
           
           div(class="load--font-size_add",
               textAreaInput(inputId = ns("save_name"),label = "", value ="",
-                            height = "2.4em",resize = "none",width = "100%",
+                            height = "2.3em",resize = "none",width = "100%",
                             placeholder ='نام فایل ذخیره')),
           
           #div(style="height:150%;",
@@ -85,7 +85,7 @@ box(width="100%",
               #                div(class="action-button--widget","ذخیره کردن داده"))
              div(style="color:black", 
              downloadBttn(ns("downloadData"),color = "warning", 
-              style ="jelly",size = "md",label=div(class="inline",style="font-size:82%;color:black;","ذخیره"))
+              style ="jelly",size = "md",label=div(class="inline",style="font-size:68%;color:black;","ذخیره"))
              )            
           #uiOutput(ns("message"), inline=TRUE)
           
@@ -174,7 +174,7 @@ br(),
         
                  conditionalPanel(
                    condition = " input.hot == null ", ns=ns,
-                   div(style="color:grey; font-size:150%;",br(), br(),
+                   div(style="color:grey; font-size:140%;",br(), br(),
                   "هنوز فایلی وارد نشده است",br(),br(),
                   "فایل خود را از منوی سمت چپ وارد کرده یا فایل جدید بسازید",
                   br(),br(),br())
@@ -225,7 +225,8 @@ br(),
 
 
 
-))
+)
+)
 }
 
 

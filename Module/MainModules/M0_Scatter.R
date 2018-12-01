@@ -286,7 +286,7 @@ M0_Scatter <- function(input,output,session,Vals,font_plot){
                                                            'hoverCompareCartesian'
                                                          )) #,annotations = text_scatter)
         
-      
+
     }}else{
       p <- Reac_CP2_Sc()$p+
         scale_x_discrete(name ="", limits=colnames(Data()))

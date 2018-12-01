@@ -100,26 +100,32 @@ source('Module/I1_Info.R')
 
     ui <- dashboardPage(
 
-
       HeaderUI("mod_header"),                   
       SidebarUI("mod_sidebar"),
       BodyUI("mod_body",theme=theme_RAAVI)
-      #rightsidebar = RightSidebarUI("mod_rightsidebar")
       
-    )
+      #RightSidebarUI("mod_rightsidebar"),
+      
+      
+    
+      )
+    
     
     
     server <- function(input, output,session) {
-      
-
-      
+ 
       callModule(Header,"mod_header")
       callModule(Sidebar,"mod_sidebar")
-      # callModule(RightSidebar,"mod_rightsidebar")
+      #callModule(RightSidebar,"mod_rightsidebar")
       callModule(Body,"mod_body")
     }
       
     
   shinyApp(ui=ui,server=server)
+  
+  
+  
+  
+  
   
   

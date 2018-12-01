@@ -2,11 +2,11 @@
 M0_BoxUI <- function(id,date,names){
   
   ns <- NS(id)
-        
+
   tabPanel(title =div(class="tabPanel--font-size center",
                        "روند کلاس"),
            icon=icon("archive",class="tabPanel-icon"),
-           
+
 fluidRow(
  
 div(style="text-align:center;",
@@ -34,11 +34,12 @@ div(style="text-align:center;",
 column(width = 10,
 br(),  
 box(status="primary",width="100%",collapsible = TRUE,collapsed = FALSE,
-
     uiOutput(ns("output"))       
   ))
 
-))
+)
+
+)
 }
 
 

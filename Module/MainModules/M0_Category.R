@@ -6,8 +6,7 @@ M0_CatUI <- function(id){
   tabPanel(title = div(class="tabPanel--font-size center",
                        "فیلتر"),
            icon = icon("filter",class="tabPanel-icon"),
-           
-           
+                     
            fluidRow(                
              
 div(style="text-align:center;",
@@ -37,9 +36,10 @@ box(width="100%",status="primary",
       
     wellPanel(
       
-      noUiSliderInput(inputId = ns("DT_sl"),label = "",color = "#578CA9",
-                      orientation = "vertical",direction = "rtl",
-                      height=350,
+      noUiSliderInput(inputId = ns("DT_sl"),label = "",
+                      color = "#578CA9",
+                      orientation = "vertical",
+                      direction = "rtl",height = "270px",
                       min = 0,max = 20,value = c(0,20),step = 0.25), 
 
             actionBttn(inputId = ns("DT_AC2"),style = "jelly",color = "warning",
@@ -60,7 +60,8 @@ box(width="100%",status="primary",
 ))
 
 
-))
+)
+)
 
 }
 
@@ -149,15 +150,15 @@ M0_Cat <- function(input,output,session,Vals,font_plot){
 
 
 ## Variable (like trigger) for selecting which React_DT want to show in output
-var = reactiveValues(a = 2)
+#var = reactiveValues(a = 0)
 
-observeEvent(input$DT_AC1, {
-  var$a = 1
-})
+# observeEvent(input$DT_AC1, {
+#   var$a = 1
+# })
 
-observeEvent(input$DT_AC2, {
-  var$a = 2
-})
+# observeEvent(input$DT_AC2, {
+#   var$a = 2
+# })
 
 # observeEvent(input$DT_AC3, {
 #   var$a = 3
@@ -465,7 +466,16 @@ React_DT2 <-eventReactive(input$DT_AC2,{
           text=element_text(family=font_plot),
           legend.position="none")
   
-  return(p)
+  gg <- ggplotly(p) %>% config(displaylogo = FALSE,collaborate = FALSE,
+                              modeBarButtonsToRemove = list(
+                                'zoom2d','pan2d','select2d','lasso2d','zoomIn2d','zoomOut2d',
+                                'sendDataToCloud',
+                                'autoScale2d',
+                                'hoverClosestCartesian',
+                                'hoverCompareCartesian'
+                              ))
+  
+  return(gg)
   
   # gg <- ggplotly(p
   #                #,tooltip=c("y","x")           for showing a subset on each point in plot
@@ -517,35 +527,7 @@ React_DT2 <-eventReactive(input$DT_AC2,{
 # })
 
 
-
-### selecting which React_DT want to show in output
-React_out <- reactive({
-  
-  if(var$a==1){        # Does not need have () for input$x .... I mean, input$x() is wrong.
-    return(React_DT1())   # return is important here. Without it does not work
-  }
-  
-  if(var$a==2){
-    return(ggplotly(React_DT2()) %>% config(displaylogo = FALSE,collaborate = FALSE,
-                                        modeBarButtonsToRemove = list(
-                                          'zoom2d','pan2d','select2d','lasso2d','zoomIn2d','zoomOut2d',
-                                          'sendDataToCloud',
-                                          'autoScale2d',
-                                          'hoverClosestCartesian',
-                                          'hoverCompareCartesian'
-                                        )))
-}
- 
-  # if(var$a==3){
-  #   return(React_DT3())
-  # }
-   
-})
-###
-
-
-
-output$DT <- renderPlotly(React_out())
+output$DT <- renderPlotly(React_DT2())
 
 table_ind <- reactiveValues(a=0)
 

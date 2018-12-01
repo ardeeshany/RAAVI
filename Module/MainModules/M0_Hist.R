@@ -76,15 +76,66 @@ M0_Hist <- function(input,output,session,Vals,font_plot){
   
   ns <- session$ns  
   
-  
-  ch_opt <- list(content = c("<div> </div>"))
-  
   Data <- reactive({
     M <- Vals[["now"]]
     rownames(M) <- Vals[["names"]]
     colnames(M) <- Vals[["dates"]]
     return(M)
   })
+  
+  # A <- reactive({
+  #   
+  #   if(input$Pr_numI != ""){
+  #     a <- input$Pr_numI
+  #   }else{
+  #     a <- 1
+  #   }
+  #   return(a)
+  #   
+  # })
+  
+  
+  group_mean <- reactive({
+
+
+    # if(!is.null(Data())){
+    if(!is.null(input$Pr_numI)){
+    if(input$Pr_numI != ""){
+     numI <- input$Pr_numI
+     }else{
+       numI <- 1
+     }
+    #numI=A()
+    if(numI==1)
+      gr <- rep(1,dim(Data())[2])
+    else
+      gr <- as.numeric(cut(1:dim(Data())[2],breaks = numI,labels = 1:numI))
+    
+    d <- as.data.frame(apply(Data(),1,function(x){weighted.mean(x,gr)}))
+    d$names <- rownames(Data())
+    colnames(d) <- c("mean.w","names")
+    d <- d[order(d$mean.w,decreasing = T),]
+    d[,1] <- round(d[,1],2)
+    return(d)}
+    # else{
+    #   return(NULL)
+    # }
+
+
+  })
+  
+  
+  
+  ch_bin <- reactive({
+
+    print("group_mean")
+    print(is.null(group_mean()))
+    print("group_mean2")
+    print(group_mean())
+    d <- group_mean()
+    return(length(unique(d[,1])))
+
+    })
   
   
   output$Hg_SeI <- renderUI({
@@ -109,19 +160,26 @@ M0_Hist <- function(input,output,session,Vals,font_plot){
   
 
   output$Hg_bin <- renderUI({
-    if(is.null(Data())) {
+    
+  if(is.null(Data())) {
       ch <- ""
       ch_select <- ""
       pickerInput(ns("Hg_bin"),label = "تعداد گروه",choices = ch,selected = ch_select,
                   options = list(style = "btn"),
                   choicesOpt = ch_opt)
     }else{
+      # print("***group_mean***")
+      # print(is.null(group_mean()))
+      # print("***ch_bin***")
+      # print(ch_bin())
+      #if(!is.null(group_mean())){
       ch <- 1:min(ch_bin(),5)
       ch_select <- min(2,ch_bin())
       pickerInput(ns("Hg_bin"),label = "تعداد گروه",choices = ch,selected = ch_select,
                   options = list(style = "btn"))
-    }
     
+      #}
+      }
 
     
   })
@@ -402,6 +460,7 @@ M0_Hist <- function(input,output,session,Vals,font_plot){
 ##################################################   
   
   
+  ch_opt <- list(content = c("<div> </div>"))
   
   output$Pr_numI <- renderUI({
     if(is.null(Data())){
@@ -419,30 +478,7 @@ M0_Hist <- function(input,output,session,Vals,font_plot){
 
   })
   
-  
-  group_mean <- reactive({
-    
-    numI <- as.numeric(input$Pr_numI)
-    
-    if(numI==1)
-      gr <- rep(1,dim(Data())[2])
-    else
-      gr <- as.numeric(cut(1:dim(Data())[2],breaks = numI,labels = 1:numI))
-    
-    d <- as.data.frame(apply(Data(),1,function(x){weighted.mean(x,gr)}))
-    d$names <- rownames(Data())
-    colnames(d) <- c("mean.w","names")
-    d <- d[order(d$mean.w,decreasing = T),]
-    d[,1] <- round(d[,1],2)
-    return(d)
-  })
-  
-  
-  
-  ch_bin <- reactive({
-    d <- group_mean()
-    return(length(unique(d[,1])))
-  })
+
   
   output$Pr_bin2 <- renderUI({
     if(is.null(Data())) {
@@ -469,8 +505,7 @@ React_DT3 <-eventReactive(input$DT_AC3, {
   
   # validate(
   #   need(!is.null(Data()),"هنوز داده ای وارد نشده است"),errorClass = "Hist_r"
-  # )
-  
+
   bin2 <- as.numeric(input$Pr_bin2)
   numI <- as.numeric(input$Pr_numI)
   
@@ -519,7 +554,9 @@ React_DT3 <-eventReactive(input$DT_AC3, {
       }
       gr_names[[gr_num]] <- melt_Data_Hg[(dup_count[length(dup_count)]+1):tail(cum_count,1),1]
       melt_Data_Hg[(dup_count[length(dup_count)]+1):tail(cum_count,1),3] <- tail(cc1,1)
-    }}
+    
+    
+      }}
   
   
 
@@ -629,7 +666,9 @@ React_DT3 <-eventReactive(input$DT_AC3, {
   out <- list(gg_hist0=gg_hist0,gg_bar=gg_bar,group_names=group_names,gr_names=Gr_names,color_count = color_count ,cc1 = cc1,c=c,gr_num=gr_num)
   
   return(out) 
-  
+ 
+
+   
 })
   
   

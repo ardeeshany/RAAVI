@@ -48,7 +48,7 @@ fluidRow(
   # )
   
   div(style="text-align:center;",
-      tags$img(src='logogrey.svg',width = "58%", height = "58%")
+      tags$img(src='logogrey.svg',width = "52%", height = "52%")
   )
   
   

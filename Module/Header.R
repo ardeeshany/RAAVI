@@ -20,45 +20,49 @@ HeaderUI <- function(id){
   
  
   
-  dashboardHeader(
+  dashboardHeader(disable = FALSE,
                       #enable_rightsidebar = TRUE,
                       #rightSidebarIcon = "info",                    
     
     # Thick Title
     tags$li(class = "dropdown",
-            tags$style(".main-header .logo {height: 2.5em;}")
+            tags$style(".main-header .logo {height: 2.8em;}")
             ),
-    
+
     #tags$head(tags$link(href = "custom.css", rel = "stylesheet")),
    
     
     
-    title =  helpText(div(style=" color : #9C9A40; text-align:center ;font-size: 120%; font-weight: bold;font-family:'dastnevis';",
+    #title = tags$img(src='logo-circle.png',width="52",height="52"),
+      
+      
+      # div(
+      title = helpText(div(style=" color : #9C9A40; text-align:center ;font-size: 120%; font-weight: bold;font-family:'dastnevis';",
                                         "راوی")),
   
     
                 ### long Title
-                 titleWidth = 85,
+                 titleWidth = 85
                 
                 ### Messages menus ; not render in server function, a message menu needs values for from and message.
-                dropdownMenu(type = "messages",
-                             messageItem(
-                               from = "راوی",
-                               message = "ورژن ۱.۰۱",
-                               icon = icon("life-ring")
-                             ),
-                             # messageItem(
-                             #   from = "New User",
-                             #   message = "How do I register?",
-                             #   icon = icon("question")
-                             # ),
-                             messageItem(
-                               from = "موسس",
-                               message = "اردلان میرشانی",
-                               icon = icon("user"),
-                               time = "2018-11-01"
-                             )
-                )
+                # dropdownMenu(type = "messages",
+                #              messageItem(
+                #                from = "راوی",
+                #                message = "ورژن ۱.۰۱",
+                #                icon = icon("life-ring")
+                #              ),
+                #              # messageItem(
+                #              #   from = "New User",
+                #              #   message = "How do I register?",
+                #              #   icon = icon("question")
+                #              # ),
+                #              messageItem(
+                #                from = "موسس",
+                #                message = "اردلان میرشانی",
+                #                icon = icon("user"),
+                #                time = "2018-11-01"
+                #              )
+                # )
                 
                 ### Notification menus ; not render in server function, a text notification
                 # dropdownMenu(type = "notifications",

@@ -1,7 +1,7 @@
 theme_RAAVI <- shinyDashboardThemeDIY(
   
   ### general
-   appFontFamily = "dastnevis"
+   appFontFamily = "main_font"
   ,appFontColor = "rgb(0,0,0)"
   #,bodyBackColor = "rgb(248,248,248)"
   ,bodyBackColor = "white"
@@ -10,13 +10,13 @@ theme_RAAVI <- shinyDashboardThemeDIY(
   ,logoBackColor = "#2E4A62"
   
   ,headerButtonBackColor = "#485167"
-  ,headerButtonIconColor = "white"
-  ,headerButtonBackColorHover = "rgb(238,238,238)"
-  ,headerButtonIconColorHover = "#485167"
+  ,headerButtonIconColor = "white" #, "#485167"
+  ,headerButtonBackColorHover = "#485167" # "rgb(238,238,238)"
+  ,headerButtonIconColorHover = "white" # "#485167"
   
   ,headerBackColor = "#485167"
-  ,headerBoxShadowColor = "white"
-  ,headerBoxShadowSize = "2px 2px 2px"
+  ,headerBoxShadowColor = "#485167"
+  ,headerBoxShadowSize = "1px 1px 1px"
   
   ### sidebar
   
@@ -80,7 +80,7 @@ theme_RAAVI <- shinyDashboardThemeDIY(
   ,sidebarTabTextColorHover = "white"
   ,sidebarTabBorderStyleHover = "none none solid none"
   ,sidebarTabBorderColorHover = "rgb(75,126,151)"
-  ,sidebarTabBorderWidthHover = 4
+  ,sidebarTabBorderWidthHover = 3
   ,sidebarTabRadiusHover = "0px 0px 0px 0px"
   
   ### boxes

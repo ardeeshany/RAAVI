@@ -221,7 +221,12 @@ M0_Prog <- function(input,output,session,Vals,font_plot){
   
   group_mean <- reactive({
     
-    numI <- as.numeric(input$Pr_numI)
+    if(!is.null(input$Pr_numI)){
+      if(input$Pr_numI != ""){
+        numI <- input$Pr_numI
+      }else{
+        numI <- 1
+      }
     
     if(numI==1)
       gr <- rep(1,dim(Data())[2])
@@ -233,8 +238,9 @@ M0_Prog <- function(input,output,session,Vals,font_plot){
     colnames(d) <- c("mean.w","names")
     #d <- d[order(d$mean.w,decreasing = T),]
     d[,1] <- round(d[,1],2)
-    return(d)
-  })
+    return(d)}
+  
+    })
   
   
   #########
