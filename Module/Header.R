@@ -42,6 +42,7 @@ HeaderUI <- function(id){
   
     
                 ### long Title
+
                  titleWidth = 85
                 
                 ### Messages menus ; not render in server function, a message menu needs values for from and message.
