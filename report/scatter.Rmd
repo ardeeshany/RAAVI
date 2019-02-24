@@ -1,0 +1,59 @@
+---
+output: html_document
+runtime: shiny
+params:
+  n: NA
+---
+<style>
+.column-left{
+  float:left;
+  width: 12%;
+  text-align: center;
+  margin-top:22%;
+  font-family:dastnevis
+}
+.column-right{
+  float:right;
+  width: 88%;
+  text-align: right;
+}
+.logo{
+text-align:right
+font-family:dastnevis
+}
+</style>
+
+<style>
+h1, h2, h3, h4, h5, h6 {
+  font-family:dastnevis;
+  text-align:center
+}
+p {
+  text-align:center
+  font-family:dastnevis;
+}
+</style>
+
+
+```{r br,echo=FALSE}
+# The `params` object is available in the document.
+HTML("<br></br>")
+```
+
+<div class="column-left">
+```{r pressure, echo=FALSE, fig.cap="تولید شده توسط راوی"}
+knitr::include_graphics("logogrey.svg")
+```
+</div>
+
+<div class="column-right">
+```{r ggplot2,echo=FALSE}
+# The `params` object is available in the document.
+params$n
+```
+</div>
+
+
+
+
+
