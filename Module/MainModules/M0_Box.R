@@ -34,7 +34,8 @@ div(style="text-align:center;",
 column(width = 10,
 br(),  
 box(status="primary",width="100%",collapsible = TRUE,collapsed = FALSE,
-    uiOutput(ns("output"))       
+    uiOutput(ns("output")),     
+    uiOutput(ns("output2"))       
   ))
 
 )
@@ -101,7 +102,7 @@ M0_Box <- function(input,output,session,Vals,font_plot){
   })
   
 
-  Reac_CP2M_Bx <- eventReactive(input$Bx_Ac, {
+  Reac_CP2M_Bx1 <- eventReactive(input$Bx_Ac, {
     
     # validate(
     #   need(!is.null(Data()),"هنوز داده ای وارد نشده است"), errorClass = "Hist_l"
@@ -129,10 +130,12 @@ M0_Box <- function(input,output,session,Vals,font_plot){
     }
 
 
-      p <- ggplot(melt_Data_Bx , aes(x=Day,y=value,fill=Day)) + geom_boxplot(outlier.size=6) +
-        stat_summary(fun.y=mean, geom="point", shape=20, size=2, color="red", fill="red")+
+      p1 <- ggplot(melt_Data_Bx , aes(x=Day,y=value,fill=Day))+ geom_boxplot() +
+        # stat_summary(fun.y=mean, colour="darkred", geom="point")+# shape=20, size=2, color="red", fill="red")+
+        # stat_summary(fun.data = mean_se, geom = "errorbar")+
         labs(title = "روند کلاس در طول زمان", x ="",y="نمره",fill="تاریخ")+
         scale_x_discrete(labels=colnames(Data())[vec_ind])+
+        #geom_jitter(width = 0.2)+
         theme(axis.text.x = element_text(size=11,colour="black",angle=60, hjust=1,vjust=.5),
               axis.text.y = element_text(size=12,colour="black"),
               axis.title=element_text(size=14,face="bold"),
@@ -140,17 +143,89 @@ M0_Box <- function(input,output,session,Vals,font_plot){
               legend.title = element_text(size=12,face="bold"),
               text=element_text(family=font_plot))
         
-
-     gg <- ggplotly(p) %>% config(displaylogo = FALSE,collaborate = FALSE,
-                                  modeBarButtonsToRemove = list(
-                                    'zoom2d','pan2d','select2d','lasso2d','zoomIn2d','zoomOut2d',
-                                    'sendDataToCloud',
-                                    'autoScale2d',
-                                    'hoverClosestCartesian',
-                                    'hoverCompareCartesian'
-                                  ))
-     gg
+      p2 <- ggplot(melt_Data_Bx , aes(x=Day,y=value,fill=Day))+
+        stat_summary(fun.y=mean, geom="point", size=3)+# shape=20, size=2, color="red", fill="red")+
+        stat_summary(fun.data = mean_se, geom = "errorbar")+
+        labs(title = "میانگین و میزان انحراف از آن", x ="",y="نمره",fill="تاریخ")+
+        scale_x_discrete(labels=colnames(Data())[vec_ind])+
+        #geom_jitter(width = 0.2)+
+        theme(axis.text.x = element_text(size=11,colour="black",angle=60, hjust=1,vjust=.5),
+              axis.text.y = element_text(size=12,colour="black"),
+              axis.title=element_text(size=14,face="bold"),
+              plot.title = element_text(size=14,face="bold"),
+              legend.title = element_text(size=12,face="bold"),
+              text=element_text(family=font_plot))
+      
+     # gg1 <- ggplotly(p1) %>% config(displaylogo = FALSE,collaborate = FALSE,
+     #                              modeBarButtonsToRemove = list(
+     #                                'zoom2d','pan2d','select2d','lasso2d','zoomIn2d','zoomOut2d',
+     #                                'sendDataToCloud',
+     #                                'autoScale2d',
+     #                                'hoverClosestCartesian',
+     #                                'hoverCompareCartesian'
+     #                              ))
+     # 
+     # gg2 <- ggplotly(p2) %>% config(displaylogo = FALSE,collaborate = FALSE,
+     #                                modeBarButtonsToRemove = list(
+     #                                  'zoom2d','pan2d','select2d','lasso2d','zoomIn2d','zoomOut2d',
+     #                                  'sendDataToCloud',
+     #                                  'autoScale2d',
+     #                                  'hoverClosestCartesian',
+     #                                  'hoverCompareCartesian'
+     #                                ))
+     
+     return(list(p1=p1,p2=p2))
+     
   })
+  
+  
+  
+  Reac_CP2M_Bx <- reactive({
+    
+
+    
+    
+     
+    if(input$add_points){
+      p1 <- Reac_CP2M_Bx1()$p1 + geom_jitter(width = 0.1,size=1.8)
+    }else{
+      p1 <- Reac_CP2M_Bx1()$p1 
+    }  
+     
+    p2 <- Reac_CP2M_Bx1()$p2
+    
+    if(input$combine){
+      color_m <- "#ffff4e"
+      color_s <- "#fd1c00"
+      p1 <- p1 + stat_summary(fun.y=mean, geom="point",size=1.35,color = color_m ,fill= color_m, shape=20)+# shape=20, size=2, color="red", fill="red")+
+        stat_summary(fun.data = mean_se, geom = "errorbar",color=color_s) 
+      gg2 <- NULL
+    }else{
+
+      gg2 <- ggplotly(p2) %>% config(displaylogo = FALSE,collaborate = FALSE,modeBarButtonsToRemove = list(
+        'zoom2d','pan2d','select2d','lasso2d','zoomIn2d','zoomOut2d',
+        'sendDataToCloud',
+        'autoScale2d',
+        'hoverClosestCartesian',
+        'hoverCompareCartesian'
+      )) 
+    
+    }  
+
+
+    gg1 <- ggplotly(p1) %>% config(displaylogo = FALSE,collaborate = FALSE,modeBarButtonsToRemove = list(
+      'zoom2d','pan2d','select2d','lasso2d','zoomIn2d','zoomOut2d',
+      'sendDataToCloud',
+      'autoScale2d',
+      'hoverClosestCartesian',
+      if(input$combine)                                                                             'hoverCompareCartesian'
+    ))
+    
+    return(list(gg1=gg1,gg2=gg2))
+    
+  })
+  
+  
   
   
   out_ind <- reactiveValues(a=0)
@@ -159,25 +234,63 @@ M0_Box <- function(input,output,session,Vals,font_plot){
     out_ind$a = 1
   })
   
+
   
+  
+
   output$output <- renderUI({
     
     if(out_ind$a==1){
       
     validate(need(!is.null(Data()),"هنوز داده ای وارد نشده است"),errorClass = "Hist_l")  
     
-    A <- div(style="text-align:right",downloadBttn(ns("download"),
+    A <- dropdown(
+        div(style="text-align:right; font-size :110%; font-weight:bold;", ":تنظیمات نمودار"),         
+
+        materialSwitch(inputId = ns("add_points"),label = "اضافه کردن نفرات", 
+                       status = "danger", right = TRUE,value = FALSE),
+        
+        materialSwitch(inputId = ns("combine"),label = "تجمیع نمودارها",
+                       status = "danger", right = TRUE,value = FALSE),
+        
+        circle = TRUE, status = "default", icon = icon("gear"),style = "unite",width = "38%")
+    
+      
+    B <- div(style="text-align:right",downloadBttn(ns("download"),
                                                    label = "دانلود",size = "sm"))
     
-    B <- withSpinner(plotlyOutput(ns("Bx")),type=5,color = "#006E6D",size = 0.6)
+    return(list(A,B,br()))
+    }
     
-    return(list(A,br(),B))
+  })
+  
+
+  output$output2 <- renderUI({
+    
+    if(!is.null(input$combine))
+    if(out_ind$a==1){
+    
+    B1 <- withSpinner(plotlyOutput(ns("Bx1")),type=5,color = "#006E6D",size = 0.6)
+    
+    if(input$combine){
+      M <- list(B1)
+    }else{
+      B2 <- withSpinner(plotlyOutput(ns("Bx2")),type=5,color = "#006E6D",size = 0.6)
+      M <- list(B1,B2)
+    }
+    
+    return(M)
+    
     }
     
   })
   
   
-  output$Bx <- renderPlotly(Reac_CP2M_Bx())
+  
+  
+  
+  output$Bx1 <- renderPlotly(Reac_CP2M_Bx()$gg1)
+  output$Bx2 <- renderPlotly(Reac_CP2M_Bx()$gg2)
   
   
   output$download <- downloadHandler(

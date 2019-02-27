@@ -101,7 +101,7 @@ M0_Hist <- function(input,output,session,Vals,font_plot){
     # if(!is.null(Data())){
     if(!is.null(input$Pr_numI)){
     if(input$Pr_numI != ""){
-     numI <- input$Pr_numI
+     numI <- as.numeric(input$Pr_numI)
      }else{
        numI <- 1
      }
