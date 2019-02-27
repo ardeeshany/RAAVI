@@ -4,8 +4,10 @@
 SidebarUI <- function(id){
   
   ns <- NS(id)
+
   dashboardSidebar(collapsed = FALSE,
     width =  85,
+
     
     # helpText(div(style="margin-top:10%; color : AliceBlue; text-align:center ;font-size: 380%; font-weight: bold;font-family:'dastnevis';",
     #              "راوی")),
