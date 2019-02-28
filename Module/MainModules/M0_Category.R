@@ -43,7 +43,7 @@ box(width="100%",status="primary",
                       min = 0,max = 20,value = c(0,20),step = 0.25), 
 
             actionBttn(inputId = ns("DT_AC2"),style = "jelly",color = "warning",
-            label = div(class="action-button--widget", "جدول نمرات"))
+            label = div(class="action-button--widget", "Table of Scores"))
              
           )
     
@@ -445,7 +445,7 @@ React_DT2 <-eventReactive(input$DT_AC2,{
   min <- input$DT_sl[1]
   max <- input$DT_sl[2]
   eps <- 10^(-4)
-  title <- paste("[",min,",",max,"]", " : نمره ی دانش آموزان در بازه ی ")
+  title <- paste(" Student scores in range : [",min,",",max,"]")
   text_col <-input$color_text
   x_size <- 10
   y_size <- 9
@@ -540,16 +540,16 @@ output$full_out <- renderUI({
   
 if(table_ind$a==1){
   
-  validate(need(!is.null(Data()),"هنوز داده ای وارد نشده است"),errorClass = "Hist_l")
+  validate(need(!is.null(Data()),"No Data has been imported yet!"),errorClass = "Hist_l")
   
   A <- dropdown(
     
     div(class="right",
-        colourpicker::colourInput(ns("color_bg"),label = div(style="font-size:80%;","انتخاب رنگ پس زمینه"),
+        colourpicker::colourInput(ns("color_bg"),label = div(style="font-size:80%;","Background color"),
                 value = "#55B4B0",showColour = "background")),
     
     div(class="right",
-        colourpicker::colourInput(ns("color_text"),label = div(style="font-size:80%;","انتخاب رنگ متن"),
+        colourpicker::colourInput(ns("color_text"),label = div(style="font-size:80%;","Text color"),
                 value =  "black",showColour = "background")),
                 #palette = "limited" , allowedCols = c("black","white","#B93A32"))),
     
@@ -557,7 +557,7 @@ if(table_ind$a==1){
   )
   
   B <- div(style="text-align:right",downloadBttn(ns("download"),
-                label = "دانلود",size = "sm"))
+                label = "Download",size = "sm"))
   
   C <- withSpinner(plotlyOutput(ns("DT")),type=5,color = "#006E6D",size = 0.6)  
   
@@ -571,13 +571,13 @@ if(table_ind$a==1){
 
 
 output$download <- downloadHandler(
-  filename =  paste0("فیلتر",".html"),
+  filename =  paste0("Filter",".html"),
   content=function(file){ 
     
     tempReport <- file.path(tempdir(),"filter.Rmd")
     file.copy("report/filter.Rmd",tempReport,overwrite = TRUE)
-    tempImage <- file.path(tempdir(),"logogrey.svg")
-    file.copy("report/logogrey.svg",tempImage,overwrite = TRUE)
+    tempImage <- file.path(tempdir(),"Logo.png")
+    file.copy("report/Logo.png",tempImage,overwrite = TRUE)
     params <- list(n = ggplotly(React_DT2()) %>% config(displaylogo = FALSE,collaborate = FALSE,
                                                         modeBarButtonsToRemove = list(
                                                           'zoom2d','pan2d','select2d','lasso2d','zoomIn2d','zoomOut2d',

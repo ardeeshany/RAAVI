@@ -50,7 +50,7 @@ SidebarUI <- function(id){
               menuItem(div(class="sidebar--font", "Progress"),  tabName= "Progress",icon  =icon("line-chart",class="sidebar-icon"))),
           
           div(class="sidebar--mtop",
-              menuItem(div(class="sidebar--font", "Subset"),  tabName= "Category",icon  =icon("filter",class="sidebar-icon")))
+              menuItem(div(class="sidebar--font", "Filter"),  tabName= "Category",icon  =icon("filter",class="sidebar-icon")))
           
           
           
