@@ -133,7 +133,7 @@ M0_Box <- function(input,output,session,Vals,font_plot){
       p1 <- ggplot(melt_Data_Bx , aes(x=Day,y=value,fill=Day))+ geom_boxplot() +
         # stat_summary(fun.y=mean, colour="darkred", geom="point")+# shape=20, size=2, color="red", fill="red")+
         # stat_summary(fun.data = mean_se, geom = "errorbar")+
-        labs(title = "Box Plot of the exams within the time", x ="",y="Scores",fill="Date")+
+        labs(title = "Exam distributions in Time", x ="",y="Scores",fill="Date")+
         scale_x_discrete(labels=colnames(Data())[vec_ind])+
         #geom_jitter(width = 0.2)+
         theme(axis.text.x = element_text(size=11,colour="black",angle=60, hjust=1,vjust=.5),

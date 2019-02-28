@@ -26,21 +26,21 @@ box(width="100%",status="primary",
            div(style="text-align:left;",
                 prettyToggle(shape = "round",value = T,
                   inputId = ns("St_Mean"),
-                  label_on = "میانگین", 
+                  label_on = "Mean", 
                   icon_on = icon("check"),
                   status_on = "primary",
                   status_off = "default", 
-                  label_off = "میانگین"
+                  label_off = "Mean"
                 )),
                 
            div(style="text-align:left;",
                 prettyToggle(shape = "round",value = T,
                   inputId = ns("St_chbI"),
-                  label_on = "تجمیع نمودارها", 
+                  label_on = "Combining Plots", 
                   icon_on = icon("check"),
                   status_on = "primary",
                   status_off = "default", 
-                  label_off = "تجمیع نمودارها"
+                  label_off = "Combining Plots"
                 ))
 
                 ),
@@ -51,8 +51,8 @@ box(width="100%",status="primary",
                div(style="text-align:left;",
                 prettyRadioButtons(
                   inputId = ns('St_rb'),inline = T,
-                  label = div(class="check-box--font-size","نوع تخمین"),
-                  choices = c("خطی"="lm","غیرخطی"="loess"),
+                  label = div(class="check-box--font-size","Type"),
+                  choices = c("lm"="lm","loess"="loess"),
                   selected = "loess"
                 ))
                 
@@ -62,7 +62,7 @@ box(width="100%",status="primary",
                 
             wellPanel(      
                         actionBttn(inputId = ns("St_Ac"),style = "jelly",color = "warning",
-                                     label = div(class="action-button--widget","در طول زمان"))
+                                     label = div(class="action-button--widget","Run"))
                                    
             )
                         
@@ -110,12 +110,12 @@ M0_Scatter <- function(input,output,session,Vals,font_plot){
     
   output$St_ChG <- renderUI({
 
-    dropdown(label = div(style="font-size:72%; color:black; font-weight:bold;","لیست دانش آموزان"),
+    dropdown(label = div(style="font-size:72%; color:black; font-weight:bold;","List Names"),
     
     div(style="text-align:left;",  
     checkboxInput(ns('St_all'),
     div(style="text-align:left;,color: #607D8B;",
-    'تمام / هیچ'))),
+    'all/none'))),
              
       div(style="text-align:left;",
       checkboxGroupInput(inputId = ns("St_ChG"), label = "", choices = c(rownames(Data())))
@@ -145,18 +145,18 @@ M0_Scatter <- function(input,output,session,Vals,font_plot){
     
     validate(
       need((input$St_Mean==TRUE)||!is.null(input$St_ChG),
-           "حداقل باید یک نمودار را انتخاب کنید"),errorClass = "scatter_min")
+           "You should select at least one student"),errorClass = "scatter_min")
     
     Mean <- apply(Data(),2,mean)
     
     if(input$St_Mean==TRUE){
       if(is.null(input$St_ChG)==TRUE){
         d <- t(Mean)
-        rownames(d) <- "میانگین"
+        rownames(d) <- "Mean"
       }else{
         d <- as.data.frame(Data()[which(rownames(Data()) %in% input$St_ChG),,drop=FALSE])
         d <- rbind(d,Mean)
-        rownames(d) <- c(rownames(d)[-length(rownames(d))],"میانگین")
+        rownames(d) <- c(rownames(d)[-length(rownames(d))],"Mean")
       }
       
       colnames(d) <- 1:dim(d)[2]
@@ -195,11 +195,11 @@ M0_Scatter <- function(input,output,session,Vals,font_plot){
               plot.title = element_text(size=14,face="bold"),
               legend.title = element_text(size=12,face="bold"),
               text=element_text(family=font_plot))+
-        labs(title="روند دانش آموزان در طول زمان",
+        labs(title="Students Scores in Time",
              color="دانش آموزان") +
         #scale_x_discrete(name ="", limits=colnames(Data())) +
         #annotate('text',x = 9,y = 18,label= text())+
-        xlab("زمان") + ylab("نمره")
+        xlab("Date") + ylab("Scores")
     }
     else{
 
@@ -213,12 +213,12 @@ M0_Scatter <- function(input,output,session,Vals,font_plot){
               plot.title = element_text(size=14,face="bold"),
               legend.title = element_text(size=12,face="bold"),
               text=element_text(family=font_plot))+
-        labs(title="روند دانش آموزان در طول زمان",
-             color="دانش آموزان") +
+        labs(title="Students Scores in Time",
+             color="Students") +
         #scale_x_discrete(name ="", limits=colnames(Data())) +
         #annotate('text',x = 9,y = 18,label= text())+
         #geom_text(aes(color=Student),position = position_dodge(width = 1),label = text(), parse = TRUE)+
-        xlab("زمان") + ylab("نمره")
+        xlab("Date") + ylab("Scores")
     }
 
     return(list(p=p,melt=melt_Data_St))
@@ -235,7 +235,7 @@ M0_Scatter <- function(input,output,session,Vals,font_plot){
   
   text_scatter <- list(
 
-    text = "روند دانش آموزان در طول زمان",
+    text = "Students Scores in Time",
 
     font=f,
     xref = "paper",
@@ -346,23 +346,23 @@ M0_Scatter <- function(input,output,session,Vals,font_plot){
 
     if(out_ind$a==1){
     
-      validate(need(!is.null(Data()),"هنوز داده ای وارد نشده است"),errorClass = "Hist_l")
+      validate(need(!is.null(Data()),"The Data has not beed imported yet!"),errorClass = "Hist_l")
       
       A <- dropdown(
-        div(style="text-align:right; font-size :110%; font-weight:bold;", ":تنظیمات نمودار"),         
+        div(style="text-align:right; font-size :110%; font-weight:bold;", " Settings : "),         
         div(style="text-align:left",
-              noUiSliderInput(ns("height"),label = "ارتفاع نمودار",     
+              noUiSliderInput(ns("height"),label = "height of plots",     
                       inline = T, min = 50,max = 2000,value = 450,step = 50,tooltips = F,
                       width = "100%",color = "#578CA9")),
 
-      materialSwitch(inputId = ns("add_date"),label = "تاریخ", 
+      materialSwitch(inputId = ns("add_date"),label = "Date", 
                  status = "danger", right = TRUE,value = FALSE),
-      numericInput(ns("number_col"),min = 1,max = 20,value = 3,label = "تعداد ستون ها",width = "100%"),
+      numericInput(ns("number_col"),min = 1,max = 20,value = 3,label = "Number of columns",width = "100%"),
       circle = TRUE, status = "default", icon = icon("gear"),style = "unite",width = "38%")
       
       
       B <- div(style="text-align:right",downloadBttn(ns("download"),
-                                                     label = "دانلود",size = "sm"))
+                                                     label = "Download",size = "sm"))
       
        #if(isolate(input$St_chbI)){
        C <- withSpinner(plotlyOutput(ns("St"),height = isolate(input$height)),type=5,color = "#006E6D",size = 0.6)
@@ -379,13 +379,13 @@ M0_Scatter <- function(input,output,session,Vals,font_plot){
 
   
   output$download <- downloadHandler(
-    filename = paste0("روند دانش آموزان",".html"),
+    filename = paste0("Box_plot",".html"),
     content=function(file){ 
       
       tempReport <- file.path(tempdir(),"scatter.Rmd")
       file.copy("report/scatter.Rmd",tempReport,overwrite = TRUE)
-      tempImage <- file.path(tempdir(),"logogrey.svg")
-      file.copy("report/logogrey.svg",tempImage,overwrite = TRUE)
+      tempImage <- file.path(tempdir(),"Logo.png")
+      file.copy("report/Logo.png",tempImage,overwrite = TRUE)
       params <- list(n = Reac_out())
       rmarkdown::render(tempReport,output_file = file,
                         params = params,
