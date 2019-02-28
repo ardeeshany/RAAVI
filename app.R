@@ -12,6 +12,18 @@
 
 
 
+# ## install on shinyapps.io
+# ### https://shiny.rstudio.com/articles/shinyapps.html
+# library(rsconnect)
+# 
+# rsconnect::setAccountInfo(name='ardeeshany',
+#                           token='4CC57CA11AC3239EB2A4836315361CEC',
+#                           secret='jGg5EWJjvZvPa0ibDbNoaJ5BoeQGZDmo87Dnp2vN')
+# 
+# deployApp(appName = "Raavi_en")
+
+
+
 # ## app.R ##f
 library(shiny)
 library(stats)
