@@ -346,7 +346,7 @@ M0_Scatter <- function(input,output,session,Vals,font_plot){
 
     if(out_ind$a==1){
     
-      validate(need(!is.null(Data()),"The Data has not beed imported yet!"),errorClass = "Hist_l")
+      validate(need(!is.null(Data()),"No Data has been imported yet!"),errorClass = "Hist_l")
       
       A <- dropdown(
         div(style="text-align:right; font-size :110%; font-weight:bold;", " Settings : "),         

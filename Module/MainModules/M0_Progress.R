@@ -25,7 +25,7 @@ box(width="100%",status="primary",
                     
                     #div(class="action-button--general--left", #action-button--mtop__Pr action-button--mleft__Pr",
                         actionBttn(inputId = ns("DT_AC3"),style = "jelly",color = "warning",
-                              label = div(class="action-button--widget","پیشرفت گروهی"))
+                              label = div(class="action-button--widget","Progress in Groups"))
               ),
 
 ########################################
@@ -35,7 +35,7 @@ box(width="100%",status="primary",
                     #div(class="action-button--general--left",
                        #style="margin-left:-40%; margin-top:80%;",
                         actionBttn(inputId = ns("Pr_AC1"),style = "jelly",color = "warning",
-                            label = div(class="action-button--widget","پیشرفت فردی"))
+                            label = div(class="action-button--widget","Progress for Individuals"))
              
            )
   ))),
@@ -81,13 +81,13 @@ M0_Prog <- function(input,output,session,Vals,font_plot){
   output$Pr_numI <- renderUI({
     if(is.null(Data())){
       ch <- ""
-      pickerInput(ns("Pr_numI"),label = "میانگین وزنی",choices = ch,
+      pickerInput(ns("Pr_numI"),label = "Weighted mean",choices = ch,
                   selected=1,
                   options = list(style = "btn"),
                   choicesOpt = ch_opt)
     } else{
       ch <- 1:ncol(Data())
-      pickerInput(ns("Pr_numI"),label = "میانگین وزنی",choices = ch,
+      pickerInput(ns("Pr_numI"),label = "Weighted mean",choices = ch,
                   selected=1,
                   options = list(style = "btn"))
     } 
@@ -104,14 +104,14 @@ M0_Prog <- function(input,output,session,Vals,font_plot){
     if(is.null(Data())) {
       ch <- ""
       ch_select <- ""
-      pickerInput(ns("Pr_bin2"),label = "تعداد گروه",choices = ch,selected = ch_select,
+      pickerInput(ns("Pr_bin2"),label = "Number of groups",choices = ch,selected = ch_select,
                   options = list(
                     style = "btn"),
                   choicesOpt = ch_opt)
     }else{
       ch <- 1:min(ch_bin(),5)
       ch_select <- min(2,ch_bin())
-      pickerInput(ns("Pr_bin2"),label = "تعداد گروه",choices = ch,selected = ch_select,
+      pickerInput(ns("Pr_bin2"),label = "Number of groups",choices = ch,selected = ch_select,
                   options = list(style = "btn"))
     }
     
@@ -145,7 +145,7 @@ M0_Prog <- function(input,output,session,Vals,font_plot){
     
     Mean <- apply(Data(),2,mean)
     Data_tot1 <- rbind(Data(),Mean)
-    rownames(Data_tot1) <- c(rownames(Data()),"میانگین")
+    rownames(Data_tot1) <- c(rownames(Data()),"Mean")
     
     fit_tot1 <- rep(list("NA"),dim(Data_tot1)[1])
     slope1 <- rep(NA,dim(Data_tot1)[1])
@@ -176,15 +176,15 @@ M0_Prog <- function(input,output,session,Vals,font_plot){
     
     if(length(unique(slope1[,3]))==1){
       if(slope1[,3]=="red"){
-        lab="پیشرفت"
+        lab="progress"
         col="#00BFC4"
       }
       else{
-        lab="پسرفت"
+        lab="return"
         col="#fa8880"
       }
     }else{
-      lab <- c("پسرفت","پیشرفت")
+      lab <- c("return","progress")
       col <- c("#fa8880","#00BFC4")
     }
     
@@ -192,7 +192,7 @@ M0_Prog <- function(input,output,session,Vals,font_plot){
     
     s1 <- ggplot(slope1,aes(x = reorder(names,sl),y = 100*sl))+
       geom_bar(data = slope1,stat="identity",aes(fill=factor(clr,labels = lab)),colour="black")+
-      labs(title="پیشرفت فردی دانش آموزان",x="",y="درصد پیشرفت خطی",fill="")+
+      labs(title="Student Progress over Time",x="",y="% Linear Progress",fill="")+
       geom_text(data=slope1,aes(x = names,y = 100*sl,label= lapply(round(100*sl,1),FUN=function(x){paste0(x,"%")})),
                 position = position_stack(vjust = 0.5),color="black",size=4.5)+
       theme(axis.text.x = element_text(size=11,colour="black",angle=0, hjust=1,vjust=.5),
@@ -319,7 +319,7 @@ M0_Prog <- function(input,output,session,Vals,font_plot){
       color = "black")
     
     text_hist <- list(
-      text = "فراوانی میانگین وزنی نمره ها در طول زمان",
+      text = "Frequency of Weighted means over time",
       font=f,
       xref = "paper",
       yref = "paper",
@@ -398,10 +398,10 @@ M0_Prog <- function(input,output,session,Vals,font_plot){
      #slope[which(slope$sl>0),3] <- "red"
 
     if(gr_num==1){
-      colnames(Gr_names) <- "گروه ۱"
+      colnames(Gr_names) <- "group 1"
     }else{
       Gr_names <- Gr_names[,order(slope$sl,decreasing = F)]
-      colnames(Gr_names) <- sapply(gr_num:1, function(x){paste("گروه",x)})
+      colnames(Gr_names) <- sapply(gr_num:1, function(x){paste("group",x)})
       }
 
      ylab_names <- rep(list("NA"),gr_num)
@@ -411,14 +411,14 @@ M0_Prog <- function(input,output,session,Vals,font_plot){
      }
     
     ylab_gr <- sapply(gr_num:1, function(x){
-      paste("گروه",x)
+      paste("group",x)
     })
     
     
     ylab_full <- rep(list("NA"),gr_num)
 
     if(gr_num==1){
-      ylab_full <- "گروه ۱ : تمام دانش آموزان"
+      ylab_full <- "group 1 : all students"
     }else{
       for(i in 1:gr_num){
         if(length(Gr_names[which(Gr_names[,i]!="NA"),i]) > 5) 
@@ -465,8 +465,8 @@ M0_Prog <- function(input,output,session,Vals,font_plot){
     slope[1:length(ind_neg),3] <- (r[1:length(ind_neg)])
     }
     
-    lab_r <- lapply(1:length(slope[,1]),FUN=function(x){paste("گروه",x,": پسرفت")})
-    lab_g <- lapply(1:length(slope[,1]),FUN=function(x){paste("گروه",x,": پیشرفت")})
+    lab_r <- lapply(1:length(slope[,1]),FUN=function(x){paste("group",x,": return")})
+    lab_g <- lapply(1:length(slope[,1]),FUN=function(x){paste("group",x,": progress ")})
     
 
     lab_legend_bar <- lab_g[1:gr_num]
@@ -531,7 +531,7 @@ M0_Prog <- function(input,output,session,Vals,font_plot){
       geom_bar(stat="identity",fill=slope$clr,color="black")+ #  aes(fill=factor(clr,labels=lab_legend_bar)),color="black")+
       #scale_fill_manual(values = factor(col))+    # filling geom_bar with colors
       #scale_fill_brewer(palette="blues")+
-      labs(title="پیشرفت گروهی دانش آموزان",x="",y="درصد پیشرفت خطی",fill="")+
+      labs(title="Progress in Groups",x="",y="% linear progress",fill="")+
       geom_text(data=slope,aes(x = reorder(names,round(100*sl,1)),y = round(100*sl,1),
                                label= lapply(round(100*sl,1),FUN=function(x){paste0(x,"%")})),
                 position = position_stack(vjust = 0.5),color="black",size=4.5)+
@@ -695,10 +695,10 @@ M0_Prog <- function(input,output,session,Vals,font_plot){
     
     if(out_ind$a==1){
     
-    validate(need(!is.null(Data()),"هنوز داده ای وارد نشده است"),errorClass = "Hist_l")  
+    validate(need(!is.null(Data()),"No Data has been imported yet!"),errorClass = "Hist_l")  
       
     A <- div(style="text-align:right",downloadBttn(ns("download"),
-                                   label = "دانلود",size = "sm"))
+                                   label = "Download",size = "sm"))
       
     B <- withSpinner(plotlyOutput(ns("Pr")),type=5,color = "#006E6D",size = 0.6)
     
@@ -710,10 +710,10 @@ M0_Prog <- function(input,output,session,Vals,font_plot){
     }
     if(out_ind$a==2){
       
-      validate(need(!is.null(Data()),"هنوز داده ای وارد نشده است"),errorClass = "Hist_l")
+      validate(need(!is.null(Data()),"No Data has been imported yet!"),errorClass = "Hist_l")
       
       A <- div(style="text-align:right",downloadBttn(ns("download"),
-                                     label = "دانلود",size = "sm"))
+                                     label = "Download",size = "sm"))
       
       B <- withSpinner(plotlyOutput(ns("Pr")),type=5,color = "#006E6D",size = 0.6)
       
@@ -728,13 +728,13 @@ M0_Prog <- function(input,output,session,Vals,font_plot){
   
   
   output$download <- downloadHandler(
-    filename = paste0("پیشرفت",".html"),
+    filename = paste0("progress",".html"),
     content=function(file){ 
       
       tempReport <- file.path(tempdir(),"progress.Rmd")
       file.copy("report/progress.Rmd",tempReport,overwrite = TRUE)
-      tempImage <- file.path(tempdir(),"logogrey.svg")
-      file.copy("report/logogrey.svg",tempImage,overwrite = TRUE)
+      tempImage <- file.path(tempdir(),"Logo.png")
+      file.copy("report/Logo.png",tempImage,overwrite = TRUE)
       if(out_ind$a==1)
         params <- list(n = React_out(),m= D_Table2())
       if(out_ind$a==2)

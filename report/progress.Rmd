@@ -49,26 +49,12 @@ p {
 HTML("<br></br>")
 ```
 
-<div class="column-left">
-```{r pressure, echo=FALSE, fig.cap="تولید شده توسط راوی"}
-knitr::include_graphics("logogrey.svg")
-```
-</div>
-
-<div class="column-right">
 ```{r plot,echo=FALSE}
 # The `params` object is available in the document.
 params$n
-```
-</div>
-
-
-<div class="table">
-```{r table,echo=FALSE}
-# The `params` object is available in the document.
 if(!is.null(params$m))
 params$m
 ```
-</div>
+
 
 

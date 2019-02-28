@@ -937,7 +937,7 @@ React_DT3 <-eventReactive(input$DT_AC3, {
        
        
       validate(
-        need(!is.null(Data()),"No Data has been imprted yet!"),errorClass = "Hist_l"
+        need(!is.null(Data()),"No Data has been imported yet!"),errorClass = "Hist_l"
       )
       
       A <- dropdown(
@@ -979,7 +979,7 @@ React_DT3 <-eventReactive(input$DT_AC3, {
     if(table_ind$a==2){
       
     validate(
-      need(!is.null(Data()),"No Data has been imprted yet!"),errorClass = "Hist_l"
+      need(!is.null(Data()),"No Data has been imported yet!"),errorClass = "Hist_l"
     )  
     
    
