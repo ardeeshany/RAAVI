@@ -40,7 +40,9 @@ tags$head(tags$link(href = "custom.css", rel = "stylesheet")),
 
 tags$head(tags$style(HTML("@font-face { font-family: dastnevis; src: url(dastnevis.ttf);}") )), 
 
-tags$head(tags$style(HTML("@font-face { font-family: main_font; src: url(IRANSansDNLight.ttf);}") )),
+#tags$head(tags$style(HTML("@font-face { font-family: main_font; src: url(IRANSansDNLight.ttf);}") )),
+
+tags$head(tags$style(HTML("@font-face { font-family: main_font; src: url(CONSOLA.ttf);}") )),
 
 tags$head(tags$style(HTML("@font-face { font-family: IRANSansDN; src: url(IRANSansDN.ttf);}") )),
 

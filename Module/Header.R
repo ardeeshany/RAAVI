@@ -37,8 +37,8 @@ HeaderUI <- function(id){
       
       
       # div(
-      title = helpText(div(style=" color : #9C9A40; text-align:center ;font-size: 120%; font-weight: bold;font-family:'dastnevis';",
-                                        "راوی")),
+      title = helpText(div(style=" color : #9C9A40; text-align:center ;font-size: 95%; font-weight: bold;font-family:'dastnevis';",
+                                        "RAAVI")),
   
     
                 ### long Title

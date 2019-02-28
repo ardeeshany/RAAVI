@@ -51,9 +51,9 @@ box(width="100%",
 
     wellPanel(
       fileInput(inputId = ns("f_new"),
-                label = div(class="load__subtitle--font-size",'آپلود فایل'),
+                label = div(class="load__subtitle--font-size",'Upload'),
                 buttonLabel = list(icon("file-excel-o")),
-                placeholder = "ورود",
+                placeholder = "Insert",
                 width = "100%",
                 accept=".xlsx")
       ),
@@ -63,13 +63,13 @@ box(width="100%",
 
     div(class="input-box--general",
                  numericInput(inputId = ns("num_row"),
-                  label =  "تعداد دانش آموز",min = 1,value = 1,step = 1)),
+                  label =  "number of students",min = 1,value = 1,step = 1)),
     div(class="input-box--general", 
                  numericInput(inputId = ns("num_col"),
-                  label = "تعداد امتحان",min = 1,value = 1,step = 1)),
+                  label = "number of exams",min = 1,value = 1,step = 1)),
       
     actionBttn(inputId = ns("f_make"),style = "jelly",color = "warning",
-               label = div(class="action-button--widget","ساختن فایل"))
+               label = div(class="action-button--widget","Create a file"))
     ),
     
     
@@ -78,14 +78,14 @@ box(width="100%",
           div(class="load--font-size_add",
               textAreaInput(inputId = ns("save_name"),label = "", value ="",
                             height = "2.3em",resize = "none",width = "100%",
-                            placeholder ='نام فایل ذخیره')),
+                            placeholder ='choose a name')),
           
           #div(style="height:150%;",
               # downloadBttn(ns("downloadData"),style = "material-circle",color = "warning",
               #                div(class="action-button--widget","ذخیره کردن داده"))
              div(style="color:black", 
              downloadBttn(ns("downloadData"),color = "warning", 
-              style ="jelly",size = "md",label=div(class="inline",style="font-size:68%;color:black;","ذخیره"))
+              style ="jelly",size = "md",label=div(class="inline",style="font-size:68%;color:black;","Save"))
              )            
           #uiOutput(ns("message"), inline=TRUE)
           
@@ -94,7 +94,7 @@ box(width="100%",
       wellPanel(
         div(style="align:center; tet-align:center;",
         actionBttn(inputId = ns("f_test"),style = "jelly",color = "warning",
-                   label = div(class="action-button--widget","فایل نمونه")))
+                   label = div(class="action-button--widget","Sample file")))
         
         
         )
@@ -175,8 +175,8 @@ br(),
                  conditionalPanel(
                    condition = " input.hot == null ", ns=ns,
                    div(style="color:grey; font-size:140%;",br(), br(),
-                  "هنوز فایلی وارد نشده است",br(),br(),
-                  "فایل خود را از منوی سمت چپ وارد کرده یا فایل جدید بسازید",
+                  "No file has been uploaded",br(),br(),
+                  "Please upload your excel file or create a new one!",
                   br(),br(),br())
                                 ),
 
@@ -187,22 +187,22 @@ br(),
                    br(),
                    
                    
-                   box(collapsible = TRUE,title = "تغییر دیتا",collapsed = TRUE,width = "200%",status = "info",
+                   box(collapsible = TRUE,title = "Data Manipulation",collapsed = TRUE,width = "200%",status = "info",
                        fluidRow(
                          column(width = 3,
                             wellPanel(div(class="inline load_add",
                                  uiOutput(ns("ui_newcolname"))),
                                  div(style="margin-top:-1%",
                                  actionBttn(ns("addcolumn"), 
-                                            div(class="action-button--widget","اضافه ستون"),
+                                            div(class="action-button--widget","Adding column"),
                                             style = "jelly",color = "warning")))),
                          
                          column(width = 3,       
                                 wellPanel(div(class="inline load_add",
                                   uiOutput(ns("ui_removecolname"))),
-                                  div(style="margin-top:-6%",
+                                  div(style="margin-top:-2%",
                                   actionBttn(ns("removecolumn"),
-                                    div(class="action-button--widget","حذف ستون"),
+                                    div(class="action-button--widget","Delete column"),
                                     style = "jelly",color = "warning")))),
                          
                          column(width = 3,
@@ -210,15 +210,15 @@ br(),
                                    uiOutput(ns("ui_newrowname"))),
                                    div(style="margin-top:-1%",
                                    actionBttn(ns("addrow"),
-                                    div(class="action-button--widget","اضافه سطر"),
+                                    div(class="action-button--widget","Adding row"),
                                     style = "jelly",color = "warning")))),
                          
                          column(width = 3,       
                                 wellPanel(div(class="inline load_add", 
                                     uiOutput(ns("ui_removerowname"))),
-                                    div(style="margin-top:-6%",
+                                    div(style="margin-top:-2%",
                                     actionBttn(ns("removerow"),
-                                      div(class="action-button--widget","حذف سطر"),
+                                      div(class="action-button--widget","Delete row"),
                                       style = "jelly",color = "warning"))))
                        ))
                )))
@@ -232,9 +232,9 @@ br(),
 
 M0_Load <- function(input,output,session,outputDir){
   
-
   Date_US <- as.OtherDate(Sys.Date(),"persian")[1:3]
-  Date_Persian = sprintf("%s-%s-%s",Date_US[3],Date_US[2],Date_US[1])
+  #Date_Persian = sprintf("%s-%s-%s",Date_US[3],Date_US[2],Date_US[1])
+  Date_Persian <- Sys.Date()
   
   
   # saveData <- function(data,fileName){
@@ -257,7 +257,7 @@ M0_Load <- function(input,output,session,outputDir){
   
   
   observeEvent(input$f_test,{
-    D_new <- read.xlsx(file.path(getwd(),"www/Data.xlsx"))
+    D_new <- read.xlsx(file.path(getwd(),"www/Data_en.xlsx"))
     values[["now"]] <- D_new[,-1]
     values[["names"]] <- D_new[,1]
     values[["dates"]] <-colnames(D_new)[-1]
@@ -441,7 +441,7 @@ M0_Load <- function(input,output,session,outputDir){
   output$ui_newrowname <- renderUI({
     textAreaInput(session$ns("newrowname"), label = "",
                   height = "2.4em",resize = "none",width = "100%",
-        placeholder = "نام دانش آموز")#sprintf("newrow%s", 1+nrow(values[["now"]])) )
+        placeholder = "Student Name")#sprintf("newrow%s", 1+nrow(values[["now"]])) )
   })
   
   observeEvent(input$addrow, {
