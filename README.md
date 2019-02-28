@@ -3,7 +3,6 @@
 <img src="Logo.png" width="200">  
 You can see a [live demo](https://ardeeshany.shinyapps.io/Raavi_en) of this app here.
 
-
 &nbsp;
 
 ##### Introduction
