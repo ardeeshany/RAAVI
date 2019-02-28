@@ -3,13 +3,14 @@ output: html_document
 runtime: shiny
 params:
   n: NA
+  m: NA
 ---
 <style>
 .column-left{
   float:left;
   width: 12%;
   text-align: center;
-  margin-top:22%;
+  margin-top:32%;
   font-family:IRANSansDN_Light
 }
 .column-right{
@@ -40,18 +41,20 @@ p {
 HTML("<br></br>")
 ```
 
-<div class="column-left">
-```{r pressure, echo=FALSE, fig.cap="تولید شده توسط راوی"}
-knitr::include_graphics("logogrey.svg")
-```
-</div>
+<!-- <div class="column-left"> -->
+<!-- ```{r pressure, echo=FALSE, fig.cap=""} -->
+<!-- knitr::include_graphics("Logo.png") -->
+<!-- ``` -->
+<!-- </div> -->
 
-<div class="column-right">
+
 ```{r ggplot2,echo=FALSE, fig.width=9,fig.height=6}
 # The `params` object is available in the document.
 params$n
+if(!is.null(params$m))
+params$m
 ```
-</div>
+
 
 
 

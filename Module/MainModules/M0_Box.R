@@ -26,7 +26,7 @@ div(style="text-align:center;",
                     br(),
                     
                     actionBttn(inputId = ns("Bx_Ac"),style = "jelly",color = "warning",
-                          label= div(class="action-button--widget","در طول زمان"))
+                          label= div(class="action-button--widget","Run"))
                           #٫label = div(class="action-button--font-size",style="color:black","آنالیز"))
                                      #class="action-button--color--yellow")
            )))),
@@ -70,14 +70,14 @@ M0_Box <- function(input,output,session,Vals,font_plot){
     if(is.null(Data())) {
       ch <- ""
       ch_select <- ""
-      pickerInput(inputId = ns("Bx_SeI1"),label = "زمان ابتدا",choices = ch,
+      pickerInput(inputId = ns("Bx_SeI1"),label = "First Exam",choices = ch,
                   selected =ch_select,
                   options = list(style = "btn"),
                   choicesOpt = ch_opt)
     }else{
       ch <- colnames(Data())
       ch_select <- colnames(Data())[1]
-      pickerInput(inputId = ns("Bx_SeI1"),label = "زمان ابتدا",choices = ch,
+      pickerInput(inputId = ns("Bx_SeI1"),label = "First Exam",choices = ch,
                   selected =ch_select,
                   options = list(style = "btn"))
     }
@@ -88,14 +88,14 @@ M0_Box <- function(input,output,session,Vals,font_plot){
     if(is.null(Data())) {
       ch <- ""
       ch_select <- ""
-      pickerInput(inputId = ns("Bx_SeI2"),label = "زمان انتها",choices = ch,
+      pickerInput(inputId = ns("Bx_SeI2"),label = "Last Exam",choices = ch,
                   selected =ch_select,
                   options = list(style = "btn"),
                   choicesOpt = ch_opt)
     }else{
       ch <- colnames(Data())
       ch_select <- tail(colnames(Data()),1)
-      pickerInput(inputId = ns("Bx_SeI2"),label = "زمان انتها",choices = ch,
+      pickerInput(inputId = ns("Bx_SeI2"),label = "Last Exam",choices = ch,
                   selected =ch_select,
                   options = list(style = "btn"))
     }
@@ -112,7 +112,7 @@ M0_Box <- function(input,output,session,Vals,font_plot){
     max=which(colnames(Data())==input$Bx_SeI2)
 
     validate(
-      need(min <= max,"زمان ابتدا نباید بعد از زمان انتها باشد"), errorClass = "Hist_l"
+      need(min <= max,"The second date should be happened after the first date"), errorClass = "Hist_l"
     )
     
     if(min < max){
@@ -133,7 +133,7 @@ M0_Box <- function(input,output,session,Vals,font_plot){
       p1 <- ggplot(melt_Data_Bx , aes(x=Day,y=value,fill=Day))+ geom_boxplot() +
         # stat_summary(fun.y=mean, colour="darkred", geom="point")+# shape=20, size=2, color="red", fill="red")+
         # stat_summary(fun.data = mean_se, geom = "errorbar")+
-        labs(title = "روند کلاس در طول زمان", x ="",y="نمره",fill="تاریخ")+
+        labs(title = "Box Plot of the exams within the time", x ="",y="Scores",fill="Date")+
         scale_x_discrete(labels=colnames(Data())[vec_ind])+
         #geom_jitter(width = 0.2)+
         theme(axis.text.x = element_text(size=11,colour="black",angle=60, hjust=1,vjust=.5),
@@ -146,7 +146,7 @@ M0_Box <- function(input,output,session,Vals,font_plot){
       p2 <- ggplot(melt_Data_Bx , aes(x=Day,y=value,fill=Day))+
         stat_summary(fun.y=mean, geom="point", size=3)+# shape=20, size=2, color="red", fill="red")+
         stat_summary(fun.data = mean_se, geom = "errorbar")+
-        labs(title = "میانگین و میزان انحراف از آن", x ="",y="نمره",fill="تاریخ")+
+        labs(title = "Mean and Standard Deviation", x ="",y="Scores",fill="Date")+
         scale_x_discrete(labels=colnames(Data())[vec_ind])+
         #geom_jitter(width = 0.2)+
         theme(axis.text.x = element_text(size=11,colour="black",angle=60, hjust=1,vjust=.5),
@@ -242,22 +242,22 @@ M0_Box <- function(input,output,session,Vals,font_plot){
     
     if(out_ind$a==1){
       
-    validate(need(!is.null(Data()),"هنوز داده ای وارد نشده است"),errorClass = "Hist_l")  
+    validate(need(!is.null(Data()),"The Data has not been imported yet!"),errorClass = "Hist_l")  
     
     A <- dropdown(
-        div(style="text-align:right; font-size :110%; font-weight:bold;", ":تنظیمات نمودار"),         
+        div(style="text-align:right; font-size :110%; font-weight:bold;", "Settings : "),         
 
-        materialSwitch(inputId = ns("add_points"),label = "اضافه کردن نفرات", 
+        materialSwitch(inputId = ns("add_points"),label = "Adding individuals", 
                        status = "danger", right = TRUE,value = FALSE),
         
-        materialSwitch(inputId = ns("combine"),label = "تجمیع نمودارها",
+        materialSwitch(inputId = ns("combine"),label = "Combining plots",
                        status = "danger", right = TRUE,value = FALSE),
         
         circle = TRUE, status = "default", icon = icon("gear"),style = "unite",width = "38%")
     
       
     B <- div(style="text-align:right",downloadBttn(ns("download"),
-                                                   label = "دانلود",size = "sm"))
+                                                   label = "Download",size = "sm"))
     
     return(list(A,B,br()))
     }
@@ -291,17 +291,17 @@ M0_Box <- function(input,output,session,Vals,font_plot){
   
   output$Bx1 <- renderPlotly(Reac_CP2M_Bx()$gg1)
   output$Bx2 <- renderPlotly(Reac_CP2M_Bx()$gg2)
-  
+
   
   output$download <- downloadHandler(
-    filename = paste0("روند کلاس",".html"),
+    filename = paste0("Class",".html"),
     content=function(file){ 
       
       tempReport <- file.path(tempdir(),"box.Rmd")
       file.copy("report/box.Rmd",tempReport,overwrite = TRUE)
-      tempImage <- file.path(tempdir(),"logogrey.svg")
-      file.copy("report/logogrey.svg",tempImage,overwrite = TRUE)
-      params <- list(n = Reac_CP2M_Bx())
+      tempImage <- file.path(tempdir(),"Logo.png")
+      file.copy("report/Logo.png",tempImage,overwrite = TRUE)
+      params <- list(n = Reac_CP2M_Bx()$gg1,m=Reac_CP2M_Bx()$gg2)
       rmarkdown::render(tempReport,output_file = file,
                         params = params,
                         envir = new.env(parent = globalenv()))
