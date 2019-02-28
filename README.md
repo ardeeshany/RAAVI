@@ -1,5 +1,6 @@
 #### Raavi, Educational data Visualization
-![](Logo.png){width=18%}
+
+![](Logo.png){width=50px}
 You can see a [live demo](https://ardeeshany.shinyapps.io/Raavi_en/) of this app here.
 
 ##### Introduction
