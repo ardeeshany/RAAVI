@@ -22,7 +22,7 @@ column(width = 2,
 br(),  
 box(width="100%",status="primary",     
     
-  wellPanel(
+  wellPanel( 
   
                     div(class="input-box--general",
                         uiOutput(ns("Hg_SeI"))),
@@ -32,7 +32,7 @@ box(width="100%",status="primary",
                         uiOutput(ns("Hg_bin"))),
 
                         actionBttn(inputId = ns("Hg_Ac"),style = "jelly",color = "warning",
-                                     label = div(class="action-button--widget","در یک زمان"))
+                                     label = div(class="action-button--widget","Run - one exam"))
                                      
 
 ),
@@ -40,7 +40,7 @@ box(width="100%",status="primary",
              
 ####################################
       
- wellPanel(    
+ wellPanel( 
 
              div(class="numeric-box--general__Pr",
                  uiOutput(ns("Pr_numI"))),
@@ -50,7 +50,7 @@ box(width="100%",status="primary",
 
 
                  actionBttn(inputId = ns("DT_AC3"),style = "jelly",color = "warning",
-                              label = div(class="action-button--widget", "در طول زمان"))
+                              label = div(class="action-button--widget", "Run - all time"))
                               #class="action-button--color--yellow")
 
 )
@@ -143,14 +143,14 @@ M0_Hist <- function(input,output,session,Vals,font_plot){
     if(is.null(Data())) {
       ch <- ""
       ch_select <- ""
-      pickerInput(inputId = ns("Hg_SeI"),label = "تاریخ",choices = ch,
+      pickerInput(inputId = ns("Hg_SeI"),label = "Date",choices = ch,
                   selected =ch_select,
                   options = list(style = "btn"),
                   choicesOpt = ch_opt)
     }else{
       ch <- colnames(Data())
       ch_select <- tail(ch,1)
-      pickerInput(inputId = ns("Hg_SeI"),label = "تاریخ",choices = ch,
+      pickerInput(inputId = ns("Hg_SeI"),label = "Date",choices = ch,
                   selected =ch_select,
                   options = list(style = "btn"))
     }
@@ -164,7 +164,7 @@ M0_Hist <- function(input,output,session,Vals,font_plot){
   if(is.null(Data())) {
       ch <- ""
       ch_select <- ""
-      pickerInput(ns("Hg_bin"),label = "تعداد گروه",choices = ch,selected = ch_select,
+      pickerInput(ns("Hg_bin"),label = "Number of groups",choices = ch,selected = ch_select,
                   options = list(style = "btn"),
                   choicesOpt = ch_opt)
     }else{
@@ -175,7 +175,7 @@ M0_Hist <- function(input,output,session,Vals,font_plot){
       #if(!is.null(group_mean())){
       ch <- 1:min(ch_bin(),5)
       ch_select <- min(2,ch_bin())
-      pickerInput(ns("Hg_bin"),label = "تعداد گروه",choices = ch,selected = ch_select,
+      pickerInput(ns("Hg_bin"),label = "Number of groups",choices = ch,selected = ch_select,
                   options = list(style = "btn"))
     
       #}
@@ -262,7 +262,7 @@ M0_Hist <- function(input,output,session,Vals,font_plot){
     
     
     group_names <- as.data.frame(matrix(NA,max(count),length(splt)))
-    colnames(group_names) <- sapply(length(splt):1, function(x){paste("دسته",x)})
+    colnames(group_names) <- sapply(length(splt):1, function(x){paste("batch",x)})
     rownames(group_names) <- 1:max(count)
     
     for(i in 1:length(splt)){
@@ -271,10 +271,10 @@ M0_Hist <- function(input,output,session,Vals,font_plot){
     
     if(gr_num==1){
       Gr_names <- as.data.frame(gr_names)
-      colnames(Gr_names) <- "گروه ۱"
+      colnames(Gr_names) <- "group 1"
     }else{
       Gr_names <- as.data.frame(matrix(NA,nrow = max(sapply(gr_names,length)),ncol = gr_num ))
-      colnames(Gr_names) <- sapply(gr_num:1, function(x){paste("گروه",x)})
+      colnames(Gr_names) <- sapply(gr_num:1, function(x){paste("group",x)})
       for(i in 1:gr_num){
         Gr_names[1:length(gr_names[[i]]),i] = gr_names[[i]]
       }}
@@ -288,14 +288,14 @@ M0_Hist <- function(input,output,session,Vals,font_plot){
     #   paste0(x,"%")
     # })
     
-    lab_legend <- paste("گروه",
+    lab_legend <- paste("group",
                         1:length(leg),":   ","%",round(100*leg,1))
     
     # lab_legend <- sapply(1:gr_num, function(x){
     #   paste("گروه",x)
     #   })
     lab_legend_bar <- sapply(1:gr_num, function(x){
-      paste("گروه",x)
+      paste("group",x)
     })
     
     
@@ -333,7 +333,7 @@ M0_Hist <- function(input,output,session,Vals,font_plot){
       geom_histogram(aes(y = round(..count../(0.01*sum(..count..)),1),
                          fill=factor(clr,labels=lab_legend)), bins=c,
                      colour="black",alpha=0.9)+
-      labs(title ="", x = "نمره", y = "فراوانی")+
+      labs(title ="", x = "Scores", y = "Frequency")+
       theme(axis.text.x = element_text(size=11,colour="black",angle=0, hjust=1,vjust=.5),
             axis.text.y = element_text(size=12,colour="black"),
             axis.title=element_text(size=14,face="bold"),
@@ -465,13 +465,13 @@ M0_Hist <- function(input,output,session,Vals,font_plot){
   output$Pr_numI <- renderUI({
     if(is.null(Data())){
       ch <- ""
-      pickerInput(ns("Pr_numI"),label = "میانگین وزنی",choices = ch,
+      pickerInput(ns("Pr_numI"),label = "Weighted mean",choices = ch,
                   selected=1,
                   options = list(style = "btn"),
                   choicesOpt = ch_opt)
     } else{
       ch <- 1:ncol(Data())
-      pickerInput(ns("Pr_numI"),label = "میانگین وزنی",choices = ch,
+      pickerInput(ns("Pr_numI"),label = "Weighted mean",choices = ch,
                   selected=1,
                   options = list(style = "btn"))
     } 
@@ -484,14 +484,14 @@ M0_Hist <- function(input,output,session,Vals,font_plot){
     if(is.null(Data())) {
       ch <- ""
       ch_select <- ""
-      pickerInput(ns("Pr_bin2"),label = "تعداد گروه",choices = ch,selected = ch_select,
+      pickerInput(ns("Pr_bin2"),label = "Number of groups",choices = ch,selected = ch_select,
                   options = list(
                     style = "btn"),
                   choicesOpt = ch_opt)
     }else{
       ch <- 1:min(ch_bin(),5)
       ch_select <- min(2,ch_bin())
-      pickerInput(ns("Pr_bin2"),label = "تعداد گروه",choices = ch,selected = ch_select,
+      pickerInput(ns("Pr_bin2"),label = "Number of groups",choices = ch,selected = ch_select,
                   options = list(
                     style = "btn"))
     }
@@ -584,7 +584,7 @@ React_DT3 <-eventReactive(input$DT_AC3, {
   ##################
   
   group_names <- as.data.frame(matrix(NA,max(count),length(splt)))
-  colnames(group_names) <- sapply(length(splt):1, function(x){paste("دسته",x)})
+  colnames(group_names) <- sapply(length(splt):1, function(x){paste("batch",x)})
   rownames(group_names) <- 1:max(count)
   
   for(i in 1:length(splt)){
@@ -594,10 +594,10 @@ React_DT3 <-eventReactive(input$DT_AC3, {
   
   if(gr_num==1){
     Gr_names <- as.data.frame(gr_names)
-    colnames(Gr_names) <- "گروه ۱"
+    colnames(Gr_names) <- "group 1"
   }else{
     Gr_names <- as.data.frame(matrix(NA,nrow = max(sapply(gr_names,length)),ncol = gr_num ))
-    colnames(Gr_names) <- sapply(gr_num:1, function(x){paste("گروه",x)})
+    colnames(Gr_names) <- sapply(gr_num:1, function(x){paste("group",x)})
     for(i in 1:gr_num){
       Gr_names[1:length(gr_names[[i]]),i] = gr_names[[i]]
     }}
@@ -606,7 +606,7 @@ React_DT3 <-eventReactive(input$DT_AC3, {
   
   
   lab_legend_bar <- sapply(1:gr_num, function(x){
-    paste("گروه",x)
+    paste("group",x)
   })
   
 
@@ -644,7 +644,7 @@ React_DT3 <-eventReactive(input$DT_AC3, {
     length(x[which(x!='NA')])/dim(melt_Data_Hg)[1]
   }))
   
-  lab_legend_hist <- paste("گروه",
+  lab_legend_hist <- paste("group",
                            1:length(leg_hist),":   ","%",round(100*leg_hist,1))
   
 
@@ -652,7 +652,7 @@ React_DT3 <-eventReactive(input$DT_AC3, {
     geom_histogram(aes(y = round(..count../(0.01*sum(..count..)),1),
                        fill=factor(clr,labels=lab_legend_hist)), bins=c,
                    colour="black",alpha=0.9)+
-    labs(title ="", x = "نمره", y = "")+
+    labs(title ="", x = "Scores", y = "")+
     theme(axis.text.x = element_text(size=11,colour="black",angle=0, hjust=1,vjust=.5),
           axis.text.y = element_text(size=12,colour="black"),
           axis.title=element_text(size=14,face="bold"),
@@ -759,7 +759,7 @@ React_DT3 <-eventReactive(input$DT_AC3, {
     color = "black")
   
   text_bar <- list(
-    text = "میانگین وزنی نمره دانش آموزان در طول زمان",
+    text = "Weighted mean of students over time",
     font=f,
     xref = "paper",
     yref = "paper",
@@ -772,7 +772,7 @@ React_DT3 <-eventReactive(input$DT_AC3, {
   )
   
   text_bar1 <- list(
-    text = "نمره دانش آموزان",
+    text = "Student scores",
     font=f,
     xref = "paper",
     yref = "paper",
@@ -785,7 +785,7 @@ React_DT3 <-eventReactive(input$DT_AC3, {
   )
   
   text_hist_date <- list(
-    text = "فراوانی نمره ها در یک زمان مشخص",
+    text = "Frequency of scores in one date",
     font=f,
     xref = "paper",
     yref = "paper",
@@ -799,7 +799,7 @@ React_DT3 <-eventReactive(input$DT_AC3, {
   
   
   text_hist_mean <- list(
-    text = "فراوانی میانگین وزنی نمره ها در طول زمان",
+    text = "Frequency of weighted means over time",
     font=f,
     xref = "paper",
     yref = "paper",
@@ -937,28 +937,28 @@ React_DT3 <-eventReactive(input$DT_AC3, {
        
        
       validate(
-        need(!is.null(Data()),"هنوز داده ای وارد نشده است"),errorClass = "Hist_l"
+        need(!is.null(Data()),"No Data has been imprted yet!"),errorClass = "Hist_l"
       )
       
       A <- dropdown(
-        div(style="text-align:right; font-size :110%; font-weight:bold;", ":تنظیمات نمودار"),
+        div(style="text-align:right; font-size :110%; font-weight:bold;", "Settings : "),
         div(style="text-align:left",
             noUiSliderInput(inputId = ns("slider_width"),
-                            label =div(style="font-size:80%;","مقیاس نمودارها"),tooltips = F,
+                            label =div(style="font-size:80%;","scale of plots"),tooltips = F,
                             inline = T, min = 15,max = 75,value = 35,step = 1,
                             width = "100%",color = "#578CA9")),
-        materialSwitch(inputId = ns("density"), label = "نمودار توزیع", status = "danger", right = TRUE),
+        materialSwitch(inputId = ns("density"), label = "density function", status = "danger", right = TRUE),
         circle = TRUE, status = "default", icon = icon("gear"),style = "unite",width = "25%"
       ) 
       
       B <- div(style="text-align:right",downloadBttn(ns("download"),
-                                                     label = "دانلود",size = "sm"))
+                                                     label = "Download",size = "sm"))
       
       C <- withSpinner(plotlyOutput(ns("Hg_1")),type=5,color = "#006E6D",size = 0.6)
        
       D <- dropdown(
-        div(style="text-align:right; font-size :110%; font-weight:bold;", ":تنظیمات جدول"),
-        radioGroupButtons(inputId = ns("table"),label = "",choices = c("گروه"="G","دسته"="D"),
+        div(style="text-align:right; font-size :110%; font-weight:bold;", "Settings : "),
+        radioGroupButtons(inputId = ns("table"),label = "",choices = c("group"="G","batch"="D"),
                           selected = "G",individual = TRUE,
                           checkIcon = list(
                             yes = tags$i(class = "fa fa-circle", 
@@ -979,30 +979,30 @@ React_DT3 <-eventReactive(input$DT_AC3, {
     if(table_ind$a==2){
       
     validate(
-      need(!is.null(Data()),"هنوز داده ای وارد نشده است"),errorClass = "Hist_l"
+      need(!is.null(Data()),"No Data has been imprted yet!"),errorClass = "Hist_l"
     )  
     
    
     A <- dropdown(
-        div(style="text-align:right; font-size :110%; font-weight:bold;", ":تنظیمات نمودار"),
+        div(style="text-align:right; font-size :110%; font-weight:bold;", "Settings : "),
         div(style="text-align:left",
             noUiSliderInput(inputId = ns("slider_width"),
-                            label =div(style="font-size:80%;","مقیاس نمودارها"),tooltips = F,
+                            label =div(style="font-size:80%;","scale of plots"),tooltips = F,
                             inline = T, min = 15,max = 75,value = 35,step = 1,
                             width = "100%",color = "#578CA9")),
-        materialSwitch(inputId = ns("density"), label = "نمودار توزیع", status = "danger", right = TRUE),
+        materialSwitch(inputId = ns("density"), label = "density function", status = "danger", right = TRUE),
         circle = TRUE, status = "default", icon = icon("gear"),style = "unite",width = "25%"
       )
       
     B <- div(style="text-align:right",downloadBttn(ns("download"),
-                                                   label = "دانلود",size = "sm"))
+                                                   label = "Download",size = "sm"))
          
     C <- withSpinner(plotlyOutput(ns("Hg_2")),type=5,color = "#006E6D",size = 0.6)
     
     
     D <- dropdown(
-      div(style="text-align:right; font-size :110%; font-weight:bold;", ":تنظیمات جدول"),
-      radioGroupButtons(inputId = ns("table"),label = "",choices = c("گروه"="G","دسته"="D"),
+      div(style="text-align:right; font-size :110%; font-weight:bold;", "Settings : "),
+      radioGroupButtons(inputId = ns("table"),label = "",choices = c("group"="G","batch"="D"),
                    selected = "G",individual = TRUE,
                    checkIcon = list(
                      yes = tags$i(class = "fa fa-circle", 
@@ -1026,13 +1026,13 @@ React_DT3 <-eventReactive(input$DT_AC3, {
   
   
   output$download <- downloadHandler(
-    filename = paste0("گروه بندی",".html"),
+    filename = paste0("Category",".html"),
     content=function(file){ 
       
       tempReport <- file.path(tempdir(),"hist.Rmd")
       file.copy("report/hist.Rmd",tempReport,overwrite = TRUE)
-      tempImage <- file.path(tempdir(),"logogrey.svg")
-      file.copy("report/logogrey.svg",tempImage,overwrite = TRUE)
+      tempImage <- file.path(tempdir(),"Logo.png")
+      file.copy("report/Logo.png",tempImage,overwrite = TRUE)
       if(table_ind$a==1)
       params <- list(n = Reac_Hg_final(),m= React_out_table_l())
       if(table_ind$a==2)
