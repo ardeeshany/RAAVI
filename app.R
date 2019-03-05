@@ -102,10 +102,10 @@ source('Module/M3_Class.R')
 #source('Module/M_Student.R')
   #source('Module/MainModules/M0_St_Scatter.R')
 source('Module/M_Summary.R')
-source('Module/I1_Info.R')
+#source('Module/I1_Info.R')
   #source('Module/MainModules/I0_Net.R')
-  source('Module/MainModules/I0_Card.R')
-  source('Module/MainModules/I0_Contact.R')
+#  source('Module/MainModules/I0_Card.R')
+#  source('Module/MainModules/I0_Contact.R')
 
 
     ui <- dashboardPage(
