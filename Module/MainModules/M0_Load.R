@@ -290,13 +290,13 @@ M0_Load <- function(input,output,session,outputDir){
 
     
   observeEvent(input$f_make,{
-    D_new <- data.frame("تاریخ آزمون"="",matrix("",nrow = input$num_row,ncol = input$num_col),stringsAsFactors = FALSE)
-    colnames(D_new)[1] <- "تاریخ آزمون"
+    D_new <- data.frame("Exam Date"="",matrix("",nrow = input$num_row,ncol = input$num_col),stringsAsFactors = FALSE)
+    colnames(D_new)[1] <- "Exam Date"
     for(i in 1:input$num_col) { 
-      colnames(D_new)[i+1] <- paste("تاریخ ", i, sep = "")
+      colnames(D_new)[i+1] <- paste("Date ", i, sep = "")
     }
     for(i in 1:input$num_row) { 
-      D_new[i,1] <- paste("نام ", i, sep = "")
+      D_new[i,1] <- paste("NAME ", i, sep = "")
     }
 
     if(input$num_col==1){
@@ -501,7 +501,7 @@ M0_Load <- function(input,output,session,outputDir){
   output$hot <- renderRHandsontable({
       if (!is.null(values[["now"]])){
       #values[["now"]] <- data.frame(lapply(values[["now"]], as.character), stringsAsFactors=FALSE)
-      r1 <- data.frame(cbind("تاریخ آزمون",t(values[["dates"]])),stringsAsFactors = FALSE)
+      r1 <- data.frame(cbind("Exam Date",t(values[["dates"]])),stringsAsFactors = FALSE)
       r2 <- data.frame(cbind(values[["names"]],values[["now"]]),stringsAsFactors = FALSE)
       names(r2) <- names(r1)
       Tot <- rbind(r1,r2)
@@ -547,7 +547,7 @@ M0_Load <- function(input,output,session,outputDir){
         print("Ardal")
         #print(cbind(values[["names"]],values[["now"]]))
         finalDF <- cbind(values[["names"]],values[["now"]])
-        colnames(finalDF) <- c("تاریخ آزمون",values[["dates"]])
+        colnames(finalDF) <- c("Exam Date",values[["dates"]])
         write.xlsx(finalDF, file, row.names = FALSE)
       }
     )
