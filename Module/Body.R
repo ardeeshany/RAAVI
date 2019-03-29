@@ -63,7 +63,7 @@ tags$head(tags$style(HTML("@font-face { font-family: IRANSansDN; src: url(IRANSa
 #   h2("اپلیکیشن راوی در حال باز شدن است"))
 # ),
 
-
+#LoginUI(ns("login")),
 tabItems(
 #### Login ####      
       
@@ -128,7 +128,7 @@ Body <- function(input,output,session,
           #callModule(I1_Info,"info")
           #callModule(M3_Class,"cls",outputDir = outputadrs,class="0",level="0",course="0")
   
-          
+#          callModule(Login,"login")
           #callModule(M0_Box,"Box",vals,font_plot)
           #callModule(M0_Hist,"Hist",vals,font_plot)
           #callModule(M0_Scatter,"Scatter",vals,font_plot)
@@ -149,7 +149,7 @@ Body <- function(input,output,session,
   # vals <- callModule(M1_Class,"c12",outputcls = sprintf("%s/12",outputadrs),class="12") 
   #         callModule(M1_Class,"c11",outputcls = sprintf("%s/11",outputadrs),class="11")
   #         callModule(M1_Class,"c10",outputcls = sprintf("%s/10",outputadrs),class="10")
-  #        callModule(M_Student,"student",Vals=vals)    
+  #         callModule(M_Student,"student",Vals=vals)    
 
 #### Login ####  
   #USER1 <- callModule(Pass,"mod_pass")
