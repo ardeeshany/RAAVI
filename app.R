@@ -1,6 +1,6 @@
 #  ssh root@159.65.170.96
 #  sudo su - -c "R -e \"install.packages('Cairo', repos='http://cran.rstudio.com/')\""
-#  sudo su - -c "R -e \"devtools::install_github('daattali/shinyjs')\""
+#  sudo su - -c "R -e \"devtools::install_github('s-u/rJava')\""
 
 # lib <- c("shiny","stats","openxlsx","ConvCalendar","shinydashboard","graphics",
 #          "reshape2","plotly","ggplot2","rhandsontable","tidyr","stringr","extrafont",
@@ -12,7 +12,7 @@
 
 
 
-
+# sudo su - -c "R -e \"install.packages('rJava', repos='http://cran.rstudio.com/')\""
 
 # ## app.R ##f
 library(shiny)
@@ -41,7 +41,7 @@ library(extrafont)
 library(dashboardthemes)
 #library(visNetwork)
 library(shinydashboardPlus)
-library(mailR)
+#library(mailR)
 library(shinycssloaders)
 #library(profvis)
 #library(gridExtra)
