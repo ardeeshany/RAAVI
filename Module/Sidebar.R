@@ -34,6 +34,7 @@ SidebarUI <- function(id){
           # menuItem(div(class="sidebar--font", "تحلیل"),  tabName= "Class",icon  =icon("database",class="sidebar-icon"))),
           # 
 
+
           div(style="margin-top:32%",
               menuItem(div(class="sidebar--font", "ورود"),  tabName= "Load",icon  =icon("download",class="sidebar-icon"))),
           

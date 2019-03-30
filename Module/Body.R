@@ -61,7 +61,7 @@ tags$head(tags$style(HTML("@font-face { font-family: IRANSansDN; src: url(IRANSa
 #   h2("اپلیکیشن راوی در حال باز شدن است"))
 # ),
 
-
+# LoginUI(ns("login")),
 tabItems(
 #### Login ####      
       
@@ -97,6 +97,7 @@ tabItems(
 #M0_HistUI(ns("Hist")),
 #M0_ProgUI(ns("Progress")),
 #M0_CatUI(ns("Category"))
+#tabItem(tabName = "Login", LoginUI(ns("login"))),
 tabItem(tabName = "Load", M0_LoadUI(ns("load"))),
 tabItem(tabName = "Box", M0_BoxUI(ns("box"))),
 tabItem(tabName = "Scatter", M0_ScatterUI(ns("scatter"))),
@@ -126,7 +127,7 @@ Body <- function(input,output,session,
           #callModule(I1_Info,"info")
           #callModule(M3_Class,"cls",outputDir = outputadrs,class="0",level="0",course="0")
   
-          
+#          callModule(Login,"login")
           #callModule(M0_Box,"Box",vals,font_plot)
           #callModule(M0_Hist,"Hist",vals,font_plot)
           #callModule(M0_Scatter,"Scatter",vals,font_plot)
