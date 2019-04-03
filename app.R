@@ -96,7 +96,7 @@ source('Module/I1_Info.R')
   #source('Module/MainModules/I0_Net.R')
   source('Module/MainModules/I0_Card.R')
   source('Module/MainModules/I0_Contact.R')
-#source('Module/Login.R')
+source('Module/Login.R')
 
     ui <- dashboardPage(
 

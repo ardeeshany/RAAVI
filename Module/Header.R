@@ -18,12 +18,21 @@ HeaderUI <- function(id){
   # dashboardHeader(title =  tags$a(href='http://github.com/ardeeshany',
   #                               tags$img(src='logo.png',height='60',width='80')),
   
- 
+  #LoginUI(ns("login"))
+  
   
   dashboardHeader(disable = FALSE,
                       #enable_rightsidebar = TRUE,
-                      #rightSidebarIcon = "info",                    
     
+                  
+                      #rightSidebarIcon = "info",                    
+                  
+                  # textInput(ns("userID"),label = "userID"),
+                  # textInput(ns("username"),label = "username"),
+                  # textInput(ns("userhash"),label = "userhash"),
+                  # 
+                  # includeScript("www/get_user_info.js"),
+                  
     # Thick Title
     tags$li(class = "dropdown",
             tags$style(".main-header .logo {height: 2.8em;}")
@@ -116,6 +125,7 @@ HeaderUI <- function(id){
 
 Header <- function(input,output,session){
   
+  #callModule(Login,"login")
   # output$messageMenu <- renderMenu({
   #   # Code to generate each of the messageItems here, in a list. This assumes
   #   # that messageData is a data frame with two columns, 'from' and 'message'.
@@ -128,4 +138,13 @@ Header <- function(input,output,session){
   #   dropdownMenu(type = "messages", .list = msgs)
   # })
 }
+
+
+
+
+
+
+
+
+
 
