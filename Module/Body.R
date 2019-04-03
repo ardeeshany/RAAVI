@@ -22,10 +22,12 @@ ns <- NS(id)
 # )
 
 
-
 dashboardBody(
 #tags$head(tags$script(HTML("$('body').addClass('sidebar-mini');"))),
 theme,
+
+#includeScript("www/get_user_info.js"),
+
 
 #ColorUI("mode_color"),  
   # tags$head( 
@@ -60,9 +62,9 @@ tags$head(tags$style(HTML("@font-face { font-family: IRANSansDN; src: url(IRANSa
 #   div(style="text-align:center",
 #   h2("اپلیکیشن راوی در حال باز شدن است"))
 # ),
-
 # LoginUI(ns("login")),
 tabItems(
+
 #### Login ####      
       
 #PassUI("mod_pass")
@@ -97,6 +99,7 @@ tabItems(
 #M0_HistUI(ns("Hist")),
 #M0_ProgUI(ns("Progress")),
 #M0_CatUI(ns("Category"))
+#tabItem(tabName = "Login", LoginUI(ns("login"))),
 #tabItem(tabName = "Login", LoginUI(ns("login"))),
 tabItem(tabName = "Load", M0_LoadUI(ns("load"))),
 tabItem(tabName = "Box", M0_BoxUI(ns("box"))),

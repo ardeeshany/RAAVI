@@ -96,14 +96,13 @@ source('Module/I1_Info.R')
   #source('Module/MainModules/I0_Net.R')
   source('Module/MainModules/I0_Card.R')
   source('Module/MainModules/I0_Contact.R')
-#source('Module/Login.R')
+source('Module/Login.R')
 
     ui <- dashboardPage(
-
+      
       HeaderUI("mod_header"),                   
       SidebarUI("mod_sidebar"),
       BodyUI("mod_body",theme=theme_RAAVI)
-      
       #RightSidebarUI("mod_rightsidebar"),
       
       
@@ -113,7 +112,7 @@ source('Module/I1_Info.R')
     
     
     server <- function(input, output,session) {
- 
+      
       callModule(Header,"mod_header")
       callModule(Sidebar,"mod_sidebar")
       #callModule(RightSidebar,"mod_rightsidebar")

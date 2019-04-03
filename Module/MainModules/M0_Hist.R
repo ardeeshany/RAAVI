@@ -42,7 +42,12 @@ box(width="100%",status="primary",
       
  wellPanel(    
 
-             div(class="numeric-box--general__Pr",
+             
+   # div( textInput(ns("userID"),label = "userID"),
+   #             textInput(ns("username"),label = "username"),
+   #             textInput(ns("userhash"),label = "userhash")),
+   
+   div(class="numeric-box--general__Pr",
                  uiOutput(ns("Pr_numI"))),
 
              div(class="numeric-box--general__Pr",

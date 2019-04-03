@@ -4,7 +4,7 @@
 SidebarUI <- function(id){
   
   ns <- NS(id)
-
+  
   dashboardSidebar(collapsed = FALSE,
     width =  85,
 
@@ -33,7 +33,8 @@ SidebarUI <- function(id){
           # div(style="margin-top:12%",
           # menuItem(div(class="sidebar--font", "تحلیل"),  tabName= "Class",icon  =icon("database",class="sidebar-icon"))),
           # 
-
+          # div(class="sidebar--mtop",
+          #     menuItem(div(class="sidebar--font", "لاگین"),  tabName="Login",icon  =icon("filter",class="sidebar-icon"))),
 
           div(style="margin-top:32%",
               menuItem(div(class="sidebar--font", "ورود"),  tabName= "Load",icon  =icon("download",class="sidebar-icon"))),
@@ -53,8 +54,7 @@ SidebarUI <- function(id){
           div(class="sidebar--mtop",
               menuItem(div(class="sidebar--font", "فیلتر"),  tabName= "Category",icon  =icon("filter",class="sidebar-icon")))
           
-          
-          
+     
           
           
           

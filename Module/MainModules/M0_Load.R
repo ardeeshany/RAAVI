@@ -248,6 +248,14 @@ M0_Load <- function(input,output,session,outputDir){
 
    observeEvent(input$f_new,{
      D_new <- read.xlsx(input$f_new$datapath)
+     
+     if(dim(D_new)[1] > 20)
+     D_new <- D_new[1:21,]
+  
+     if(dim(D_new)[2] > 20)
+     D_new <- D_new[,1:21]
+     
+     
      values[["now"]] <- D_new[,-1]
      values[["names"]] <-D_new[,1]
      values[["dates"]] <- colnames(D_new)[-1]

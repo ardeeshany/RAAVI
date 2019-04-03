@@ -18,12 +18,21 @@ HeaderUI <- function(id){
   # dashboardHeader(title =  tags$a(href='http://github.com/ardeeshany',
   #                               tags$img(src='logo.png',height='60',width='80')),
   
- 
+  #LoginUI(ns("login"))
+  
   
   dashboardHeader(disable = FALSE,
                       #enable_rightsidebar = TRUE,
-                      #rightSidebarIcon = "info",                    
     
+                  
+                      #rightSidebarIcon = "info",                    
+                  
+                  # textInput(ns("userID"),label = "userID"),
+                  # textInput(ns("username"),label = "username"),
+                  # textInput(ns("userhash"),label = "userhash"),
+                  # 
+                  # includeScript("www/get_user_info.js"),
+                  
     # Thick Title
     tags$li(class = "dropdown",
             tags$style(".main-header .logo {height: 2.8em;}")
@@ -64,7 +73,6 @@ HeaderUI <- function(id){
                 #                time = "2018-11-01"
                 #              )
                 # )
-                
                 ### Notification menus ; not render in server function, a text notification
                 # dropdownMenu(type = "notifications",
                 #              notificationItem(
@@ -116,16 +124,27 @@ HeaderUI <- function(id){
 
 Header <- function(input,output,session){
   
-  # output$messageMenu <- renderMenu({
-  #   # Code to generate each of the messageItems here, in a list. This assumes
-  #   # that messageData is a data frame with two columns, 'from' and 'message'.
-  #   msgs <- apply(messageData, 1, function(row) {
-  #     messageItem(from = row[["from"]], message = row[["message"]])
-  #   })
+
+  #output$messageMenu <- renderMenu({
+        # Code to generate each of the messageItems here, in a list. This assumes
+    # that messageData is a data frame with two columns, 'from' and 'message'.
+    # msgs <- apply(messageData, 1, function(row) {
+    #   messageItem(from = row[["from"]], message = row[["message"]])
+   # })
+    
   #   
   #   # This is equivalent to calling:
   #   #   dropdownMenu(type="messages", msgs[[1]], msgs[[2]], ...)
   #   dropdownMenu(type = "messages", .list = msgs)
   # })
 }
+
+
+
+
+
+
+
+
+
 

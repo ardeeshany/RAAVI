@@ -13,13 +13,9 @@ div(style="text-align:center;",
 column(width = 2, 
 br(),  
 box(width="100%",status="primary",  
-              
-              #wellPanel(
 
-    
-    wellPanel(
-      uiOutput(ns("St_ChG"))
-    ),
+
+    wellPanel(uiOutput(ns("St_ChG"))),
                
     wellPanel(             
                
@@ -74,12 +70,8 @@ box(width="100%",status="primary",
 column(width = 10,
 br(),  
 box(status="primary",width="100%",collapsible = TRUE,collapsed = FALSE,
-
-  uiOutput(ns("output"))
-
-  )
-)
-
+    uiOutput(ns("output"))
+      ))
 ))
 
 }
@@ -257,7 +249,7 @@ M0_Scatter <- function(input,output,session,Vals,font_plot){
     
     if(isolate(!input$St_chbI)){
       if(input$add_date){
-      p <- Reac_CP2_Sc()$p + facet_wrap( ~ Student,as.table = FALSE,ncol=colnum,scales = "free_x")+
+      p <- Reac_CP2_Sc()$p + facet_wrap( ~ Student,as.table = FALSE,ncol=colnum,scales = "free",switch = "both")+
         scale_x_discrete(name ="", limits=colnames(Data()))
       
       A <- ggplotly(p)   %>% 
@@ -272,7 +264,7 @@ M0_Scatter <- function(input,output,session,Vals,font_plot){
 
       
     }else{
-      p <- Reac_CP2_Sc()$p + facet_wrap( ~ Student,as.table = FALSE,ncol=colnum,scales = "free_x")+ #,ncol=colnum,)+
+      p <- Reac_CP2_Sc()$p + facet_wrap( ~ Student,as.table = FALSE,ncol=colnum,scales = "free",switch = "both")+ #,ncol=colnum,)+
         scale_x_discrete(name ="", limits=1:ncol(Data()))
     
       A <- ggplotly(p)  %>% 
@@ -306,11 +298,7 @@ M0_Scatter <- function(input,output,session,Vals,font_plot){
 
   
     }
-    # A$x$layout$width <- NULL
-    # A$x$layout$height <- NULL
-    # A$width <- NULL
-    # A$height <- NULL
-    
+
     return(A)
     
   })
