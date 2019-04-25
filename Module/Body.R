@@ -102,6 +102,7 @@ tabItems(
 #tabItem(tabName = "Login", LoginUI(ns("login"))),
 
 #tabItem(tabName = "Login", LoginUI(ns("login"))),
+tabItem(tabName = "Report", ReportUI(ns("report"))),
 tabItem(tabName = "Load", M0_LoadUI(ns("load"))),
 tabItem(tabName = "Box", M0_BoxUI(ns("box"))),
 tabItem(tabName = "Scatter", M0_ScatterUI(ns("scatter"))),
@@ -135,6 +136,7 @@ Body <- function(input,output,session,
           #callModule(M0_Box,"Box",vals,font_plot)
           #callModule(M0_Hist,"Hist",vals,font_plot)
           #callModule(M0_Scatter,"Scatter",vals,font_plot)
+          callModule(Report,"report")
           callModule(M0_Box,"box",vals,font_plot)
           callModule(M0_Cat,"category",vals,font_plot)
           callModule(M0_Scatter,"scatter",vals,font_plot)

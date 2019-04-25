@@ -59,37 +59,37 @@ box(width="100%",
       ),
       
 
-    wellPanel(
-
-    div(class="input-box--general",
-                 numericInput(inputId = ns("num_row"),
-                  label =  "تعداد دانش آموز",min = 1,value = 1,step = 1)),
-    div(class="input-box--general", 
-                 numericInput(inputId = ns("num_col"),
-                  label = "تعداد امتحان",min = 1,value = 1,step = 1)),
-      
-    actionBttn(inputId = ns("f_make"),style = "jelly",color = "warning",
-               label = div(class="action-button--widget","ساختن فایل"))
-    ),
+    # wellPanel(
+    # 
+    # div(class="input-box--general",
+    #              numericInput(inputId = ns("num_row"),
+    #               label =  "تعداد دانش آموز",min = 1,value = 1,step = 1)),
+    # div(class="input-box--general", 
+    #              numericInput(inputId = ns("num_col"),
+    #               label = "تعداد امتحان",min = 1,value = 1,step = 1)),
+    #   
+    # actionBttn(inputId = ns("f_make"),style = "jelly",color = "warning",
+    #            label = div(class="action-button--widget","ساختن فایل"))
+    # ),
     
     
-    wellPanel(
-          
-          div(class="load--font-size_add",
-              textAreaInput(inputId = ns("save_name"),label = "", value ="",
-                            height = "2.3em",resize = "none",width = "100%",
-                            placeholder ='نام فایل ذخیره')),
-          
-          #div(style="height:150%;",
-              # downloadBttn(ns("downloadData"),style = "material-circle",color = "warning",
-              #                div(class="action-button--widget","ذخیره کردن داده"))
-             div(style="color:black", 
-             downloadBttn(ns("downloadData"),color = "warning", 
-              style ="jelly",size = "md",label=div(class="inline",style="font-size:68%;color:black;","ذخیره"))
-             )            
-          #uiOutput(ns("message"), inline=TRUE)
-          
-    ),
+    # wellPanel(
+    #       
+    #       div(class="load--font-size_add",
+    #           textAreaInput(inputId = ns("save_name"),label = "", value ="",
+    #                         height = "2.3em",resize = "none",width = "100%",
+    #                         placeholder ='نام فایل ذخیره')),
+    #       
+    #       #div(style="height:150%;",
+    #           # downloadBttn(ns("downloadData"),style = "material-circle",color = "warning",
+    #           #                div(class="action-button--widget","ذخیره کردن داده"))
+    #          div(style="color:black", 
+    #          downloadBttn(ns("downloadData"),color = "warning", 
+    #           style ="jelly",size = "md",label=div(class="inline",style="font-size:68%;color:black;","ذخیره"))
+    #          )            
+    #       #uiOutput(ns("message"), inline=TRUE)
+    #       
+    # ),
     
       wellPanel(
         div(style="align:center; tet-align:center;",
@@ -97,8 +97,12 @@ box(width="100%",
                    label = div(class="action-button--widget","فایل نمونه")))
         
         
-        )
+        ),
 
+    wellPanel(
+      div(style="align:center; text-align:center",
+          downloadBttn(ns("report"),label = "دانلود",size = "sm"))
+    )
 
    ))),
 
@@ -182,45 +186,45 @@ br(),
 
         
                    div(class="data-table--general",
-                       rHandsontableOutput(ns("hot"))),
+                       rHandsontableOutput(ns("hot")))
                    
-                   br(),
+                   #br(),
                    
                    
-                   box(collapsible = TRUE,title = "تغییر دیتا",collapsed = TRUE,width = "200%",status = "info",
-                       fluidRow(
-                         column(width = 3,
-                            wellPanel(div(class="inline load_add",
-                                 uiOutput(ns("ui_newcolname"))),
-                                 div(style="margin-top:-1%",
-                                 actionBttn(ns("addcolumn"), 
-                                            div(class="action-button--widget","اضافه ستون"),
-                                            style = "jelly",color = "warning")))),
-                         
-                         column(width = 3,       
-                                wellPanel(div(class="inline load_add",
-                                  uiOutput(ns("ui_removecolname"))),
-                                  div(style="margin-top:-6%",
-                                  actionBttn(ns("removecolumn"),
-                                    div(class="action-button--widget","حذف ستون"),
-                                    style = "jelly",color = "warning")))),
-                         
-                         column(width = 3,
-                                wellPanel(div(class="inline load_add",
-                                   uiOutput(ns("ui_newrowname"))),
-                                   div(style="margin-top:-1%",
-                                   actionBttn(ns("addrow"),
-                                    div(class="action-button--widget","اضافه سطر"),
-                                    style = "jelly",color = "warning")))),
-                         
-                         column(width = 3,       
-                                wellPanel(div(class="inline load_add", 
-                                    uiOutput(ns("ui_removerowname"))),
-                                    div(style="margin-top:-6%",
-                                    actionBttn(ns("removerow"),
-                                      div(class="action-button--widget","حذف سطر"),
-                                      style = "jelly",color = "warning"))))
-                       ))
+                   # box(collapsible = TRUE,title = "تغییر دیتا",collapsed = TRUE,width = "200%",status = "info",
+                   #     fluidRow(
+                   #       column(width = 3,
+                   #          wellPanel(div(class="inline load_add",
+                   #               uiOutput(ns("ui_newcolname"))),
+                   #               div(style="margin-top:-1%",
+                   #               actionBttn(ns("addcolumn"), 
+                   #                          div(class="action-button--widget","اضافه ستون"),
+                   #                          style = "jelly",color = "warning")))),
+                   #       
+                   #       column(width = 3,       
+                   #              wellPanel(div(class="inline load_add",
+                   #                uiOutput(ns("ui_removecolname"))),
+                   #                div(style="margin-top:-6%",
+                   #                actionBttn(ns("removecolumn"),
+                   #                  div(class="action-button--widget","حذف ستون"),
+                   #                  style = "jelly",color = "warning")))),
+                   #       
+                   #       column(width = 3,
+                   #              wellPanel(div(class="inline load_add",
+                   #                 uiOutput(ns("ui_newrowname"))),
+                   #                 div(style="margin-top:-1%",
+                   #                 actionBttn(ns("addrow"),
+                   #                  div(class="action-button--widget","اضافه سطر"),
+                   #                  style = "jelly",color = "warning")))),
+                   #       
+                   #       column(width = 3,       
+                   #              wellPanel(div(class="inline load_add", 
+                   #                  uiOutput(ns("ui_removerowname"))),
+                   #                  div(style="margin-top:-6%",
+                   #                  actionBttn(ns("removerow"),
+                   #                    div(class="action-button--widget","حذف سطر"),
+                   #                    style = "jelly",color = "warning"))))
+                   #     ))
                )))
 
 
@@ -235,6 +239,32 @@ M0_Load <- function(input,output,session,outputDir){
 
   Date_US <- as.OtherDate(Sys.Date(),"persian")[1:3]
   Date_Persian = sprintf("%s-%s-%s",Date_US[3],Date_US[2],Date_US[1])
+  
+  
+
+  output$report <- downloadHandler(
+    filename = paste0("report",".pdf"),
+    content=function(file){ 
+      
+      tempReport <- file.path(tempdir(),"report.Rmd")
+      file.copy("report/report.Rmd",tempReport,overwrite = TRUE)
+      tempImage <- file.path(tempdir(),"Logo.png")
+      file.copy("report/Logo.png",tempImage,overwrite = TRUE)
+      params <- list(n = 1)
+      rmarkdown::render(tempReport,output_file = file,
+                        params = params,
+                        envir = new.env(parent = globalenv()))
+      #pdf(file,width=7,height=5) 
+      #ggsave(filename = file,plot = React_DT2(),device = cairo_pdf)
+      #export(p = ggplotly(React_DT2()),file = file)
+      #htmlwidgets::saveWidget(widget = ggplotly(React_DT2()),file = file)
+      #webshot::webshot(sprintf("file://%s", file),file = file,selector="#htmlwidget_container")
+      #plotly_IMAGE(x = ggplotly(React_DT2()),out_file = file,format = "jpeg")
+      #orca(ggplotly(React_DT2()),file)
+      #dev.off() 
+    }
+  )
+  
   
   
   # saveData <- function(data,fileName){
@@ -561,6 +591,11 @@ M0_Load <- function(input,output,session,outputDir){
     )
     #})
   
+    
+    
+    
+    
+    
     
     
   ## Cancel last action    

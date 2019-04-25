@@ -366,8 +366,12 @@ M0_Scatter <- function(input,output,session,Vals,font_plot){
     })
 
   
+  
+  
+  
+  
   output$download <- downloadHandler(
-    filename = paste0("روند دانش آموزان",".html"),
+    filename = paste0("روند دانش آموزان",".pdf"),
     content=function(file){ 
       
       tempReport <- file.path(tempdir(),"scatter.Rmd")

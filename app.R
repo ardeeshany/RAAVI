@@ -1,4 +1,4 @@
-#  ssh root@159.65.170.96
+#  ssh root@159.65.170.96f
 #  sudo su - -c "R -e \"install.packages('Cairo', repos='http://cran.rstudio.com/')\""
 #  sudo su - -c "R -e \"devtools::install_github('s-u/rJava')\""
 
@@ -83,6 +83,7 @@ source('Module/Extra/ui_outside_functions.R')
 #source('Module/M1_Class.R')
 #source('Module/M2_Class.R')
 source('Module/M3_Class.R')
+  source('Module/MainModules/Report.R')
   source('Module/MainModules/M0_Hist.R')
   source('Module/MainModules/M0_Scatter.R')
   source('Module/MainModules/M0_Box.R')

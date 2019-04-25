@@ -3,14 +3,14 @@ M0_BoxUI <- function(id,date,names){
   
   ns <- NS(id)
 
-  tabPanel(title =div(class="tabPanel--font-size center",
-                       "روند کلاس"),
-           icon=icon("archive",class="tabPanel-icon"),
+  # tabPanel(title =div(class="tabPanel--font-size center",
+  #                      "روند کلاس"),
+  #          icon=icon("archive",class="tabPanel-icon"),
 
 fluidRow(
  
 div(style="text-align:center;",
-  column(width = 2, 
+  column(width = 4, 
   br(),  
   box(width="100%",status="primary",              
    
@@ -25,23 +25,23 @@ div(style="text-align:center;",
                     
                     br(),
                     
+                      div(style="align:center; text-align:center",
+                          downloadBttn(ns("report"),label = "گزارش",size = "sm")),
+                    
+                    br(),
+                    
                     actionBttn(inputId = ns("Bx_Ac"),style = "jelly",color = "warning",
-                          label= div(class="action-button--widget","در طول زمان"))
-                          #٫label = div(class="action-button--font-size",style="color:black","آنالیز"))
-                                     #class="action-button--color--yellow")
+                    label= div(class="action-button--widget","در طول زمان"))
            )))),
 
-column(width = 10,
-br(),  
+column(width = 8,
+br(),
 box(status="primary",width="100%",collapsible = TRUE,collapsed = FALSE,
-    uiOutput(ns("output")),     
-    uiOutput(ns("output2"))       
+    uiOutput(ns("output")),
+    uiOutput(ns("output2"))
   ))
 
-)
-
-)
-}
+)}
 
 
 
@@ -181,24 +181,20 @@ M0_Box <- function(input,output,session,Vals,font_plot){
   
   
   Reac_CP2M_Bx <- reactive({
-    
 
-    
-    
-     
     if(input$add_points){
       p1 <- Reac_CP2M_Bx1()$p1 + geom_jitter(width = 0.1,size=1.8)
     }else{
-      p1 <- Reac_CP2M_Bx1()$p1 
-    }  
-     
+      p1 <- Reac_CP2M_Bx1()$p1
+    }
+
     p2 <- Reac_CP2M_Bx1()$p2
     
     if(input$combine){
       color_m <- "#ffff4e"
       color_s <- "#fd1c00"
       p1 <- p1 + stat_summary(fun.y=mean, geom="point",size=1.35,color = color_m ,fill= color_m, shape=20)+# shape=20, size=2, color="red", fill="red")+
-        stat_summary(fun.data = mean_se, geom = "errorbar",color=color_s) 
+        stat_summary(fun.data = mean_se, geom = "errorbar",color=color_s)
       gg2 <- NULL
     }else{
 
@@ -218,9 +214,10 @@ M0_Box <- function(input,output,session,Vals,font_plot){
       'sendDataToCloud',
       'autoScale2d',
       'hoverClosestCartesian',
-      if(input$combine)                                                                             'hoverCompareCartesian'
+      if(input$combine)'hoverCompareCartesian'
     ))
     
+    #return(gg1)
     return(list(gg1=gg1,gg2=gg2))
     
   })
@@ -313,9 +310,21 @@ M0_Box <- function(input,output,session,Vals,font_plot){
       #plotly_IMAGE(x = ggplotly(React_DT2()),out_file = file,format = "jpeg")
       #orca(ggplotly(React_DT2()),file)
       #dev.off() 
-    }
-  )
+    })
   
   
+  output$report <- downloadHandler(
+    
+    filename = "report.pdf",
+    
+    content=function(file){ 
+      tempReport <- file.path(tempdir(),"box.Rmd")
+      #file.copy("report/box.Rmd",tempReport,overwrite = TRUE)
+      #tempImage <- file.path(tempdir(),"Logo.png")
+      #file.copy("report/Logo.png",tempImage,overwrite = TRUE)
+      params <- list(n = Reac_CP2M_Bx())
+      rmarkdown::render(tempReport,output_file = file,
+                        params = params,
+                        envir = new.env(parent = globalenv()))})
   
 }
