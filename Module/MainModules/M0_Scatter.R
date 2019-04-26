@@ -2,82 +2,47 @@ M0_ScatterUI <- function(id){
 
    ns <- NS(id)
 
-  tabPanel(title = div(class="tabPanel--font-size center",
-                       "روند دانش آموزان"),
-           icon=icon("line-chart",class="tabPanel-icon"),
 ###
 
-fluidRow(
-
-div(style="text-align:center;",
-column(width = 2, 
-br(),  
+# fluidRow(
+# 
+ div(style="text-align:center;",
+# column(width = 8, 
+ br(),  
 box(width="100%",status="primary",  
 
 
-    wellPanel(uiOutput(ns("St_ChG"))),
-               
-    wellPanel(             
-               
-           div(style="text-align:left;",
-                prettyToggle(shape = "round",value = T,
-                  inputId = ns("St_Mean"),
-                  label_on = "میانگین", 
-                  icon_on = icon("check"),
-                  status_on = "primary",
-                  status_off = "default", 
-                  label_off = "میانگین"
-                )),
-                
-           div(style="text-align:left;",
-                prettyToggle(shape = "round",value = T,
-                  inputId = ns("St_chbI"),
-                  label_on = "تجمیع نمودارها", 
-                  icon_on = icon("check"),
-                  status_on = "primary",
-                  status_off = "default", 
-                  label_off = "تجمیع نمودارها"
-                ))
-
-                ),
-
-            wellPanel(      
-              
-               
-               div(style="text-align:left;",
-                prettyRadioButtons(
-                  inputId = ns('St_rb'),inline = T,
-                  label = div(class="check-box--font-size","نوع تخمین"),
-                  choices = c("خطی"="lm","غیرخطی"="loess"),
-                  selected = "loess"
-                ))
-                
-                
-                
-                ),
-                
-            wellPanel(      
-                        actionBttn(inputId = ns("St_Ac"),style = "jelly",color = "warning",
-                                     label = div(class="action-button--widget","در طول زمان"))
-                                   
-            )
-                        
+    wellPanel(
+      
+      div(style="text-align:center",
+      actionBttn(inputId = ns("St_Ac"),style = "jelly",color = "warning",
+                 label = div(class="action-button--widget","روند دانش آموزان"))),
+      
+      br(),
+      # div(style="text-align:right",
+      #          radioButtons(ns('format'), 'فرمت خروجی', c('HTML','PDF','Word'),inline = FALSE)),
+      
+      radioGroupButtons(
+        inputId = ns('format'),
+        label =  'فرمت خروجی',
+        choices = c("HTML", "PDF", "Word"),
+        selected = "HTML",
+        direction = "vertical"
+      ),
+      
+      br(),
+      
+      uiOutput(ns('grid'))))
 
 
+#)))
 
-))),
-
-column(width = 10,
-br(),  
-box(status="primary",width="100%",collapsible = TRUE,collapsed = FALSE,
-    uiOutput(ns("output"))
-      ))
-))
-
-}
-
-
-
+# column(width = 6,
+# br(),  
+# box(status="primary",width="100%",collapsible = TRUE,collapsed = FALSE,
+#     uiOutput(ns("output"))
+#       ))
+)}
 
 
 
@@ -100,26 +65,102 @@ M0_Scatter <- function(input,output,session,Vals,font_plot){
   })
 
     
-  output$St_ChG <- renderUI({
-
-    dropdown(label = div(style="font-size:72%; color:black; font-weight:bold;","لیست دانش آموزان"),
     
-    div(style="text-align:left;",  
-    checkboxInput(ns('St_all'),
-    div(style="text-align:left;,color: #607D8B;",
-    'تمام / هیچ'))),
-             
-      div(style="text-align:left;",
-      checkboxGroupInput(inputId = ns("St_ChG"), label = "", choices = c(rownames(Data())))
-      ),
-      style = "unite", icon = div(style="color:black;",icon("user-circle-o")),
-      status = "warning", width = "168%"
-       # animate = animateOptions(
-       #   enter = animations$fading_entrances$fadeInLeftBig,
-       #   exit = animations$fading_exits$fadeOutRightBig
-       # )
-    )
+    output$grid <- renderUI({
+      
+      if(out_ind$a==1){
+        
+        validate(need(!is.null(Data()),"هنوز داده ای وارد نشده است"),errorClass = "Hist_l")  
+        
+        A <- dropdown(
+          
+          #uiOutput(ns("St_ChG")),
+          
+          div(style="text-align:left; font-size :80%;",
+              prettyToggle(shape = "round",value = T,
+                           inputId = ns("St_Mean"),
+                           label_on = "میانگین", 
+                           icon_on = icon("check"),
+                           status_on = "primary",
+                           status_off = "default", 
+                           label_off = "میانگین"
+              ),
+          
+              prettyToggle(shape = "round",value = T,
+                           inputId = ns("St_chbI"),
+                           label_on = "تجمیع نمودارها", 
+                           icon_on = icon("check"),
+                           status_on = "primary",
+                           status_off = "default", 
+                           label_off = "تجمیع نمودارها"
+              ),
+
+              prettyRadioButtons(
+                inputId = ns('St_rb'),inline = T,
+                label = div(class="check-box--font-size","نوع تخمین"),
+                choices = c("خطی"="lm","غیرخطی"="loess"),
+                selected = "loess"
+              )),
+          circle = TRUE, status = "default", icon = icon("gear"),style = "unite",width = "200%")
+        
+        
+        C <- dropdown(label = div(style="font-size:72%; color:black; font-weight:bold;","لیست دانش آموزان"),
+                                
+                                div(style="text-align:left;",  
+                                    checkboxInput(ns('St_all'),
+                                                  div(style="text-align:left;,color: #607D8B;",
+                                                      'تمام / هیچ'))),
+                                
+                                div(style="text-align:left;",
+                                    checkboxGroupInput(inputId = ns("St_ChG"), label = "", choices = c(rownames(Data())))
+                                ),
+                                style = "unite", icon = div(style="color:black;",icon("user-circle-o")),
+                                status = "warning", width = "168%"
+                                # animate = animateOptions(
+                                #   enter = animations$fading_entrances$fadeInLeftBig,
+                                #   exit = animations$fading_exits$fadeOutRightBig
+                                # )
+        )
+        
+        B <- div(style="text-align:center",downloadBttn(ns("download"),
+                                                       label ="گزارش",size = "sm"))
+        
+        return(list(A,br(),C,br(),B))
+      }
+      })
+    
+    
+    out_ind <- reactiveValues(a=0)
+    
+    observeEvent(input$St_Ac, {
+      out_ind$a = 1
     })
+    
+    observeEvent(Data(),{
+      out_ind$a = 0
+    })
+    
+    
+  # output$St_ChG <- renderUI({
+  # 
+  #   dropdown(label = div(style="font-size:72%; color:black; font-weight:bold;","لیست دانش آموزان"),
+  #   
+  #   div(style="text-align:left;",  
+  #   checkboxInput(ns('St_all'),
+  #   div(style="text-align:left;,color: #607D8B;",
+  #   'تمام / هیچ'))),
+  #            
+  #     div(style="text-align:left;",
+  #     checkboxGroupInput(inputId = ns("St_ChG"), label = "", choices = c(rownames(Data())))
+  #     ),
+  #     style = "unite", icon = div(style="color:black;",icon("user-circle-o")),
+  #     status = "warning", width = "168%"
+  #      # animate = animateOptions(
+  #      #   enter = animations$fading_entrances$fadeInLeftBig,
+  #      #   exit = animations$fading_exits$fadeOutRightBig
+  #      # )
+  #   )
+  #   })
 
   observeEvent(input$St_all,{
     updateCheckboxGroupInput(
@@ -299,17 +340,12 @@ M0_Scatter <- function(input,output,session,Vals,font_plot){
   
     }
 
-    return(A)
+    return(list(A=A))
     
   })
   
   
   
-  out_ind <- reactiveValues(a=0)
-  
-  observeEvent(input$St_Ac, {
-    out_ind$a = 1
-  })
   
   # observeEvent(input$St_Ac,{
   #   # pdf("plot.pdf")
@@ -368,30 +404,22 @@ M0_Scatter <- function(input,output,session,Vals,font_plot){
   
   
   
-  
-  
   output$download <- downloadHandler(
-    filename = paste0("روند دانش آموزان",".pdf"),
-    content=function(file){ 
-      
-      tempReport <- file.path(tempdir(),"scatter.Rmd")
-      file.copy("report/scatter.Rmd",tempReport,overwrite = TRUE)
-      tempImage <- file.path(tempdir(),"logogrey.svg")
-      file.copy("report/logogrey.svg",tempImage,overwrite = TRUE)
-      params <- list(n = Reac_out())
-      rmarkdown::render(tempReport,output_file = file,
-                        params = params,
-                        envir = new.env(parent = globalenv()))
-      #pdf(file,width=7,height=5) 
-      #ggsave(filename = file,plot = React_DT2(),device = cairo_pdf)
-      #export(p = ggplotly(React_DT2()),file = file)
-      #htmlwidgets::saveWidget(widget = ggplotly(React_DT2()),file = file)
-      #webshot::webshot(sprintf("file://%s", file),file = file,selector="#htmlwidget_container")
-      #plotly_IMAGE(x = ggplotly(React_DT2()),out_file = file,format = "jpeg")
-      #orca(ggplotly(React_DT2()),file)
-      #dev.off() 
-    }
-  )
+    
+    
+    filename = function(){
+      paste('گزارش کلاس', sep = '.', switch(as.character(input$format) ,HTML = 'html', PDF = 'pdf', Word = 'docx'))
+    },
+    content=function(file){
+      withProgress(message = "... گزارش در حال ساخته شدن است",
+                   min = 0,max = 100,value = 72, {
+                     tempReport <- file.path(tempdir(),"scatter.Rmd")
+                     file.copy("report/scatter.Rmd",tempReport,overwrite = TRUE)
+                     params <- list(n = Reac_out()$A)
+                     rmarkdown::render(tempReport,output_format = switch(as.character(input$format),PDF = pdf_document(), HTML = html_document(), Word = word_document()),
+                                       output_file = file,
+                                       params = params,
+                                       envir = new.env(parent = globalenv()))})})
   
   
   

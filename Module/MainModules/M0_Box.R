@@ -7,10 +7,10 @@ M0_BoxUI <- function(id,date,names){
   #                      "روند کلاس"),
   #          icon=icon("archive",class="tabPanel-icon"),
 
-fluidRow(
+#fluidRow(
  
 div(style="text-align:center;",
-  column(width = 8, 
+#  column(width = 8, 
   br(),  
   box(width="100%",status="primary",              
    
@@ -23,7 +23,7 @@ div(style="text-align:center;",
                     #     uiOutput(ns("Bx_SeI2"))),
                     #div(class="action-button--general action-button--mleft action-button--mtop",
                     
-                    div(style="text-align:right",
+                    div(style="text-align:center",
                     actionBttn(inputId = ns("Bx_Ac"),style = "jelly",color = "warning",
                                label= div(class="action-button--widget","تحلیل روند کلاس"))),
                     
@@ -39,17 +39,10 @@ div(style="text-align:center;",
                       direction = "vertical"
                     ),
                     
-                    
                     br(),
                     uiOutput(ns("output"))
-                    #uiOutput(ns("output"))
-                    # br(),
-                    # div(style="align:center; text-align:center",
-                    #       downloadBttn(ns("report"),label = "گزارش",size = "sm"))
-                    
-                    
+  ))
 
-           ))))
 
 # column(width = 4,
 # br(),
@@ -164,7 +157,7 @@ M0_Box <- function(input,output,session,Vals,font_plot){
               text=element_text(family=font_plot))
         
       p2 <- ggplot(melt_Data_Bx , aes(x=Day,y=value,fill=Day))+
-        stat_summary(fun.y=mean, geom="point", size=3)+# shape=20, size=2, color="red", fill="red")+
+        stat_summary(fun.y=mean, geom="point", size=3)+ # shape=20, size=2, color="red", fill="red")+
         stat_summary(fun.data = mean_se, geom = "errorbar")+
         labs(title = "میانگین و میزان انحراف از آن", x ="",y="نمره",fill="تاریخ")+
         scale_x_discrete(labels=colnames(Data())[vec_ind])+
@@ -175,24 +168,7 @@ M0_Box <- function(input,output,session,Vals,font_plot){
               plot.title = element_text(size=14,face="bold"),
               legend.title = element_text(size=12,face="bold"),
               text=element_text(family=font_plot))
-      
-     # gg1 <- ggplotly(p1) %>% config(displaylogo = FALSE,collaborate = FALSE,
-     #                              modeBarButtonsToRemove = list(
-     #                                'zoom2d','pan2d','select2d','lasso2d','zoomIn2d','zoomOut2d',
-     #                                'sendDataToCloud',
-     #                                'autoScale2d',
-     #                                'hoverClosestCartesian',
-     #                                'hoverCompareCartesian'
-     #                              ))
-     # 
-     # gg2 <- ggplotly(p2) %>% config(displaylogo = FALSE,collaborate = FALSE,
-     #                                modeBarButtonsToRemove = list(
-     #                                  'zoom2d','pan2d','select2d','lasso2d','zoomIn2d','zoomOut2d',
-     #                                  'sendDataToCloud',
-     #                                  'autoScale2d',
-     #                                  'hoverClosestCartesian',
-     #                                  'hoverCompareCartesian'
-     #                                ))
+
      
      return(list(p1=p1,p2=p2))
      
@@ -237,48 +213,50 @@ M0_Box <- function(input,output,session,Vals,font_plot){
       if(input$combine)'hoverCompareCartesian'
     ))
     
-    #return(gg1)
     return(list(gg1=gg1,gg2=gg2))
     
   })
   
   
   
+  output$output <- renderUI({
+    
+    if(out_ind$a==1){
+      
+      validate(need(!is.null(Data()),"هنوز داده ای وارد نشده است"),errorClass = "Hist_l")  
+      
+      A <- dropdown(
+        div(style="text-align:right; font-size :80%; font-weight:bold;", ":تنظیمات نمودار"),         
+        
+        div(style="text-align:left; font-size :80%;",
+        materialSwitch(inputId = ns("add_points"),label = "نفرات", width = "60%",
+                       status = "danger", right = TRUE,value = FALSE),
+        
+        materialSwitch(inputId = ns("combine"),label = "تجمیع",width = "60%",
+                       status = "danger", right = TRUE,value = FALSE)),
+        
+        circle = TRUE, status = "default", icon = icon("gear"),style = "unite",width = "200%")
+      
+      B <- div(style="text-align:center",downloadBttn(ns("download"),
+                                                     label = "گزارش",size = "sm"))
+      
+      return(list(A,br(),B))
+    }
+    
+  })
   
+
   out_ind <- reactiveValues(a=0)
   
   observeEvent(input$Bx_Ac, {
     out_ind$a = 1
   })
   
-
-  
-  
-
-  output$output <- renderUI({
-    
-    if(out_ind$a==1){
-      
-    validate(need(!is.null(Data()),"هنوز داده ای وارد نشده است"),errorClass = "Hist_l")  
-    
-    A <- dropdown(
-        div(style="text-align:right; font-size :110%; font-weight:bold;", ":تنظیمات نمودار"),         
-
-        materialSwitch(inputId = ns("add_points"),label = "اضافه کردن نفرات", 
-                       status = "danger", right = TRUE,value = FALSE),
-        
-        materialSwitch(inputId = ns("combine"),label = "تجمیع نمودارها",
-                       status = "danger", right = TRUE,value = FALSE),
-        
-        circle = TRUE, status = "default", icon = icon("gear"),style = "unite",width = "38%")
-    
-    B <- div(style="text-align:right",downloadBttn(ns("download"),
-                                      label = "گزارش روند کلاس",size = "sm"))
-    
-    return(list(A,br(),B))
-    }
-    
+  observeEvent(Data(),{
+    out_ind$a = 0
   })
+  
+  
   
 
   output$output2 <- renderUI({
@@ -302,50 +280,27 @@ M0_Box <- function(input,output,session,Vals,font_plot){
   })
   
   
-  
-  
-  
   output$Bx1 <- renderPlotly(Reac_CP2M_Bx()$gg1)
   output$Bx2 <- renderPlotly(Reac_CP2M_Bx()$gg2)
-  
-  
-  # output$download <- downloadHandler(
-  #   filename = paste0("روند کلاس",".html"),
-  #   content=function(file){ 
-  #     
-  #     tempReport <- file.path(tempdir(),"box.Rmd")
-  #     file.copy("report/box.Rmd",tempReport,overwrite = TRUE)
-  #     tempImage <- file.path(tempdir(),"logogrey.svg")
-  #     file.copy("report/logogrey.svg",tempImage,overwrite = TRUE)
-  #     params <- list(n = Reac_CP2M_Bx())
-  #     rmarkdown::render(tempReport,output_file = file,
-  #                       params = params,
-  #                       envir = new.env(parent = globalenv()))
-  #     #pdf(file,width=7,height=5) 
-  #     #ggsave(filename = file,plot = React_DT2(),device = cairo_pdf)
-  #     #export(p = ggplotly(React_DT2()),file = file)
-  #     #htmlwidgets::saveWidget(widget = ggplotly(React_DT2()),file = file)
-  #     #webshot::webshot(sprintf("file://%s", file),file = file,selector="#htmlwidget_container")
-  #     #plotly_IMAGE(x = ggplotly(React_DT2()),out_file = file,format = "jpeg")
-  #     #orca(ggplotly(React_DT2()),file)
-  #     #dev.off() 
-  #   })
+
   
   
   output$download <- downloadHandler(
     
-    
+
     filename = function(){
     paste('گزارش کلاس', sep = '.', switch(as.character(input$format) ,HTML = 'html', PDF = 'pdf', Word = 'docx'))
     },
     content=function(file){
+      withProgress(message = "... گزارش در حال ساخته شدن است",
+                   min = 0,max = 100,value = 72, {
       tempReport <- file.path(tempdir(),"box.Rmd")
       file.copy("report/box.Rmd",tempReport,overwrite = TRUE)
       params <- list(n = Reac_CP2M_Bx()$gg1,m=Reac_CP2M_Bx()$gg2)
       rmarkdown::render(tempReport,output_format = switch(as.character(input$format),PDF = pdf_document(), HTML = html_document(), Word = word_document()),
                         output_file = file,
                         params = params,
-                        envir = new.env(parent = globalenv()))})
+                        envir = new.env(parent = globalenv()))})})
   
   
 }
