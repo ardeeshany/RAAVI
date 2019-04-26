@@ -10,36 +10,52 @@ M0_BoxUI <- function(id,date,names){
 fluidRow(
  
 div(style="text-align:center;",
-  column(width = 4, 
+  column(width = 8, 
   br(),  
   box(width="100%",status="primary",              
    
   wellPanel(
-                    div(class="input-box--general",
-                        uiOutput(ns("Bx_SeI1"))),
-
-                    br(),
-                    div(class="input-box--general",
-                        uiOutput(ns("Bx_SeI2"))),
+                    # div(class="input-box--general",
+                    #     uiOutput(ns("Bx_SeI1"))),
+                    # 
+                    # br(),
+                    # div(class="input-box--general",
+                    #     uiOutput(ns("Bx_SeI2"))),
                     #div(class="action-button--general action-button--mleft action-button--mtop",
                     
-                    br(),
-                    
-                      div(style="align:center; text-align:center",
-                          downloadBttn(ns("report"),label = "گزارش",size = "sm")),
-                    
-                    br(),
-                    
+                    div(style="text-align:right",
                     actionBttn(inputId = ns("Bx_Ac"),style = "jelly",color = "warning",
-                    label= div(class="action-button--widget","در طول زمان"))
-           )))),
+                               label= div(class="action-button--widget","تحلیل روند کلاس"))),
+                    
+                    br(),
+                    # div(style="text-align:right",
+                    #          radioButtons(ns('format'), 'فرمت خروجی', c('HTML','PDF','Word'),inline = FALSE)),
 
-column(width = 8,
-br(),
-box(status="primary",width="100%",collapsible = TRUE,collapsed = FALSE,
-    uiOutput(ns("output")),
-    uiOutput(ns("output2"))
-  ))
+                    radioGroupButtons(
+                      inputId = ns('format'),
+                      label =  'فرمت خروجی',
+                      choices = c("HTML", "PDF", "Word"),
+                      selected = "HTML",
+                      direction = "vertical"
+                    ),
+                    
+                    
+                    br(),
+                    uiOutput(ns("output"))
+                    #uiOutput(ns("output"))
+                    # br(),
+                    # div(style="align:center; text-align:center",
+                    #       downloadBttn(ns("report"),label = "گزارش",size = "sm"))
+                    
+                    
+
+           ))))
+
+# column(width = 4,
+# br(),
+# box(status="primary",width="100%",collapsible = TRUE,collapsed = FALSE,
+#     uiOutput(ns("output2"))
+#   ))
 
 )}
 
@@ -66,40 +82,40 @@ M0_Box <- function(input,output,session,Vals,font_plot){
   })
   
 
-  output$Bx_SeI1 <- renderUI({
-    if(is.null(Data())) {
-      ch <- ""
-      ch_select <- ""
-      pickerInput(inputId = ns("Bx_SeI1"),label = "زمان ابتدا",choices = ch,
-                  selected =ch_select,
-                  options = list(style = "btn"),
-                  choicesOpt = ch_opt)
-    }else{
-      ch <- colnames(Data())
-      ch_select <- colnames(Data())[1]
-      pickerInput(inputId = ns("Bx_SeI1"),label = "زمان ابتدا",choices = ch,
-                  selected =ch_select,
-                  options = list(style = "btn"))
-    }
-  })
-  
-  
-  output$Bx_SeI2 <- renderUI({
-    if(is.null(Data())) {
-      ch <- ""
-      ch_select <- ""
-      pickerInput(inputId = ns("Bx_SeI2"),label = "زمان انتها",choices = ch,
-                  selected =ch_select,
-                  options = list(style = "btn"),
-                  choicesOpt = ch_opt)
-    }else{
-      ch <- colnames(Data())
-      ch_select <- tail(colnames(Data()),1)
-      pickerInput(inputId = ns("Bx_SeI2"),label = "زمان انتها",choices = ch,
-                  selected =ch_select,
-                  options = list(style = "btn"))
-    }
-  })
+  # output$Bx_SeI1 <- renderUI({
+  #   if(is.null(Data())) {
+  #     ch <- ""
+  #     ch_select <- ""
+  #     pickerInput(inputId = ns("Bx_SeI1"),label = "زمان ابتدا",choices = ch,
+  #                 selected =ch_select,
+  #                 options = list(style = "btn"),
+  #                 choicesOpt = ch_opt)
+  #   }else{
+  #     ch <- colnames(Data())
+  #     ch_select <- colnames(Data())[1]
+  #     pickerInput(inputId = ns("Bx_SeI1"),label = "زمان ابتدا",choices = ch,
+  #                 selected =ch_select,
+  #                 options = list(style = "btn"))
+  #   }
+  # })
+  # 
+  # 
+  # output$Bx_SeI2 <- renderUI({
+  #   if(is.null(Data())) {
+  #     ch <- ""
+  #     ch_select <- ""
+  #     pickerInput(inputId = ns("Bx_SeI2"),label = "زمان انتها",choices = ch,
+  #                 selected =ch_select,
+  #                 options = list(style = "btn"),
+  #                 choicesOpt = ch_opt)
+  #   }else{
+  #     ch <- colnames(Data())
+  #     ch_select <- tail(colnames(Data()),1)
+  #     pickerInput(inputId = ns("Bx_SeI2"),label = "زمان انتها",choices = ch,
+  #                 selected =ch_select,
+  #                 options = list(style = "btn"))
+  #   }
+  # })
   
 
   Reac_CP2M_Bx1 <- eventReactive(input$Bx_Ac, {
@@ -108,9 +124,13 @@ M0_Box <- function(input,output,session,Vals,font_plot){
     #   need(!is.null(Data()),"هنوز داده ای وارد نشده است"), errorClass = "Hist_l"
     # )
     
-    min=which(colnames(Data())==input$Bx_SeI1)
-    max=which(colnames(Data())==input$Bx_SeI2)
-
+    # min=which(colnames(Data())==input$Bx_SeI1)
+    # max=which(colnames(Data())==input$Bx_SeI2)
+    min = 1
+    max = dim(Data())[2]
+    
+    
+    
     validate(
       need(min <= max,"زمان ابتدا نباید بعد از زمان انتها باشد"), errorClass = "Hist_l"
     )
@@ -252,11 +272,10 @@ M0_Box <- function(input,output,session,Vals,font_plot){
         
         circle = TRUE, status = "default", icon = icon("gear"),style = "unite",width = "38%")
     
-      
     B <- div(style="text-align:right",downloadBttn(ns("download"),
-                                                   label = "دانلود",size = "sm"))
+                                      label = "گزارش روند کلاس",size = "sm"))
     
-    return(list(A,B,br()))
+    return(list(A,br(),B))
     }
     
   })
@@ -290,41 +309,43 @@ M0_Box <- function(input,output,session,Vals,font_plot){
   output$Bx2 <- renderPlotly(Reac_CP2M_Bx()$gg2)
   
   
+  # output$download <- downloadHandler(
+  #   filename = paste0("روند کلاس",".html"),
+  #   content=function(file){ 
+  #     
+  #     tempReport <- file.path(tempdir(),"box.Rmd")
+  #     file.copy("report/box.Rmd",tempReport,overwrite = TRUE)
+  #     tempImage <- file.path(tempdir(),"logogrey.svg")
+  #     file.copy("report/logogrey.svg",tempImage,overwrite = TRUE)
+  #     params <- list(n = Reac_CP2M_Bx())
+  #     rmarkdown::render(tempReport,output_file = file,
+  #                       params = params,
+  #                       envir = new.env(parent = globalenv()))
+  #     #pdf(file,width=7,height=5) 
+  #     #ggsave(filename = file,plot = React_DT2(),device = cairo_pdf)
+  #     #export(p = ggplotly(React_DT2()),file = file)
+  #     #htmlwidgets::saveWidget(widget = ggplotly(React_DT2()),file = file)
+  #     #webshot::webshot(sprintf("file://%s", file),file = file,selector="#htmlwidget_container")
+  #     #plotly_IMAGE(x = ggplotly(React_DT2()),out_file = file,format = "jpeg")
+  #     #orca(ggplotly(React_DT2()),file)
+  #     #dev.off() 
+  #   })
+  
+  
   output$download <- downloadHandler(
-    filename = paste0("روند کلاس",".html"),
-    content=function(file){ 
-      
+    
+    
+    filename = function(){
+    paste('گزارش کلاس', sep = '.', switch(as.character(input$format) ,HTML = 'html', PDF = 'pdf', Word = 'docx'))
+    },
+    content=function(file){
       tempReport <- file.path(tempdir(),"box.Rmd")
       file.copy("report/box.Rmd",tempReport,overwrite = TRUE)
-      tempImage <- file.path(tempdir(),"logogrey.svg")
-      file.copy("report/logogrey.svg",tempImage,overwrite = TRUE)
-      params <- list(n = Reac_CP2M_Bx())
-      rmarkdown::render(tempReport,output_file = file,
-                        params = params,
-                        envir = new.env(parent = globalenv()))
-      #pdf(file,width=7,height=5) 
-      #ggsave(filename = file,plot = React_DT2(),device = cairo_pdf)
-      #export(p = ggplotly(React_DT2()),file = file)
-      #htmlwidgets::saveWidget(widget = ggplotly(React_DT2()),file = file)
-      #webshot::webshot(sprintf("file://%s", file),file = file,selector="#htmlwidget_container")
-      #plotly_IMAGE(x = ggplotly(React_DT2()),out_file = file,format = "jpeg")
-      #orca(ggplotly(React_DT2()),file)
-      #dev.off() 
-    })
-  
-  
-  output$report <- downloadHandler(
-    
-    filename = "report.pdf",
-    
-    content=function(file){ 
-      tempReport <- file.path(tempdir(),"box.Rmd")
-      #file.copy("report/box.Rmd",tempReport,overwrite = TRUE)
-      #tempImage <- file.path(tempdir(),"Logo.png")
-      #file.copy("report/Logo.png",tempImage,overwrite = TRUE)
-      params <- list(n = Reac_CP2M_Bx())
-      rmarkdown::render(tempReport,output_file = file,
+      params <- list(n = Reac_CP2M_Bx()$gg1,m=Reac_CP2M_Bx()$gg2)
+      rmarkdown::render(tempReport,output_format = switch(as.character(input$format),PDF = pdf_document(), HTML = html_document(), Word = word_document()),
+                        output_file = file,
                         params = params,
                         envir = new.env(parent = globalenv()))})
+  
   
 }

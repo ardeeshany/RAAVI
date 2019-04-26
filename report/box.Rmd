@@ -1,8 +1,8 @@
 ---
+output: html_document
 params:
   n : NA
-output:
-  html_document: default
+  m : NA
 ---
 <style>
 .column-left{
@@ -49,8 +49,9 @@ HTML("<br></br>")
 <div class="column-right">
 ```{r ggplot2,echo=FALSE,fig.width=10,fig.height=8}
 # The `params` object is available in the document.
-params$n$gg1
-params$n$gg2
+params$n
+if(!is.null(params$m))
+params$m
 ```
 </div>
 

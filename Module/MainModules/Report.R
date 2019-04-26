@@ -7,7 +7,7 @@ ReportUI <- function(id){
 ### First Column    
       
 div(style="text-align:center;",
-column(width = 2,
+column(width = 3,
     br(),
     box(width="100%",
     #title = div(class="load__title--font-size","وارد کردن داده"),
@@ -30,7 +30,7 @@ column(width = 2,
 ### Second Column    
 
 div(style="text-align:center;",
-column(width = 6, title = div(class="load__title--font-size","روند کلاس"),
+column(width = 3, title = div(class="load__title--font-size","روند کلاس"),
   
    M0_BoxUI(ns("box")) 
    #  wellPanel(
@@ -69,10 +69,18 @@ Report <- function(input,output,session){
      if(dim(D_new)[2] > 20)
      D_new <- D_new[,1:21]
      
+     values[["names"]] <- D_new[-1,1]
+     values[["dates"]] <-colnames(D_new)[-1]
      
-     values[["now"]] <- D_new[,-1]
-     values[["names"]] <-D_new[,1]
-     values[["dates"]] <- colnames(D_new)[-1]
+     A <- D_new[-1,-1]
+     
+     if(!is.null(dim(A))){
+       for(i in 1:dim(A)[1]){
+         for(j in 1:dim(A)[2]){
+           A[i,j] <- persian.tonumber(A[i,j])}}}
+     
+     values[["now"]] <- data.matrix(A)
+     
      })
   
   
