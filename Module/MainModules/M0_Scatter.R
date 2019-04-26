@@ -74,14 +74,14 @@ M0_Scatter <- function(input,output,session,Vals,format_out,font_plot){
                            label_off = "میانگین"
               ),
           
-              prettyToggle(shape = "round",value = T,
-                           inputId = ns("St_chbI"),
-                           label_on = "تجمیع نمودارها", 
-                           icon_on = icon("check"),
-                           status_on = "primary",
-                           status_off = "default", 
-                           label_off = "تجمیع نمودارها"
-              ),
+              # prettyToggle(shape = "round",value = T,
+              #              inputId = ns("St_chbI"),
+              #              label_on = "تجمیع نمودارها", 
+              #              icon_on = icon("check"),
+              #              status_on = "primary",
+              #              status_off = "default", 
+              #              label_off = "تجمیع نمودارها"
+              # ),
 
               prettyRadioButtons(
                 inputId = ns('St_rb'),inline = T,
@@ -94,14 +94,30 @@ M0_Scatter <- function(input,output,session,Vals,format_out,font_plot){
         
         C <- dropdown(label = div(style="font-size:72%; color:black; font-weight:bold;","لیست دانش آموزان"),
                                 
-                                div(style="text-align:left;",  
-                                    checkboxInput(ns('St_all'),
-                                                  div(style="text-align:left;,color: #607D8B;",
-                                                      'تمام / هیچ'))),
                                 
-                                div(style="text-align:left;",
-                                    checkboxGroupInput(inputId = ns("St_ChG"), label = "", choices = c(rownames(Data())))
-                                ),
+                      div(style="text-align:center; font-size :80%;",
+                      pickerInput(
+                        inputId = ns("St_ChG"), 
+                        label = "انتخاب کنید", 
+                        choices =  c(rownames(Data())), 
+                        options = list(
+                          `actions-box` = TRUE, 
+                          size = 5,
+                          `selected-text-format` = "count > 3"
+                        ),
+                        multiple = TRUE
+                      )),
+                      
+                      
+                      
+                      # div(style="text-align:left;",  
+                      #               checkboxInput(ns('St_all'),
+                      #                             div(style="text-align:left;,color: #607D8B;",
+                      #                                 'تمام / هیچ'))),
+                      #           
+                      #           div(style="text-align:left;",
+                      #               checkboxGroupInput(inputId = ns("St_ChG"), label = "", choices = c(rownames(Data())))
+                      #           ),
                                 style = "unite", icon = div(style="color:black;",icon("user-circle-o")),
                                 status = "warning", width = "168%"
                                 # animate = animateOptions(
@@ -128,38 +144,16 @@ M0_Scatter <- function(input,output,session,Vals,format_out,font_plot){
       out_ind$a = 0
     })
     
-    
-  # output$St_ChG <- renderUI({
-  # 
-  #   dropdown(label = div(style="font-size:72%; color:black; font-weight:bold;","لیست دانش آموزان"),
-  #   
-  #   div(style="text-align:left;",  
-  #   checkboxInput(ns('St_all'),
-  #   div(style="text-align:left;,color: #607D8B;",
-  #   'تمام / هیچ'))),
-  #            
-  #     div(style="text-align:left;",
-  #     checkboxGroupInput(inputId = ns("St_ChG"), label = "", choices = c(rownames(Data())))
-  #     ),
-  #     style = "unite", icon = div(style="color:black;",icon("user-circle-o")),
-  #     status = "warning", width = "168%"
-  #      # animate = animateOptions(
-  #      #   enter = animations$fading_entrances$fadeInLeftBig,
-  #      #   exit = animations$fading_exits$fadeOutRightBig
-  #      # )
+  # observeEvent(input$St_all,{
+  #   updateCheckboxGroupInput(
+  #     session, 'St_ChG', choices = rownames(Data()),
+  #     selected = if (input$St_all) rownames(Data())
   #   )
-  #   })
-
-  observeEvent(input$St_all,{
-    updateCheckboxGroupInput(
-      session, 'St_ChG', choices = rownames(Data()),
-      selected = if (input$St_all) rownames(Data())
-    )
-  })
+  # })
 
 
-  Reac_CP2_Sc <- eventReactive(input$St_Ac, {
-    
+  #Reac_CP2_Sc <- eventReactive(input$St_Ac, {
+   Reac_CP2_Sc <- reactive({  
     # validate(
     #   need(!is.null(Data()),"هنوز داده ای وارد نشده است"),errorClass = "Hist_l"
     # )
@@ -195,34 +189,34 @@ M0_Scatter <- function(input,output,session,Vals,format_out,font_plot){
 
     text <- coef(m)[1]
 
-    if(input$St_chbI == FALSE){
-      
-      if(length(unique(melt_Data_St[,1]))==1){
-        x_angle = 60
-        x_size = 11
-      }else{
-        x_angle = 90
-        x_size = 8
-      }
-      
-      p <- ggplot(melt_Data_St, aes(Day, value)) + geom_point(aes(color = Student)) +
-        stat_smooth(aes(color = Student),method = input$St_rb) +
-        #facet_wrap( ~ Student,as.table = FALSE,ncol=3)+
-        # theme(axis.line = element_line(colour = "darkblue", size = 1, linetype = "solid"),
-        #       axis.text.x  = element_text(face="bold",angle=45, vjust=0.5, size=5)) +
-        theme(axis.text.x = element_text(size=x_size,colour="black",angle=x_angle, hjust=1,vjust=.5),
-              axis.text.y = element_text(size=12,colour="black"),
-              axis.title=element_text(size=14,face="bold"),
-              plot.title = element_text(size=14,face="bold"),
-              legend.title = element_text(size=12,face="bold"),
-              text=element_text(family=font_plot))+
-        labs(title="روند دانش آموزان در طول زمان",
-             color="دانش آموزان") +
-        #scale_x_discrete(name ="", limits=colnames(Data())) +
-        #annotate('text',x = 9,y = 18,label= text())+
-        xlab("زمان") + ylab("نمره")
-    }
-    else{
+    # if(input$St_chbI == FALSE){
+    #   
+    #   if(length(unique(melt_Data_St[,1]))==1){
+    #     x_angle = 60
+    #     x_size = 11
+    #   }else{
+    #     x_angle = 90
+    #     x_size = 8
+    #   }
+    #   
+    #   p <- ggplot(melt_Data_St, aes(Day, value)) + geom_point(aes(color = Student)) +
+    #     stat_smooth(aes(color = Student),method = input$St_rb) +
+    #     #facet_wrap( ~ Student,as.table = FALSE,ncol=3)+
+    #     # theme(axis.line = element_line(colour = "darkblue", size = 1, linetype = "solid"),
+    #     #       axis.text.x  = element_text(face="bold",angle=45, vjust=0.5, size=5)) +
+    #     theme(axis.text.x = element_text(size=x_size,colour="black",angle=x_angle, hjust=1,vjust=.5),
+    #           axis.text.y = element_text(size=12,colour="black"),
+    #           axis.title=element_text(size=14,face="bold"),
+    #           plot.title = element_text(size=14,face="bold"),
+    #           legend.title = element_text(size=12,face="bold"),
+    #           text=element_text(family=font_plot))+
+    #     labs(title="روند دانش آموزان در طول زمان",
+    #          color="دانش آموزان") +
+    #     #scale_x_discrete(name ="", limits=colnames(Data())) +
+    #     #annotate('text',x = 9,y = 18,label= text())+
+    #     xlab("زمان") + ylab("نمره")
+    # }
+    # else{
 
       p <- ggplot(melt_Data_St, aes(Day, value)) + geom_point(aes(color = Student)) +
         stat_smooth(aes(color = Student),method = input$St_rb,se=FALSE) +
@@ -240,11 +234,10 @@ M0_Scatter <- function(input,output,session,Vals,format_out,font_plot){
         #annotate('text',x = 9,y = 18,label= text())+
         #geom_text(aes(color=Student),position = position_dodge(width = 1),label = text(), parse = TRUE)+
         xlab("زمان") + ylab("نمره")
-    }
+    #}
 
     return(list(p=p,melt=melt_Data_St))
-    #gg <- ggplotly(p)
-    #gg
+
 
   })
   
@@ -276,39 +269,39 @@ M0_Scatter <- function(input,output,session,Vals,format_out,font_plot){
     height <- input$height
     #width <- input$width
     
-    if(isolate(!input$St_chbI)){
-      if(input$add_date){
-      p <- Reac_CP2_Sc()$p + facet_wrap( ~ Student,as.table = FALSE,ncol=colnum,scales = "free",switch = "both")+
-        scale_x_discrete(name ="", limits=colnames(Data()))
-      
-      A <- ggplotly(p)   %>% 
-        layout(height = height, autosize=TRUE) %>% config(displaylogo = FALSE,collaborate = FALSE,
-                                                          modeBarButtonsToRemove = list(
-                                                            'zoom2d','pan2d','select2d','lasso2d','zoomIn2d','zoomOut2d',
-                                                            'sendDataToCloud',
-                                                            'autoScale2d',
-                                                            'hoverClosestCartesian',
-                                                            'hoverCompareCartesian'
-                                                          )) #,annotations = text_scatter)
-
-      
-    }else{
-      p <- Reac_CP2_Sc()$p + facet_wrap( ~ Student,as.table = FALSE,ncol=colnum,scales = "free",switch = "both")+ #,ncol=colnum,)+
-        scale_x_discrete(name ="", limits=1:ncol(Data()))
-    
-      A <- ggplotly(p)  %>% 
-
-        layout(height = height,autosize=TRUE) %>% config(displaylogo = FALSE,collaborate = FALSE,
-                                                         modeBarButtonsToRemove = list(
-                                                           'zoom2d','pan2d','select2d','lasso2d','zoomIn2d','zoomOut2d',
-                                                           'sendDataToCloud',
-                                                           'autoScale2d',
-                                                           'hoverClosestCartesian',
-                                                           'hoverCompareCartesian'
-                                                         )) #,annotations = text_scatter)
-        
-
-    }}else{
+    # if(isolate(!input$St_chbI)){
+    #   if(input$add_date){
+    #   p <- Reac_CP2_Sc()$p + facet_wrap( ~ Student,as.table = FALSE,ncol=colnum,scales = "free",switch = "both")+
+    #     scale_x_discrete(name ="", limits=colnames(Data()))
+    #   
+    #   A <- ggplotly(p)   %>% 
+    #     layout(height = height, autosize=TRUE) %>% config(displaylogo = FALSE,collaborate = FALSE,
+    #                                                       modeBarButtonsToRemove = list(
+    #                                                         'zoom2d','pan2d','select2d','lasso2d','zoomIn2d','zoomOut2d',
+    #                                                         'sendDataToCloud',
+    #                                                         'autoScale2d',
+    #                                                         'hoverClosestCartesian',
+    #                                                         'hoverCompareCartesian'
+    #                                                       )) #,annotations = text_scatter)
+    # 
+    #   
+    # }else{
+    #   p <- Reac_CP2_Sc()$p + facet_wrap( ~ Student,as.table = FALSE,ncol=colnum,scales = "free",switch = "both")+ #,ncol=colnum,)+
+    #     scale_x_discrete(name ="", limits=1:ncol(Data()))
+    # 
+    #   A <- ggplotly(p)  %>% 
+    # 
+    #     layout(height = height,autosize=TRUE) %>% config(displaylogo = FALSE,collaborate = FALSE,
+    #                                                      modeBarButtonsToRemove = list(
+    #                                                        'zoom2d','pan2d','select2d','lasso2d','zoomIn2d','zoomOut2d',
+    #                                                        'sendDataToCloud',
+    #                                                        'autoScale2d',
+    #                                                        'hoverClosestCartesian',
+    #                                                        'hoverCompareCartesian'
+    #                                                      )) #,annotations = text_scatter)
+    #     
+    # 
+    # }}else{
       p <- Reac_CP2_Sc()$p+
         scale_x_discrete(name ="", limits=colnames(Data()))
       
@@ -326,7 +319,7 @@ M0_Scatter <- function(input,output,session,Vals,format_out,font_plot){
                                                           )) #,annotations = text_scatter)
 
   
-    }
+    #}
 
     return(list(A=A))
     
