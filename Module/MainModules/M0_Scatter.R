@@ -19,18 +19,6 @@ box(width="100%",status="primary",
                  label = div(class="action-button--widget","روند دانش آموزان"))),
       
       br(),
-      # div(style="text-align:right",
-      #          radioButtons(ns('format'), 'فرمت خروجی', c('HTML','PDF','Word'),inline = FALSE)),
-      
-      radioGroupButtons(
-        inputId = ns('format'),
-        label =  'فرمت خروجی',
-        choices = c("HTML", "PDF", "Word"),
-        selected = "HTML",
-        direction = "vertical"
-      ),
-      
-      br(),
       
       uiOutput(ns('grid'))))
 
@@ -53,7 +41,7 @@ box(width="100%",status="primary",
 #
 ######################
 
-M0_Scatter <- function(input,output,session,Vals,font_plot){
+M0_Scatter <- function(input,output,session,Vals,format_out,font_plot){
 
   ns <- session$ns
   
@@ -408,7 +396,7 @@ M0_Scatter <- function(input,output,session,Vals,font_plot){
     
     
     filename = function(){
-      paste('گزارش کلاس', sep = '.', switch(as.character(input$format) ,HTML = 'html', PDF = 'pdf', Word = 'docx'))
+      paste('گزارش کلاس', sep = '.', switch(format_out(),HTML = 'html', PDF = 'pdf', Word = 'docx'))
     },
     content=function(file){
       withProgress(message = "... گزارش در حال ساخته شدن است",
@@ -416,7 +404,7 @@ M0_Scatter <- function(input,output,session,Vals,font_plot){
                      tempReport <- file.path(tempdir(),"scatter.Rmd")
                      file.copy("report/scatter.Rmd",tempReport,overwrite = TRUE)
                      params <- list(n = Reac_out()$A)
-                     rmarkdown::render(tempReport,output_format = switch(as.character(input$format),PDF = pdf_document(), HTML = html_document(), Word = word_document()),
+                     rmarkdown::render(tempReport,output_format = switch(format_out(),PDF = pdf_document(), HTML = html_document(), Word = word_document()),
                                        output_file = file,
                                        params = params,
                                        envir = new.env(parent = globalenv()))})})

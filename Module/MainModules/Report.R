@@ -23,7 +23,18 @@ column(width = 2,
     wellPanel(
         div(style="align:center; tet-align:center;",
         actionBttn(inputId = ns("f_test"),style = "jelly",color = "warning",
-                   label = div(class="action-button--widget","فایل نمونه"))))
+                   label = div(class="action-button--widget","فایل نمونه")))),
+    
+    
+    wellPanel(
+      radioGroupButtons(
+        inputId = ns('format'),
+        label =  'فرمت خروجی',
+        choices = c("HTML", "PDF", "Word"),
+        selected = "HTML",
+        direction = "vertical"
+      )
+    )
     
     ))),
 
@@ -104,7 +115,9 @@ Report <- function(input,output,session){
   english <- "01234567890123456789"
   persian.tonumber <- function(s) as.character(chartr(persian,english,s))
   
-  callModule(M0_Box,"box",values,"IRANSansDN")
-  callModule(M0_Scatter,"scatter",values,"IRANSansDN")
+  
+  format_out <- reactive({return(input$format)})
+  callModule(M0_Box,"box",values,format_out,"IRANSansDN")
+  callModule(M0_Scatter,"scatter",values,format_out,"IRANSansDN")
   
 }
