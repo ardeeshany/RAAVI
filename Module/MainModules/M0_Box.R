@@ -255,11 +255,13 @@ M0_Box <- function(input,output,session,Vals,font_plot){
         
         circle = TRUE, status = "default", icon = icon("gear"),style = "unite",width = "38%")
     
-      
+     
+    C <- div(style="text-align:right",radioButtons(ns('format'), 'Document format', c('PDF', 'HTML', 'Word'),
+                      inline = TRUE))
     B <- div(style="text-align:right",downloadBttn(ns("download"),
                                                    label = "Download",size = "sm"))
     
-    return(list(A,B,br()))
+    return(list(A,C,B,br()))
     }
     
   })
@@ -294,27 +296,45 @@ M0_Box <- function(input,output,session,Vals,font_plot){
 
   
   output$download <- downloadHandler(
-    filename = paste0("Class",".html"),
-    content=function(file){ 
-      
+
+    filename = function(){
+      paste('my-report', sep = '.', switch(input$format, PDF = 'pdf', HTML = 'html', Word = 'docx'))
+    },
+
+    content=function(file){
       tempReport <- file.path(tempdir(),"box.Rmd")
       file.copy("report/box.Rmd",tempReport,overwrite = TRUE)
-      tempImage <- file.path(tempdir(),"Logo.png")
-      file.copy("report/Logo.png",tempImage,overwrite = TRUE)
       params <- list(n = Reac_CP2M_Bx()$gg1,m=Reac_CP2M_Bx()$gg2)
-      rmarkdown::render(tempReport,output_file = file,
+      rmarkdown::render(tempReport,output_format = switch(input$format,PDF = pdf_document(), HTML = html_document(), Word = word_document()),
+                        output_file = file,
                         params = params,
                         envir = new.env(parent = globalenv()))
-      #pdf(file,width=7,height=5) 
-      #ggsave(filename = file,plot = React_DT2(),device = cairo_pdf)
-      #export(p = ggplotly(React_DT2()),file = file)
-      #htmlwidgets::saveWidget(widget = ggplotly(React_DT2()),file = file)
-      #webshot::webshot(sprintf("file://%s", file),file = file,selector="#htmlwidget_container")
-      #plotly_IMAGE(x = ggplotly(React_DT2()),out_file = file,format = "jpeg")
-      #orca(ggplotly(React_DT2()),file)
-      #dev.off() 
-    }
+      }
   )
+  
+  # output$download <- downloadHandler(
+  #   filename = paste0("Class",".pdf"),
+  #   content=function(file){ 
+  #     
+  #     tempReport <- file.path(tempdir(),"box.Rmd")
+  #     file.copy("report/box.Rmd",tempReport,overwrite = TRUE)
+  #     tempImage <- file.path(tempdir(),"Logo.png")
+  #     file.copy("report/Logo.png",tempImage,overwrite = TRUE)
+  #     
+  #     params <- list(n = Reac_CP2M_Bx()$gg1,m=Reac_CP2M_Bx()$gg2)
+  #     rmarkdown::render(tempReport,output_file = file,
+  #                       params = params,
+  #                       envir = new.env(parent = globalenv()))
+  #     #pdf(file,width=7,height=5) 
+  #     #ggsave(filename = file,plot = React_DT2(),device = cairo_pdf)
+  #     #export(p = ggplotly(React_DT2()),file = file)
+  #     #htmlwidgets::saveWidget(widget = ggplotly(React_DT2()),file = file)
+  #     #webshot::webshot(sprintf("file://%s", file),file = file,selector="#htmlwidget_container")
+  #     #plotly_IMAGE(x = ggplotly(React_DT2()),out_file = file,format = "jpeg")
+  #     #orca(ggplotly(React_DT2()),file)
+  #     #dev.off() 
+  #   }
+  # )
   
   
   

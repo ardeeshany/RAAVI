@@ -1,41 +1,9 @@
 ---
 output: html_document
-runtime: shiny
 params:
   n: NA
   m: NA
 ---
-<style>
-.column-left{
-  float:left;
-  width: 12%;
-  text-align: center;
-  margin-top:32%;
-  font-family:IRANSansDN_Light
-}
-.column-right{
-  float:right;
-  width: 88%;
-  text-align: right;
-}
-.logo{
-text-align:right
-font-family:IRANSansDN_Light
-}
-</style>
-
-<style>
-h1, h2, h3, h4, h5, h6 {
-  font-family:IRANSansDN_Light;
-  text-align:center
-}
-p {
-  text-align:center
-  font-family:IRANSansDN_Light;
-}
-</style>
-
-
 ```{r br,echo=FALSE}
 # The `params` object is available in the document.
 HTML("<br></br>")
