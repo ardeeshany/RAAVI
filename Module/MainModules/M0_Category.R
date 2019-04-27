@@ -3,14 +3,7 @@ M0_CatUI <- function(id){
   
   ns <- NS(id)
   
-  tabPanel(title = div(class="tabPanel--font-size center",
-                       "فیلتر"),
-           icon = icon("filter",class="tabPanel-icon"),
-                     
-           fluidRow(                
-             
 div(style="text-align:center;",
-column(width = 2, 
 br(),  
 box(width="100%",status="primary",   
     
@@ -36,32 +29,26 @@ box(width="100%",status="primary",
       
     wellPanel(
       
-      noUiSliderInput(inputId = ns("DT_sl"),label = "",
-                      color = "#578CA9",
-                      orientation = "vertical",
-                      direction = "rtl",height = "270px",
-                      min = 0,max = 20,value = c(0,20),step = 0.25), 
-
-            actionBttn(inputId = ns("DT_AC2"),style = "jelly",color = "warning",
-            label = div(class="action-button--widget", "جدول نمرات"))
+      div(style="align:center; tet-align:center;",
+      actionBttn(inputId = ns("DT_AC2"),style = "jelly",color = "warning",
+                 label = div(class="action-button--widget", "جدول نمرات"))),
+      
+      br(),
+      uiOutput(ns("grid"))
              
           )
-    
-))),
 
 
-column(width = 10, 
-br(),  
-box(width="100%",status="primary",
-    
-  uiOutput(ns("full_out"))
-
+# column(width = 10, 
+# br(),  
+# box(width="100%",status="primary",
+#     
+#   uiOutput(ns("full_out"))
+# 
+# 
+# ))
 
 ))
-
-
-)
-)
 
 }
 
@@ -83,7 +70,7 @@ box(width="100%",status="primary",
 #   Group_name_iso[i] = paste("گروه",i,sep="")
 # }
 
-M0_Cat <- function(input,output,session,Vals,font_plot){
+M0_Cat <- function(input,output,session,Vals,format_out,font_plot){
 
   ns <- session$ns  
   
@@ -96,6 +83,64 @@ M0_Cat <- function(input,output,session,Vals,font_plot){
     return(M)
   })  
   
+  
+  output$grid <- renderUI({
+    
+    if(out_ind$a==1){
+      
+      validate(need(!is.null(Data()),"هنوز داده ای وارد نشده است"),errorClass = "Hist_l")  
+      
+      br()
+      
+      A <- dropdown(
+
+        #uiOutput(ns("St_ChG")),
+
+        div(style="text-align:left; font-size :90%;",
+
+              div(class="right",
+                  colourpicker::colourInput(ns("color_bg"),label = div(style="font-size:80%;","انتخاب رنگ پس زمینه"),
+                                            value = "#55B4B0",showColour = "background")),
+
+              div(class="right",
+                  colourpicker::colourInput(ns("color_text"),label = div(style="font-size:80%;","انتخاب رنگ متن"),
+                                            value =  "black",showColour = "background")),
+              #palette = "limited" , allowedCols = c("black","white","#B93A32"))),
+
+            
+            chooseSliderSkin("Modern",color = "gray"),
+            setSliderColor("#578CA9",1),
+            sliderInput(ns("DT_sl"), "رنج نمره",
+                        min = 0, max = 20, value = c(0,20)
+            )),
+            # noUiSliderInput(inputId = ns("DT_sl"),label = "",
+            #                 color = "#578CA9",
+            #                 #orientation = "vertical",
+            #                 direction = "ltr", #height = "270px",
+            #                 min = 0,max = 20,value = c(0,20),step = 0.25)),
+
+
+        circle = TRUE, status = "default", icon = icon("gear"),style = "unite",width = "120%")
+      
+      B <- div(style="text-align:center",downloadBttn(ns("download"),
+                                                      label ="گزارش",size = "sm"))
+      
+      return(list(A,br(),B))
+      
+      
+    }
+    
+  })
+  
+  out_ind <- reactiveValues(a=0)
+  
+  observeEvent(input$DT_AC2, {
+    out_ind$a = 1
+  })
+  
+  observeEvent(Data(),{
+    out_ind$a = 0
+  })
   
   
   
@@ -365,7 +410,8 @@ M0_Cat <- function(input,output,session,Vals,font_plot){
 
 
 
-React_DT2 <-eventReactive(input$DT_AC2,{
+  #React_DT2 <-eventReactive(input$DT_AC2,{
+  React_DT2 <-reactive({
   
   # validate(
   #   need(!is.null(Data()),"هنوز داده ای وارد نشده است"), errorClass = "Hist_l"
@@ -535,70 +581,66 @@ observeEvent(input$DT_AC2, {
   table_ind$a = 1
 })
 
-output$full_out <- renderUI({
-  
-  
-if(table_ind$a==1){
-  
-  validate(need(!is.null(Data()),"هنوز داده ای وارد نشده است"),errorClass = "Hist_l")
-  
-  A <- dropdown(
-    
-    div(class="right",
-        colourpicker::colourInput(ns("color_bg"),label = div(style="font-size:80%;","انتخاب رنگ پس زمینه"),
-                value = "#55B4B0",showColour = "background")),
-    
-    div(class="right",
-        colourpicker::colourInput(ns("color_text"),label = div(style="font-size:80%;","انتخاب رنگ متن"),
-                value =  "black",showColour = "background")),
-                #palette = "limited" , allowedCols = c("black","white","#B93A32"))),
-    
-    circle = TRUE, status = "default", icon = icon("gear"),style = "unite",width = "18%"
-  )
-  
-  B <- div(style="text-align:right",downloadBttn(ns("download"),
-                label = "دانلود",size = "sm"))
-  
-  C <- withSpinner(plotlyOutput(ns("DT")),type=5,color = "#006E6D",size = 0.6)  
-  
-  
-  
-  out <- list(A,B,br(),C)
-  return(out)
-}
-  
-})
+# output$full_out <- renderUI({
+#   
+#   
+# if(table_ind$a==1){
+#   
+#   validate(need(!is.null(Data()),"هنوز داده ای وارد نشده است"),errorClass = "Hist_l")
+#   
+#   A <- dropdown(
+#     
+#     div(class="right",
+#         colourpicker::colourInput(ns("color_bg"),label = div(style="font-size:80%;","انتخاب رنگ پس زمینه"),
+#                 value = "#55B4B0",showColour = "background")),
+#     
+#     div(class="right",
+#         colourpicker::colourInput(ns("color_text"),label = div(style="font-size:80%;","انتخاب رنگ متن"),
+#                 value =  "black",showColour = "background")),
+#                 #palette = "limited" , allowedCols = c("black","white","#B93A32"))),
+#     
+#     circle = TRUE, status = "default", icon = icon("gear"),style = "unite",width = "18%"
+#   )
+#   
+#   B <- div(style="text-align:right",downloadBttn(ns("download"),
+#                 label = "دانلود",size = "sm"))
+#   
+#   C <- withSpinner(plotlyOutput(ns("DT")),type=5,color = "#006E6D",size = 0.6)  
+#   
+#   
+#   
+#   out <- list(A,B,br(),C)
+#   return(out)
+# }
+#   
+# })
+
+
 
 
 output$download <- downloadHandler(
-  filename =  paste0("فیلتر",".html"),
-  content=function(file){ 
-    
-    tempReport <- file.path(tempdir(),"filter.Rmd")
-    file.copy("report/filter.Rmd",tempReport,overwrite = TRUE)
-    tempImage <- file.path(tempdir(),"logogrey.svg")
-    file.copy("report/logogrey.svg",tempImage,overwrite = TRUE)
-    params <- list(n = ggplotly(React_DT2()) %>% config(displaylogo = FALSE,collaborate = FALSE,
-                                                        modeBarButtonsToRemove = list(
-                                                          'zoom2d','pan2d','select2d','lasso2d','zoomIn2d','zoomOut2d',
-                                                          'sendDataToCloud',
-                                                          'autoScale2d',
-                                                          'hoverClosestCartesian',
-                                                          'hoverCompareCartesian'
-                                                        )))
-    rmarkdown::render(tempReport,output_file = file,
-                      params = params,
-                      envir = new.env(parent = globalenv()))
-    #pdf(file,width=7,height=5) 
-    #ggsave(filename = file,plot = React_DT2(),device = cairo_pdf)
-    #export(p = ggplotly(React_DT2()),file = file)
-    #htmlwidgets::saveWidget(widget = ggplotly(React_DT2()),file = file)
-    #webshot::webshot(sprintf("file://%s", file),file = file,selector="#htmlwidget_container")
-    #plotly_IMAGE(x = ggplotly(React_DT2()),out_file = file,format = "jpeg")
-    #orca(ggplotly(React_DT2()),file)
-    #dev.off() 
-  }
-)
+  
+  filename = function(){
+    paste('گزارش جدول نمرات', sep = '.', switch(format_out(),HTML = 'html', PDF = 'pdf', Word = 'docx'))
+  },
+  content=function(file){
+    withProgress(message = "... گزارش در حال ساخته شدن است",
+                 min = 0,max = 100,value = 72, {
+                   tempReport <- file.path(tempdir(),"filter.Rmd")
+                   file.copy("report/filter.Rmd",tempReport,overwrite = TRUE)
+                   params <- list(n = ggplotly(React_DT2()) %>% config(displaylogo = FALSE,collaborate = FALSE,
+                                                                       modeBarButtonsToRemove = list(
+                                                                         'zoom2d','pan2d','select2d','lasso2d','zoomIn2d','zoomOut2d',
+                                                                         'sendDataToCloud',
+                                                                         'autoScale2d',
+                                                                         'hoverClosestCartesian',
+                                                                         'hoverCompareCartesian'
+                                                                       )))
+                   rmarkdown::render(tempReport,output_format = switch(format_out(),PDF = pdf_document(), HTML = html_document(), Word = word_document()),
+                                     output_file = file,
+                                     params = params,
+                                     envir = new.env(parent = globalenv()))})})
+
 
 
 }
