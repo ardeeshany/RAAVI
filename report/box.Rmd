@@ -1,5 +1,4 @@
 ---
-output: html_document
 params:
   n : NA
   m : NA
