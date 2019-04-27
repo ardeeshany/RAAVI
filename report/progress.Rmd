@@ -1,6 +1,5 @@
 ---
 output: html_document
-runtime: shiny
 params:
   n: NA
   m: NA
@@ -48,12 +47,6 @@ p {
 # The `params` object is available in the document.
 HTML("<br></br>")
 ```
-
-<div class="column-left">
-```{r pressure, echo=FALSE, fig.cap="تولید شده توسط راوی"}
-knitr::include_graphics("logogrey.svg")
-```
-</div>
 
 <div class="column-right">
 ```{r plot,echo=FALSE}

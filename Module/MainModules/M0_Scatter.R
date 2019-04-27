@@ -1,14 +1,9 @@
 M0_ScatterUI <- function(id){
 
-   ns <- NS(id)
+ns <- NS(id)
 
-###
-
-# fluidRow(
-# 
- div(style="text-align:center;",
-# column(width = 8, 
- br(),  
+div(style="text-align:center;",
+br(),  
 box(width="100%",status="primary",  
 
 
@@ -386,8 +381,7 @@ M0_Scatter <- function(input,output,session,Vals,format_out,font_plot){
   
   
   output$download <- downloadHandler(
-    
-    
+
     filename = function(){
       paste('گزارش کلاس', sep = '.', switch(format_out(),HTML = 'html', PDF = 'pdf', Word = 'docx'))
     },
