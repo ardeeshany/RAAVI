@@ -17,6 +17,7 @@
 # ## app.R ##f
 library(shiny)
 library(stats)
+library(rmarkdown)
 #library(XLConnect)
 #library(xlsx)
 #library(readxl)
