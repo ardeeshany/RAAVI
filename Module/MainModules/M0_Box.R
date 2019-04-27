@@ -278,10 +278,10 @@ M0_Box <- function(input,output,session,Vals,format_out,font_plot){
     paste('report', sep = '.', switch(format_out(),HTML = 'html', PDF = 'pdf', Word = 'docx'))
     },
     content=function(file){
-      withProgress(message = "... گزارش در حال ساخته شدن است",
+      withProgress(message = "... گزارش در حال ساخته شدن می باشد",
                    min = 0,max = 100,value = 72, {
       tempReport <- file.path(tempdir(),"box.Rmd")
-      file.copy("report/box.Rmd",tempReport,overwrite = TRUE)
+      file.copy("~/report/box.Rmd",tempReport,overwrite = TRUE)
       params <- list(n = Reac_CP2M_Bx()$gg1,m=Reac_CP2M_Bx()$gg2)
       rmarkdown::render(tempReport,output_format = switch(format_out(),PDF = pdf_document(), HTML = html_document(), Word = word_document()),
                         output_file = file,

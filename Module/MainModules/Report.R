@@ -65,6 +65,13 @@ div(style="text-align:center;",
 div(style="text-align:center;",
     column(width = 2,
            M0_HistUI(ns("hist"))
+    )),
+
+### sixth Column    
+
+div(style="text-align:center;",
+    column(width = 2,
+           M0_CatUI(ns("cat"))
     ))
 
 
@@ -135,5 +142,6 @@ Report <- function(input,output,session){
   callModule(M0_Scatter,"scatter",values,format_out,"IRANSansDN")
   callModule(M0_Prog,"progress",values,format_out,"IRANSansDN")
   callModule(M0_Hist,"hist",values,format_out,"IRANSansDN")
+  callModule(M0_Cat,"cat",values,format_out,"IRANSansDN")
   
 }
