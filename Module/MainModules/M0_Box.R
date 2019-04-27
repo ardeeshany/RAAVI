@@ -25,7 +25,7 @@ div(style="text-align:center;",
                     
                     div(style="text-align:center",
                     actionBttn(inputId = ns("Bx_Ac"),style = "jelly",color = "warning",
-                               label= div(class="action-button--widget","تحلیل کلاس"))),
+                               label= div(class="action-button--widget","اول"))),
                     
                     br(),
                     uiOutput(ns("output"))
@@ -275,7 +275,7 @@ M0_Box <- function(input,output,session,Vals,format_out,font_plot){
     
 
     filename = function(){
-      paste('نمودار جعبه ای', sep = '.', switch(format_out(),HTML = 'html', PDF = 'pdf', Word = 'docx'))
+      paste("نمودار", sep = '.', switch(format_out(),HTML = 'html', PDF = 'pdf', Word = 'docx'))
     },
     content=function(file){
       withProgress(message = "... گزارش در حال ساخته شدن است",
