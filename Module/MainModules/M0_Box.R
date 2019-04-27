@@ -275,7 +275,7 @@ M0_Box <- function(input,output,session,Vals,format_out,font_plot){
     
 
     filename = function(){
-    paste('گزارش کلاس', sep = '.', switch(format_out(),HTML = 'html', PDF = 'pdf', Word = 'docx'))
+    paste('report', sep = '.', switch(format_out(),HTML = 'html', PDF = 'pdf', Word = 'docx'))
     },
     content=function(file){
       withProgress(message = "... گزارش در حال ساخته شدن است",
@@ -286,7 +286,8 @@ M0_Box <- function(input,output,session,Vals,format_out,font_plot){
       rmarkdown::render(tempReport,output_format = switch(format_out(),PDF = pdf_document(), HTML = html_document(), Word = word_document()),
                         output_file = file,
                         params = params,
-                        envir = new.env(parent = globalenv()))})})
+                        envir = new.env(parent = globalenv()))
+      })})
   
   
 }
