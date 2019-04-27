@@ -49,15 +49,22 @@ column(width = 2, title = div(class="load__title--font-size","روند کلاس"
 ### Third Column    
 
 div(style="text-align:center;",
-    column(width = 2, title = div(class="load__title--font-size","روند دانش آموزان"),
-           M0_ScatterUI(ns("scatter")) 
+    column(width = 2,
+          M0_ScatterUI(ns("scatter")) 
     )),
 
 ### Fourth Column    
 
 div(style="text-align:center;",
-    column(width = 2, title = div(class="load__title--font-size","روند دانش آموزان"),
+    column(width = 2,
            M0_ProgUI(ns("progress"))
+    )),
+
+### Fifth Column    
+
+div(style="text-align:center;",
+    column(width = 2,
+           M0_HistUI(ns("hist"))
     ))
 
 
@@ -127,5 +134,6 @@ Report <- function(input,output,session){
   callModule(M0_Box,"box",values,format_out,"IRANSansDN")
   callModule(M0_Scatter,"scatter",values,format_out,"IRANSansDN")
   callModule(M0_Prog,"progress",values,format_out,"IRANSansDN")
+  callModule(M0_Hist,"hist",values,format_out,"IRANSansDN")
   
 }

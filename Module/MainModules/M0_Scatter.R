@@ -11,7 +11,7 @@ box(width="100%",status="primary",
       
       div(style="text-align:center",
       actionBttn(inputId = ns("St_Ac"),style = "jelly",color = "warning",
-                 label = div(class="action-button--widget","روند دانش آموزان"))),
+                 label = div(class="action-button--widget","تحلیل فردی"))),
       
       br(),
       

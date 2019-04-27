@@ -10,7 +10,7 @@ box(width="100%",status="primary",
       
       div(style="text-align:center",    
       actionBttn(inputId = ns("Pr_AC1"),style = "jelly",color = "warning",
-                 label = div(class="action-button--widget","پیشرفت فردی"))),
+                 label = div(class="action-button--widget","پیشرفت"))),
     
       # div(style="text-align:center",    
       # actionBttn(inputId = ns("DT_AC3"),style = "jelly",color = "warning",

@@ -49,11 +49,6 @@ p {
 HTML("<br></br>")
 ```
 
-<div class="column-left">
-```{r pressure, echo=FALSE, fig.cap="تولید شده توسط راوی"}
-knitr::include_graphics("logogrey.svg")
-```
-</div>
 
 <div class="column-right">
 ```{r hist,echo=FALSE}
