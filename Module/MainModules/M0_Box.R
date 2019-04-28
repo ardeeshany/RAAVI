@@ -25,7 +25,7 @@ div(style="text-align:center;",
                     
                     div(style="text-align:center",
                     actionBttn(inputId = ns("Bx_Ac"),style = "jelly",color = "warning",
-                               label= div(class="action-button--widget","ششم"))),
+                               label= div(class="action-button--widget","هفتم"))),
                     
                     br(),
                     uiOutput(ns("output"))
