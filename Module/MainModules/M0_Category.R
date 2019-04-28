@@ -1,4 +1,3 @@
-
 M0_CatUI <- function(id){
   
   ns <- NS(id)
