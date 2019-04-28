@@ -16,6 +16,7 @@ params:
   float:right;
   width: 88%;
   text-align: right;
+  font-family:IRANSansDN_Light
 }
 .logo{
 text-align:right
@@ -52,7 +53,7 @@ HTML("<br></br>")
 <!-- </div> -->
 
 <div class="column-right">
-```{r ggplot2,echo=FALSE,fig.width=10,fig.height=8}
+```{r ggplot2,echo=FALSE,fig.width=12,fig.height=16}
 # The `params` object is available in the document.
 params$n
 if(!is.null(params$m))
