@@ -1,4 +1,8 @@
 ---
+output: 
+  pdf_document: 
+    keep_tex: yes
+    allow_html: yes
 params:
   n : NA
   m : NA

@@ -25,7 +25,7 @@ div(style="text-align:center;",
                     
                     div(style="text-align:center",
                     actionBttn(inputId = ns("Bx_Ac"),style = "jelly",color = "warning",
-                               label= div(class="action-button--widget","پنجم"))),
+                               label= div(class="action-button--widget","ششم"))),
                     
                     br(),
                     uiOutput(ns("output"))
@@ -281,11 +281,11 @@ M0_Box <- function(input,output,session,Vals,format_out,font_plot){
     content=function(file){
       withProgress(message = "... گزارش در حال ساخته شدن است",
                    min = 0,max = 100,value = 72, {
-                     # tempReport <- file.path(tempdir(),"box.Rmd")
-                     # file.copy("report/box.Rmd",tempReport,overwrite = TRUE)
+                     tempReport <- file.path(tempdir(),"box.Rmd")
+                     file.copy("report/box.Rmd",tempReport,overwrite = TRUE)
       params <- list(n = Reac_CP2M_Bx()$gg1,m=Reac_CP2M_Bx()$gg2)
       #rmarkdown::render(tempReport,output_format = switch(format_out(),PDF = pdf_document(), HTML = html_document(), Word = word_document()),
-       rmarkdown::render("report/box.Rmd",output_format = switch(format_out(),PDF = pdf_document(), HTML = html_document(), Word = word_document()),
+       rmarkdown::render(tempReport,output_format = switch(format_out(),PDF = pdf_document(), HTML = html_document(), Word = word_document()),
                         output_file = file,
                         params = params,
                         envir = new.env(parent = globalenv()))
