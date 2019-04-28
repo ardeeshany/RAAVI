@@ -3,49 +3,8 @@ always_allow_html: yes
 params:
   n : NA
   m : NA
+sansfont: IRANSansDN
 ---
-<style>
-.column-left{
-  float:left;
-  width: 12%;
-  text-align: center;
-  margin-top:22%;
-  font-family:IRANSansDN_Light
-}
-.column-right{
-  float:right;
-  width: 88%;
-  text-align: right;
-  font-family:IRANSansDN_Light
-}
-
-
-.column-right2{
-  float:right;
-  width: 88%;
-  text-align: left;
-  font-family: IRANSansDN; src: url(IRANSansDN.ttf);
-}
-
-
-
-.logo{
-text-align:right
-font-family:IRANSansDN_Light
-}
-</style>
-
-<style>
-h1, h2, h3, h4, h5, h6 {
-  font-family:IRANSansDN_Light;
-  text-align:center
-}
-p {
-  text-align:center
-  font-family:IRANSansDN_Light;
-}
-</style>
-
 
 ```{r, include=FALSE}
 options(tinytex.verbose = TRUE)
