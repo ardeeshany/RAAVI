@@ -18,6 +18,7 @@
 library(shiny)
 library(stats)
 library(rmarkdown)
+library(knitr)
 #library(XLConnect)
 #library(xlsx)
 #library(readxl)
