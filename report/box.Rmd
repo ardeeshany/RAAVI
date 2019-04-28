@@ -3,12 +3,13 @@ always_allow_html: yes
 params:
   n : NA
   m : NA
-sansfont: IRANSansDN
 ---
+<style>
+.column-left{
+@font-face { font-family: IRANSansDN; src: url(IRANSansDN.ttf);}
+}
+</style>
 
-```{r, include=FALSE}
-options(tinytex.verbose = TRUE)
-```
 
 
 ```{r br,echo=FALSE}
@@ -22,18 +23,9 @@ HTML("<br></br>")
 <!-- ``` -->
 <!-- </div> -->
 
-<div class="column-right">
+
+<div class="column-left">
 ```{r ggplot2,echo=FALSE,fig.width=12,fig.height=16}
-# The `params` object is available in the document.
-params$n
-if(!is.null(params$m))
-params$m
-```
-</div>
-
-
-<div class="column-right2">
-```{r ggplot3,echo=FALSE,fig.width=12,fig.height=16}
 # The `params` object is available in the document.
 params$n
 if(!is.null(params$m))
