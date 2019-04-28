@@ -35,6 +35,11 @@ p {
 </style>
 
 
+```{r, include=FALSE}
+options(tinytex.verbose = TRUE)
+```
+
+
 ```{r br,echo=FALSE}
 # The `params` object is available in the document.
 HTML("<br></br>")
