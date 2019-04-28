@@ -3,13 +3,10 @@ always_allow_html: yes
 params:
   n : NA
   m : NA
+font-family: 'IRANSansDN'
 ---
 
-<style>
-.column-left{
-@font-face { font-family: IRANSansDN; src: url(IRANSansDN.ttf);}
-}
-</style>
+
 ```{r br,echo=FALSE}
 # The `params` object is available in the document.
 HTML("<br></br>")
@@ -26,7 +23,7 @@ HTML("<br></br>")
 params$n
 if(!is.null(params$m))
 params$m
-params$n
+params$m
 ```
 
 
