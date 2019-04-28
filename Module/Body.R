@@ -136,7 +136,7 @@ Body <- function(input,output,session,
           #callModule(M0_Box,"Box",vals,font_plot)
           #callModule(M0_Hist,"Hist",vals,font_plot)
           #callModule(M0_Scatter,"Scatter",vals,font_plot)
-          callModule(Report,"report")
+          callModule(Report,"report",font_plot)
           callModule(M0_Box,"box",vals,font_plot)
           callModule(M0_Cat,"category",vals,font_plot)
           callModule(M0_Scatter,"scatter",vals,font_plot)

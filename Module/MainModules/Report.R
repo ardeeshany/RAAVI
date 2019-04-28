@@ -80,7 +80,7 @@ div(style="text-align:center;",
 
 ### Server
 
-Report <- function(input,output,session){
+Report <- function(input,output,session,font_plot){
   
   
   ns <- session$ns
@@ -138,10 +138,10 @@ Report <- function(input,output,session){
   
   
   format_out <- reactive({return(input$format)})
-  callModule(M0_Box,"box",values,format_out,"IRANSansDN")
-  callModule(M0_Scatter,"scatter",values,format_out,"IRANSansDN")
-  callModule(M0_Prog,"progress",values,format_out,"IRANSansDN")
-  callModule(M0_Hist,"hist",values,format_out,"IRANSansDN")
-  callModule(M0_Cat,"cat",values,format_out,"IRANSansDN")
+  callModule(M0_Box,"box",values,format_out,font_plot)
+  callModule(M0_Scatter,"scatter",values,format_out,font_plot)
+  callModule(M0_Prog,"progress",values,format_out,font_plot)
+  callModule(M0_Hist,"hist",values,format_out,font_plot)
+  callModule(M0_Cat,"cat",values,format_out,font_plot)
   
 }

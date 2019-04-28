@@ -1,9 +1,10 @@
 ---
+font-family: BZAR
+fontsize: 22pt
 always_allow_html: yes
 params:
   n : NA
   m : NA
-font-family: 'IRANSansDN'
 ---
 
 
@@ -12,17 +13,12 @@ font-family: 'IRANSansDN'
 HTML("<br></br>")
 ```
 <!-- <div style='position:absolute; top:0; right:0; padding:10px;'> -->
-<!-- ```{r pressure, echo=FALSE,fig.asp=0.2} -->
-<!-- knitr::include_graphics('Logo.png') -->
-<!-- ``` -->
-<!-- </div> -->
 
-<div class="column-left">
+
 ```{r ggplot2,echo=FALSE,fig.width=12,fig.height=16}
 # The `params` object is available in the document.
 params$n
 if(!is.null(params$m))
-params$m
 params$m
 ```
 
