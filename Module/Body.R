@@ -44,7 +44,7 @@ tags$head(tags$link(href = "custom.css", rel = "stylesheet")),
 # 
  tags$head(tags$style(HTML("@font-face { font-family: main_font; src: url(IRANSansDNLight.ttf);}") )),
 # 
- tags$head(tags$style(HTML("@font-face { font-family: IRANSansDN; src: url(IRANSansDN.ttf);}") )),
+ tags$style(HTML("@font-face {font-family: IRANSansDN; src: url(IRANSansDN.ttf);}")),
 
 # tags$head(
 #   tags$link(rel="stylesheet", type = "text/css",
