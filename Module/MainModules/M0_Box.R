@@ -64,12 +64,6 @@ M0_Box <- function(input,output,session,Vals,format_out,font_plot){
     M <- Vals[["now"]]
     rownames(M) <- Vals[["names"]]
     colnames(M) <- Vals[["dates"]]
-    
-      for(i in 1:dim(M)[1]){
-        for(j in 1:dim(M)[2]){
-          M[i,j] <- persian.tonumber(M[i,j])
-        }}
-    
     return(M)
   })
   
