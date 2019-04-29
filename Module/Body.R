@@ -38,13 +38,20 @@ theme,
 
 #tags$head(tags$link(href = "IranNastaliq.ttf", rel = "stylesheet")), 
 
-tags$head(tags$link(href = "custom.css", rel = "stylesheet")), 
 
- tags$head(tags$style(HTML("@font-face { font-family: dastnevis; src: url(dastnevis.ttf);}") )), 
+library(showtext),
+library(sysfonts),
+font_add(family="IRANSansDN",regular="IRANSansDN.ttf"),
+showtext_auto(),
+
+
+  tags$head(tags$link(href = "custom.css", rel = "stylesheet")), 
 # 
- tags$head(tags$style(HTML("@font-face { font-family: main_font; src: url(IRANSansDNLight.ttf);}") )),
-# 
- tags$style(HTML("#box {font-family: IRANSansDN; src: url(IRANSansDN.ttf);}")),
+  tags$head(tags$style(HTML("@font-face { font-family: dastnevis; src: url(dastnevis.ttf);}") )), 
+# # 
+  tags$head(tags$style(HTML("@font-face { font-family: main_font; src: url(IRANSansDNLight.ttf);}") )),
+# # 
+  tags$head(tags$style(HTML("@font-face {font-family: IRANSansDN; src: url(IRANSansDN.ttf);}"))),
 
 # tags$head(
 #   tags$link(rel="stylesheet", type = "text/css",
@@ -122,7 +129,7 @@ tags$head(includeHTML(("www/google-analytics.html")))
 
 Body <- function(input,output,session, 
                  class="0",level="0",course="0",
-                 outputDir="RAAVI/RAAVI-Released/DATA/Test",font_plot="B Esfehan"){
+                 outputDir="RAAVI/RAAVI-Released/DATA/Test",font_plot="IRANSansDN"){
   
           #hide(id = "loading-content", anim = TRUE, animType = "fade")    
           #show("app-content")
