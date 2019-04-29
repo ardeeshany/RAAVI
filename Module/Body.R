@@ -40,13 +40,11 @@ theme,
 
 tags$head(tags$link(href = "custom.css", rel = "stylesheet")), 
 
-tags$head(tags$style(HTML("@font-face { font-family: dastnevis; src: url(dastnevis.ttf);}") )), 
-
-tags$head(tags$style(HTML("@font-face { font-family: main_font; src: url(IRANSansDNLight.ttf);}") )),
-
-tags$head(tags$style(HTML("@font-face { font-family: IRANSansDN; src: url(IRANSansDN.ttf);}") )),
-
-#tags$head(tags$style(HTML("@font-face { font-family: main_font; src: url(dastnevis.ttf);}") )), 
+# tags$head(tags$style(HTML("@font-face { font-family: dastnevis; src: url(dastnevis.ttf);}") )), 
+# 
+# tags$head(tags$style(HTML("@font-face { font-family: main_font; src: url(IRANSansDNLight.ttf);}") )),
+# 
+# tags$head(tags$style(HTML("@font-face { font-family: IRANSansDN; src: url(IRANSansDN.ttf);}") )),
 
 # tags$head(
 #   tags$link(rel="stylesheet", type = "text/css",
@@ -124,7 +122,7 @@ tags$head(includeHTML(("www/google-analytics.html")))
 
 Body <- function(input,output,session, 
                  class="0",level="0",course="0",
-                 outputDir="RAAVI/RAAVI-Released/DATA/Test",font_plot="IRANSansDN"){
+                 outputDir="RAAVI/RAAVI-Released/DATA/Test",font_plot="B Esfehan"){
   
           #hide(id = "loading-content", anim = TRUE, animType = "fade")    
           #show("app-content")
