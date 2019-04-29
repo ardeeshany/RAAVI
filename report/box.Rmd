@@ -3,15 +3,8 @@ always_allow_html: yes
 params:
   n : NA
   m : NA
+fontfanily: IRANSansDN
 ---
-<style>
-
-@font-face { 
-font-family: IRANSansDN; 
-src: url(IRANSansDN.ttf);
-}
-
-</style>
 
 ```{r br,echo=FALSE}
 # The `params` object is available in the document.
@@ -19,16 +12,13 @@ HTML("<br></br>")
 ```
 <!-- <div style='position:absolute; top:0; right:0; padding:10px;'> -->
 
-
-<div style="font-family: IRANSansDN;">
 ```{r ggplot2,echo=FALSE,fig.width=12,fig.height=16}
 # The `params` object is available in the document.
-tags$style(HTML("@font-face { font-family: IRANSansDN; src: url(IRANSansDN.ttf);}"))
 params$n
 if(!is.null(params$m))
 params$m
 ```
-</div>
+
 
 
 

@@ -135,8 +135,6 @@ M0_Box <- function(input,output,session,Vals,format_out,font_plot){
       vec_ind <- max
     }
 
-    font_plot1 <- "IRANSansDN"
-
       p1 <- ggplot(melt_Data_Bx , aes(x=Day,y=value,fill=Day))+ geom_boxplot() +
         # stat_summary(fun.y=mean, colour="darkred", geom="point")+# shape=20, size=2, color="red", fill="red")+
         # stat_summary(fun.data = mean_se, geom = "errorbar")+
@@ -148,7 +146,7 @@ M0_Box <- function(input,output,session,Vals,format_out,font_plot){
               axis.title=element_text(size=14,face="bold"),
               plot.title = element_text(size=14,face="bold"),
               legend.title = element_text(size=12,face="bold"),
-              text=element_text(family=font_plot1))
+              text=element_text(family=font_plot))
         
       p2 <- ggplot(melt_Data_Bx , aes(x=Day,y=value,fill=Day))+
         stat_summary(fun.y=mean, geom="point", size=3)+ # shape=20, size=2, color="red", fill="red")+
@@ -161,7 +159,7 @@ M0_Box <- function(input,output,session,Vals,format_out,font_plot){
               axis.title=element_text(size=14,face="bold"),
               plot.title = element_text(size=14,face="bold"),
               legend.title = element_text(size=12,face="bold"),
-              text=element_text(family=font_plot1))
+              text=element_text(family=font_plot))
 
      
      return(list(p1=p1,p2=p2))

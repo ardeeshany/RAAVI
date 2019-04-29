@@ -1,7 +1,7 @@
 ReportUI <- function(id){
   
   ns <- NS(id)
-  
+
   fluidRow(
 
 ### First Column    
