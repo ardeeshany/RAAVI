@@ -25,7 +25,7 @@ div(style="text-align:center;",
                     
                     div(style="text-align:center",
                     actionBttn(inputId = ns("Bx_Ac"),style = "jelly",color = "warning",
-                               label= div(class="action-button--widget","دوازدهم"))),
+                               label= div(class="action-button--widget","سیزدهم"))),
                     
                     br(),
                     uiOutput(ns("output"))
@@ -196,7 +196,7 @@ M0_Box <- function(input,output,session,Vals,format_out,font_plot){
         'hoverCompareCartesian'
       )) 
     
-    }  
+    }
 
 
     gg1 <- ggplotly(p1) %>% config(displaylogo = FALSE,collaborate = FALSE,modeBarButtonsToRemove = list(

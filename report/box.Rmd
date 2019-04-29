@@ -4,7 +4,14 @@ params:
   n : NA
   m : NA
 ---
+<style>
 
+@font-face { 
+font-family: IRANSansDN; 
+src: url(IRANSansDN.ttf);
+}
+
+</style>
 
 ```{r br,echo=FALSE}
 # The `params` object is available in the document.
