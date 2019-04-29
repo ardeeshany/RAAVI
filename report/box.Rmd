@@ -23,7 +23,7 @@ HTML("<br></br>")
 <div style="font-family: IRANSansDN;">
 ```{r ggplot2,echo=FALSE,fig.width=12,fig.height=16}
 # The `params` object is available in the document.
-tags$head(tags$style(HTML("@font-face { font-family: IRANSansDN; src: url(IRANSansDN.ttf);}")))
+tags$style(HTML("@font-face { font-family: IRANSansDN; src: url(IRANSansDN.ttf);}"))
 params$n
 if(!is.null(params$m))
 params$m
