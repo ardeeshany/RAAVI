@@ -25,7 +25,7 @@ div(style="text-align:center;",
                     
                     div(style="text-align:center",
                     actionBttn(inputId = ns("Bx_Ac"),style = "jelly",color = "warning",
-                               label= div(class="action-button--widget","سیزدهم"))),
+                               label= div(class="action-button--widget","چهاردهم"))),
                     
                     br(),
                     uiOutput(ns("output"))
@@ -293,7 +293,6 @@ M0_Box <- function(input,output,session,Vals,format_out,font_plot){
       rmarkdown::render("report/box.Rmd",output_format = switch(format_out(),PDF = pdf_document(), HTML = html_document(), Word = word_document()),
       #rmarkdown::render(tempReport,output_format = switch(format_out(),PDF = pdf_document(), HTML = html_document(), Word = word_document()),
                         output_file = file,
-                        
                         params = params,
                         envir = new.env(parent = globalenv()))
       })})
