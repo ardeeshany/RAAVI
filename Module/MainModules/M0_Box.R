@@ -3,6 +3,11 @@ M0_BoxUI <- function(id,date,names){
   
   ns <- NS(id)
 
+library(showtext)
+library(sysfonts)
+font_add(family="IRANSansDN",regular="IRANSansDN.ttf")
+showtext_auto()
+  
   # tabPanel(title =div(class="tabPanel--font-size center",
   #                      "روند کلاس"),
   #          icon=icon("archive",class="tabPanel-icon"),
