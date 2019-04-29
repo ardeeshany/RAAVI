@@ -1,11 +1,6 @@
 ReportUI <- function(id){
   
   ns <- NS(id)
-
-library(showtext)
-library(sysfonts)
-font_add(family="IRANSansDN",regular="IRANSansDN.ttf")
-showtext_auto()
   
   fluidRow(
 

@@ -54,6 +54,8 @@ library(shinyWidgets)
 library(shinyjs)
 library(colourpicker)
 library(openssl)
+library(showtext)
+library(sysfonts)
 # library(Cairo)
 # 
 # CairoFonts(

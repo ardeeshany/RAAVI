@@ -2,11 +2,6 @@
 M0_BoxUI <- function(id,date,names){
   
   ns <- NS(id)
-
-library(showtext)
-library(sysfonts)
-font_add(family="IRANSansDN",regular="IRANSansDN.ttf")
-showtext_auto()
   
   # tabPanel(title =div(class="tabPanel--font-size center",
   #                      "روند کلاس"),
@@ -57,10 +52,10 @@ box(status="primary",width="100%",collapsible = TRUE,collapsed = FALSE,
 M0_Box <- function(input,output,session,Vals,format_out,font_plot){
   
   
+  
+  showtext_auto()
   ns <- session$ns  
-  
   ch_opt <- list(content = c("<div> </div>"))
-  
   
   persian <- "\u0660\u0661\u0662\u0663\u0664\u0665\u0666\u0667\u0668\u0669\u06F0\u06F1\u06F2\u06F3\u06F4\u06F5\u06F6\u06F7\u06F8\u06F9"
   english <- "01234567890123456789"
@@ -258,7 +253,6 @@ M0_Box <- function(input,output,session,Vals,format_out,font_plot){
   
 
   output$output2 <- renderUI({
-    
     if(!is.null(input$combine))
     if(out_ind$a==1){
     
@@ -274,7 +268,6 @@ M0_Box <- function(input,output,session,Vals,format_out,font_plot){
     return(M)
     
     }
-    
   })
   
   
