@@ -51,9 +51,6 @@ box(status="primary",width="100%",collapsible = TRUE,collapsed = FALSE,
 
 M0_Box <- function(input,output,session,Vals,format_out,font_plot){
   
-  
-  
-  showtext_auto()
   ns <- session$ns  
   ch_opt <- list(content = c("<div> </div>"))
   
@@ -113,6 +110,8 @@ M0_Box <- function(input,output,session,Vals,format_out,font_plot){
     
     # min=which(colnames(Data())==input$Bx_SeI1)
     # max=which(colnames(Data())==input$Bx_SeI2)
+    
+    showtext_auto()
     min = 1
     max = dim(Data())[2]
     
@@ -162,7 +161,6 @@ M0_Box <- function(input,output,session,Vals,format_out,font_plot){
               legend.title = element_text(size=12,face="bold"),
               text=element_text(family=font_plot))
 
-     
      return(list(p1=p1,p2=p2))
      
   })
@@ -286,7 +284,7 @@ M0_Box <- function(input,output,session,Vals,format_out,font_plot){
                    min = 0,max = 100,value = 72, {
                      # tempReport <- file.path(tempdir(),"box.Rmd")
                      # file.copy("report/box.Rmd",tempReport,overwrite = TRUE)
-      params <- list(n = Reac_CP2M_Bx()$gg1,m=Reac_CP2M_Bx()$gg2)
+      params <- list(n = Reac_CP2M_Bx()$gg1,m=Reac_CP2M_Bx()$gg2,mainfont=font_plot)
       rmarkdown::render("report/box.Rmd",output_format = switch(format_out(),PDF = pdf_document(), HTML = html_document(), Word = word_document()),
       #rmarkdown::render(tempReport,output_format = switch(format_out(),PDF = pdf_document(), HTML = html_document(), Word = word_document()),
                         output_file = file,
