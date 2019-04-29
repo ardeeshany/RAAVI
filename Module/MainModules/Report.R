@@ -91,6 +91,10 @@ Report <- function(input,output,session,font_plot){
   
   values <- reactiveValues(tot=NULL)
   
+  persian <- "\u0660\u0661\u0662\u0663\u0664\u0665\u0666\u0667\u0668\u0669\u06F0\u06F1\u06F2\u06F3\u06F4\u06F5\u06F6\u06F7\u06F8\u06F9"
+  english <- "01234567890123456789"
+  persian.tonumber <- function(s) as.character(chartr(persian,english,s))
+  
   observeEvent(input$f_new,{
      D_new <- read.xlsx(input$f_new$datapath)
      
@@ -131,10 +135,6 @@ Report <- function(input,output,session,font_plot){
     values[["now"]] <- data.matrix(A)
 
   })
-
-  persian <- "\u0660\u0661\u0662\u0663\u0664\u0665\u0666\u0667\u0668\u0669\u06F0\u06F1\u06F2\u06F3\u06F4\u06F5\u06F6\u06F7\u06F8\u06F9"
-  english <- "01234567890123456789"
-  persian.tonumber <- function(s) as.character(chartr(persian,english,s))
   
   
   format_out <- reactive({return(input$format)})

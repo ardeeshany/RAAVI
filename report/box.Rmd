@@ -1,6 +1,4 @@
 ---
-font-family: BZAR
-fontsize: 22pt
 always_allow_html: yes
 params:
   n : NA

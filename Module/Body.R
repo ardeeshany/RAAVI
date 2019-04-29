@@ -122,7 +122,10 @@ tags$head(includeHTML(("www/google-analytics.html")))
 
 Body <- function(input,output,session, 
                  class="0",level="0",course="0",
-                 outputDir="RAAVI/RAAVI-Released/DATA/Test",font_plot = "IRANSansDN"){
+                 outputDir="RAAVI/RAAVI-Released/DATA/Test"){
+  
+  
+          font_plot = "IRANSansDN"
   
           #hide(id = "loading-content", anim = TRUE, animType = "fade")    
           #show("app-content")
