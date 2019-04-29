@@ -29,14 +29,15 @@ div(style="text-align:center;",
                     
                     br(),
                     uiOutput(ns("output"))
-  ))
+  )),
 
 
-# column(width = 4,
-# br(),
-# box(status="primary",width="100%",collapsible = TRUE,collapsed = FALSE,
-#     uiOutput(ns("output2"))
-#   ))
+#column(width = 4,
+br(),
+box(status="primary",width="100%",collapsible = TRUE,collapsed = FALSE,
+    uiOutput(ns("output2"))
+  )
+#)
 
 )}
 

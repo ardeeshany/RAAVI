@@ -1,9 +1,14 @@
 ---
+output:
+  html_document:
+    css: style.css
+  pdf_document:
+    css: style.css
 always_allow_html: yes
 params:
   n : NA
   m : NA
-fontfanily: IRANSansDN
+
 ---
 
 ```{r br,echo=FALSE}
