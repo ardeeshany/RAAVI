@@ -52,6 +52,8 @@ box(status="primary",width="100%",collapsible = TRUE,collapsed = FALSE,
 M0_Box <- function(input,output,session,Vals,format_out,font_plot){
   
   ns <- session$ns  
+  
+  #showtext_auto()
   ch_opt <- list(content = c("<div> </div>"))
   
   persian <- "\u0660\u0661\u0662\u0663\u0664\u0665\u0666\u0667\u0668\u0669\u06F0\u06F1\u06F2\u06F3\u06F4\u06F5\u06F6\u06F7\u06F8\u06F9"
@@ -139,6 +141,7 @@ M0_Box <- function(input,output,session,Vals,format_out,font_plot){
         # stat_summary(fun.y=mean, colour="darkred", geom="point")+# shape=20, size=2, color="red", fill="red")+
         # stat_summary(fun.data = mean_se, geom = "errorbar")+
         labs(title = "روند کلاس در طول زمان", x ="",y="نمره",fill="تاریخ")+
+        #labs(title = "Class Mean", x ="",y="Scores",fill="Time")+
         scale_x_discrete(labels=colnames(Data())[vec_ind])+
         #geom_jitter(width = 0.2)+
         theme(axis.text.x = element_text(size=11,colour="black",angle=60, hjust=1,vjust=.5),
@@ -273,24 +276,38 @@ M0_Box <- function(input,output,session,Vals,format_out,font_plot){
   output$Bx2 <- renderPlotly(Reac_CP2M_Bx()$gg2)
 
   output$download <- downloadHandler(
-    
+
 
     filename = function(){
       paste("نمودار", sep = '.', switch(format_out(),HTML = 'html', PDF = 'pdf', Word = 'docx'))
       # paste("salam.pdf")
       },
     content=function(file){
+      # withProgress(message = "... گزارش در حال ساخته شدن است",
+      #              min = 0,max = 100,value = 72, {
+      #                # tempReport <- file.path(tempdir(),"box.Rmd")
+      #                # file.copy("report/box.Rmd",tempReport,overwrite = TRUE)
+      # params <- list(n = Reac_CP2M_Bx()$gg1,m=Reac_CP2M_Bx()$gg2)
+      # rmarkdown::render("report/box.Rmd",output_format = switch(format_out(),PDF = pdf_document(), HTML = html_document(), Word = word_document()),
+      # #rmarkdown::render(tempReport,output_format = switch(format_out(),PDF = pdf_document(), HTML = html_document(), Word = word_document()),
+      #                   output_file = file,
+      #                   params = params,
+      #                   envir = new.env(parent = globalenv()))
+      #              })
       withProgress(message = "... گزارش در حال ساخته شدن است",
-                   min = 0,max = 100,value = 72, {
-                     # tempReport <- file.path(tempdir(),"box.Rmd")
-                     # file.copy("report/box.Rmd",tempReport,overwrite = TRUE)
-      params <- list(n = Reac_CP2M_Bx()$gg1,m=Reac_CP2M_Bx()$gg2,mainfont=font_plot)
-      rmarkdown::render("report/box.Rmd",output_format = switch(format_out(),PDF = pdf_document(), HTML = html_document(), Word = word_document()),
-      #rmarkdown::render(tempReport,output_format = switch(format_out(),PDF = pdf_document(), HTML = html_document(), Word = word_document()),
-                        output_file = file,
-                        params = params,
-                        envir = new.env(parent = globalenv()))
-      })})
+                                 min = 0,max = 100,value = 72, { 
+      export(Reac_CP2M_Bx()$gg1, file=file)})
+        # dir <- file.path(getwd(),"/www")
+        # cairo_pdf("www/plot2.pdf",family = font_plot)
+        # Reac_out()
+        # dev.off()
+        # ggsave(plot =Reac_CP2M_Bx()$gg1,filename = "www/plot2.pdf", device = cairo_pdf)
+      }
+    )
+  
+  
+
+  
   
   
 }
