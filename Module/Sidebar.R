@@ -37,28 +37,28 @@ SidebarUI <- function(id){
           #     menuItem(div(class="sidebar--font", "لاگین"),  tabName="Login",icon  =icon("filter",class="sidebar-icon"))),
 
           div(style="margin-top:32%",
-              menuItem(div(class="sidebar--font", "گزارش"),  tabName= "Report",icon  =icon("sticky-note-o",class="sidebar-icon"))),
+              menuItem(div(class="sidebar--font", "گزارش"),  tabName= "Report",icon  =icon("sticky-note-o",class="sidebar-icon")))
 
-          div(style="margin-top:32%",
-              menuItem(div(class="sidebar--font", "ورود"),  tabName= "Load",icon  =icon("download",class="sidebar-icon"))),
-                    
-          div(class="sidebar--mtop",
-              menuItem(div(class="sidebar--font","کلاس"),  tabName= "Box",icon  =icon("group",class="sidebar-icon"))),
-          
-          div(class="sidebar--mtop",
-              menuItem(div(class="sidebar--font", "دانش آموز"),  tabName= "Scatter",icon  =icon("user-circle-o",class="sidebar-icon"))),
-                    
-          div(class="sidebar--mtop",
-              menuItem(div(class="sidebar--font", "گروه بندی"),  tabName= "Hist",icon  =icon("tasks",class="sidebar-icon"))),
-          
-          div(class="sidebar--mtop",
-              menuItem(div(class="sidebar--font", "پیشرفت"),  tabName= "Progress",icon  =icon("line-chart",class="sidebar-icon"))),
-          
-          div(class="sidebar--mtop",
-              menuItem(div(class="sidebar--font", "فیلتر"),  tabName= "Category",icon  =icon("filter",class="sidebar-icon")))
-          
-     
-          
+          # div(style="margin-top:32%",
+          #     menuItem(div(class="sidebar--font", "ورود"),  tabName= "Load",icon  =icon("download",class="sidebar-icon"))),
+          #           
+          # div(class="sidebar--mtop",
+          #     menuItem(div(class="sidebar--font","کلاس"),  tabName= "Box",icon  =icon("group",class="sidebar-icon"))),
+          # 
+          # div(class="sidebar--mtop",
+          #     menuItem(div(class="sidebar--font", "دانش آموز"),  tabName= "Scatter",icon  =icon("user-circle-o",class="sidebar-icon"))),
+          #           
+          # div(class="sidebar--mtop",
+          #     menuItem(div(class="sidebar--font", "گروه بندی"),  tabName= "Hist",icon  =icon("tasks",class="sidebar-icon"))),
+          # 
+          # div(class="sidebar--mtop",
+          #     menuItem(div(class="sidebar--font", "پیشرفت"),  tabName= "Progress",icon  =icon("line-chart",class="sidebar-icon"))),
+          # 
+          # div(class="sidebar--mtop",
+          #     menuItem(div(class="sidebar--font", "فیلتر"),  tabName= "Category",icon  =icon("filter",class="sidebar-icon")))
+          # 
+          # 
+          # 
           
           
           

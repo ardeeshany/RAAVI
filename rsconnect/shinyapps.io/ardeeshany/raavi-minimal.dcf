@@ -1,0 +1,12 @@
+name: raavi-minimal
+title: RAAVI-minimal
+username:
+account: ardeeshany
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 899210
+bundleId: 2048303
+url: https://ardeeshany.shinyapps.io/raavi-minimal/
+when: 1556586735.73926
+asMultiple: FALSE
+asStatic: FALSE

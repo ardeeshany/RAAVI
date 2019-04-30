@@ -247,8 +247,8 @@ M0_Load <- function(input,output,session,outputDir){
       
       tempReport <- file.path(tempdir(),"report.Rmd")
       file.copy("report/report.Rmd",tempReport,overwrite = TRUE)
-      tempImage <- file.path(tempdir(),"Logo.png")
-      file.copy("report/Logo.png",tempImage,overwrite = TRUE)
+      # tempImage <- file.path(tempdir(),"Logo.png")
+      # file.copy("report/Logo.png",tempImage,overwrite = TRUE)
       params <- list(n = 1)
       rmarkdown::render(tempReport,output_file = file,
                         params = params,
