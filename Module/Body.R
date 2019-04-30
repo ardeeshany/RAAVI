@@ -141,6 +141,7 @@ Body <- function(input,output,session,
           #callModule(M0_Scatter,"Scatter",vals,font_plot)
           #font_add(family="IRANSansDEN",regular="/Users/ardalanmirshani/Library/Fonts/IRANSansDN.ttf")
           #font_add_google("Gochi Hand", "gochi")
+          loadfonts()
           font_plot = "IRANSansDN"
           callModule(Report,"report",font_plot)
           # callModule(M0_Box,"box",vals,font_plot)
