@@ -6,16 +6,11 @@ params:
 ---
 
 
-```{r font}
-# The `params` object is available in the document.
-font_import("IRANSansDN")
-```
-
 
 ```{r ggplot2,echo=FALSE,fig.width=12,fig.height=16}
 # The `params` object is available in the document.
-ggplotly(params$n+
-theme(text=element_text(family="IRANSansDN")))
+ggplotly(params$n)
+#theme(text=element_text(family="IRANSansDN")))
 if(!is.null(params$m))
 params$m
 ```

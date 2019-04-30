@@ -303,6 +303,7 @@ M0_Box <- function(input,output,session,Vals,format_out,font_plot){
         # Reac_out()
         # dev.off()
         # ggsave(plot =Reac_CP2M_Bx()$gg1,filename = "www/plot2.pdf", device = cairo_pdf)
+      embed_fonts(file)
       }
     )
   
