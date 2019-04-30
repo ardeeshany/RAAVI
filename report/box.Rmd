@@ -1,11 +1,4 @@
 ---
-output:
-  pdf_document:
-    latex_engine: xelatex
-mainfont: "IRANSansDN"
-sansfont: "IRANSansDN"
-monofont: "IRANSansDN"
-mathfont: "IRANSansDN"
 always_allow_html: yes
 params:
   n: NA
@@ -14,7 +7,9 @@ params:
 
 ```{r ggplot2,echo=FALSE,fig.width=12,fig.height=16}
 # The `params` object is available in the document.
-params$n
+font_add(family="IRANSansDN",regular="/Users/ardalanmirshani/Library/Fonts/IRANSansDN.ttf")
+ggplotly(params$n+
+theme(text=element_text(family="IRANSansDN")))
 if(!is.null(params$m))
 params$m
 ```
