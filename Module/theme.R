@@ -1,7 +1,7 @@
 theme_RAAVI <- shinyDashboardThemeDIY(
   
   ### general
-   appFontFamily = "main_font"
+   appFontFamily = "IRANSansDN"
   ,appFontColor = "rgb(0,0,0)"
   #,bodyBackColor = "rgb(248,248,248)"
   ,bodyBackColor = "white"
