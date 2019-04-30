@@ -1,6 +1,9 @@
 ---
+output:
+  pdf_document:
+    latex_engine: xelatex
+mainfont: "IRANSansDN"
 always_allow_html: yes
-font-family: 'IRANSansDN'
 params:
   n: NA
   m: NA
