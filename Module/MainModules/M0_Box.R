@@ -283,20 +283,21 @@ M0_Box <- function(input,output,session,Vals,format_out,font_plot){
       # paste("salam.pdf")
       },
     content=function(file){
-      # withProgress(message = "... گزارش در حال ساخته شدن است",
-      #              min = 0,max = 100,value = 72, {
-      #                # tempReport <- file.path(tempdir(),"box.Rmd")
-      #                # file.copy("report/box.Rmd",tempReport,overwrite = TRUE)
-      # params <- list(n = Reac_CP2M_Bx()$gg1,m=Reac_CP2M_Bx()$gg2)
-      # rmarkdown::render("report/box.Rmd",output_format = switch(format_out(),PDF = pdf_document(), HTML = html_document(), Word = word_document()),
-      # #rmarkdown::render(tempReport,output_format = switch(format_out(),PDF = pdf_document(), HTML = html_document(), Word = word_document()),
-      #                   output_file = file,
-      #                   params = params,
-      #                   envir = new.env(parent = globalenv()))
-      #              })
       withProgress(message = "... گزارش در حال ساخته شدن است",
-                                 min = 0,max = 100,value = 72, { 
-      export(Reac_CP2M_Bx()$gg1, file=file)})
+                   min = 0,max = 100,value = 72, {
+                     # tempReport <- file.path(tempdir(),"box.Rmd")
+                     # file.copy("report/box.Rmd",tempReport,overwrite = TRUE)
+      params <- list(n = Reac_CP2M_Bx()$gg1,m=Reac_CP2M_Bx()$gg2)
+      rmarkdown::render("report/box.Rmd",output_format = switch(format_out(),PDF = pdf_document(), HTML = html_document(), Word = word_document()),
+      #rmarkdown::render(tempReport,output_format = switch(format_out(),PDF = pdf_document(), HTML = html_document(), Word = word_document()),
+                        output_file = file,
+                        params = params,
+                        envir = new.env(parent = globalenv()))
+                   })
+      # withProgress(message = "... گزارش در حال ساخته شدن است",
+      #                            min = 0,max = 100,value = 72, { 
+      # export(Reac_CP2M_Bx()$gg1, file=file)}
+      # )
         # dir <- file.path(getwd(),"/www")
         # cairo_pdf("www/plot2.pdf",family = font_plot)
         # Reac_out()
