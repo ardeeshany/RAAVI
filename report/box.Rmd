@@ -4,8 +4,6 @@ params:
   m: NA
 ---
 
-
-
 ```{r ggplot2,echo=FALSE,fig.width=12,fig.height=16,fig.showtext=TRUE}
 # The `params` object is available in the document.
 showtext_auto()
