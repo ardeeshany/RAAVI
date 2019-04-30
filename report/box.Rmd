@@ -3,6 +3,9 @@ output:
   pdf_document:
     latex_engine: xelatex
 mainfont: "IRANSansDN"
+sansfont: "IRANSansDN"
+monofont: "IRANSansDN"
+mathfont: "IRANSansDN"
 always_allow_html: yes
 params:
   n: NA
