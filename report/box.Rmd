@@ -1,5 +1,4 @@
----
-always_allow_html: yes
+--- 
 params:
   n: NA
   m: NA
@@ -7,10 +6,10 @@ params:
 
 
 
-```{r ggplot2,echo=FALSE,fig.width=12,fig.height=16}
+```{r ggplot2,echo=FALSE,fig.width=12,fig.height=16,fig.showtext=TRUE}
 # The `params` object is available in the document.
-ggplotly(params$n)
-#theme(text=element_text(family="IRANSansDN")))
+params$n+
+theme(text=element_text(family="IRANSansDN"))
 if(!is.null(params$m))
 params$m
 ```
