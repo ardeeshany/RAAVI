@@ -257,12 +257,12 @@ M0_Box <- function(input,output,session,Vals,format_out,font_plot){
     if(!is.null(input$combine))
     if(out_ind$a==1){
     
-    B1 <- withSpinner(plotlyOutput(ns("Bx1")),type=5,color = "#006E6D",size = 0.6)
+    B1 <- withSpinner(plotOutput(ns("Bx1")),type=5,color = "#006E6D",size = 0.6)
     
     if(input$combine){
       M <- list(B1)
     }else{
-      B2 <- withSpinner(plotlyOutput(ns("Bx2")),type=5,color = "#006E6D",size = 0.6)
+      B2 <- withSpinner(plotOutput(ns("Bx2")),type=5,color = "#006E6D",size = 0.6)
       M <- list(B1,B2)
     }
     
@@ -271,9 +271,12 @@ M0_Box <- function(input,output,session,Vals,format_out,font_plot){
     }
   })
   
+  output$Bx1 <- renderPlot(Reac_CP2M_Bx1()$p1)
+  output$Bx2 <- renderPlot(Reac_CP2M_Bx1()$p2)
   
-  output$Bx1 <- renderPlotly(Reac_CP2M_Bx()$gg1)
-  output$Bx2 <- renderPlotly(Reac_CP2M_Bx()$gg2)
+    
+  # output$Bx1 <- renderPlotly(Reac_CP2M_Bx()$gg1)
+  # output$Bx2 <- renderPlotly(Reac_CP2M_Bx()$gg2)
 
   output$download <- downloadHandler(
 
