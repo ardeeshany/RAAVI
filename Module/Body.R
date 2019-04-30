@@ -103,13 +103,13 @@ tabItems(
 #tabItem(tabName = "Login", LoginUI(ns("login"))),
 
 #tabItem(tabName = "Login", LoginUI(ns("login"))),
-tabItem(tabName = "Report", ReportUI(ns("report"))),
-tabItem(tabName = "Load", M0_LoadUI(ns("load"))),
-tabItem(tabName = "Box", M0_BoxUI(ns("box"))),
-tabItem(tabName = "Scatter", M0_ScatterUI(ns("scatter"))),
-tabItem(tabName = "Hist", M0_HistUI(ns("hist"))),
-tabItem(tabName = "Progress", M0_ProgUI(ns("progress"))),
-tabItem(tabName = "Category", M0_CatUI(ns("category")))
+tabItem(tabName = "Report", ReportUI(ns("report")))
+# tabItem(tabName = "Load", M0_LoadUI(ns("load"))),
+# tabItem(tabName = "Box", M0_BoxUI(ns("box"))),
+# tabItem(tabName = "Scatter", M0_ScatterUI(ns("scatter"))),
+# tabItem(tabName = "Hist", M0_HistUI(ns("hist"))),
+# tabItem(tabName = "Progress", M0_ProgUI(ns("progress"))),
+# tabItem(tabName = "Category", M0_CatUI(ns("category")))
 # tabItem(tabName = "C12",M1_ClassUI(ns("c12"))), 
 # tabItem(tabName = "C11",M1_ClassUI(ns("c11"))), 
 # tabItem(tabName = "C10",M1_ClassUI(ns("c10"))), 
@@ -141,13 +141,13 @@ Body <- function(input,output,session,
           #font_add_google("Gochi Hand", "gochi")
           font_plot = "IRANSansDN"
           callModule(Report,"report",font_plot)
-          callModule(M0_Box,"box",vals,font_plot)
-          callModule(M0_Cat,"category",vals,font_plot)
-          callModule(M0_Scatter,"scatter",vals,font_plot)
-          callModule(M0_Hist,"hist",vals,font_plot)
-          callModule(M0_Prog,"progress",vals,font_plot)
-          #callModule(M0_Prog,"Progress",vals,font_plot)
-          vals <- callModule(M0_Load,"load",outputDir)
+          # callModule(M0_Box,"box",vals,font_plot)
+          # callModule(M0_Cat,"category",vals,font_plot)
+          # callModule(M0_Scatter,"scatter",vals,font_plot)
+          # callModule(M0_Hist,"hist",vals,font_plot)
+          # callModule(M0_Prog,"progress",vals,font_plot)
+          # #callModule(M0_Prog,"Progress",vals,font_plot)
+          # vals <- callModule(M0_Load,"load",outputDir)
           
           # V <- reactive({
           #   M <- tidyr::gather(cbind(name=vals[["names"]],vals[["now"]],class=class,level=level,course=course),date,grade,-name,-class,-level,-course)

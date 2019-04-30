@@ -5,6 +5,8 @@ account: ardeeshany
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 413789
-bundleId: 1562458
+bundleId: 2048322
 url: https://ardeeshany.shinyapps.io/RAAVI2/
-when: 1535657522.00346
+when: 1556587213.09696
+asMultiple: FALSE
+asStatic: FALSE

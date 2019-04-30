@@ -277,7 +277,7 @@ M0_Box <- function(input,output,session,Vals,format_out,font_plot){
 
   output$download <- downloadHandler(
 
-
+    #showtext_auto(),
     filename = function(){
       paste("نمودار", sep = '.', switch(format_out(),HTML = 'html', PDF = 'pdf', Word = 'docx'))
       # paste("salam.pdf")
