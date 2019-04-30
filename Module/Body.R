@@ -43,9 +43,9 @@ theme,
 # 
    tags$head(tags$style(HTML("@font-face { font-family: dastnevis; src: url(dastnevis.ttf);}") )), 
 # # 
-#  tags$head(tags$style(HTML("@font-face { font-family: main_font; src: url(IRANSansDNLight.ttf);}") )),
+  tags$head(tags$style(HTML("@font-face { font-family: main_font; src: url(IRANSansDNLight.ttf);}") )),
 # # 
-#  tags$head(tags$style(HTML("@font-face {font-family: IRANSansDEN; src: url(IRANSansDN.ttf);}"))),
+  tags$head(tags$style(HTML("@font-face {font-family: IRANSansDEN; src: url(IRANSansDN.ttf);}"))),
 
 # tags$head(
 #   tags$link(rel="stylesheet", type = "text/css",
@@ -141,7 +141,7 @@ Body <- function(input,output,session,
           #callModule(M0_Scatter,"Scatter",vals,font_plot)
           #font_add(family="IRANSansDEN",regular="/Users/ardalanmirshani/Library/Fonts/IRANSansDN.ttf")
           #font_add_google("Gochi Hand", "gochi")
-          font_plot = "dastnevis"
+          font_plot = "IRANSansDN"
           callModule(Report,"report",font_plot)
           # callModule(M0_Box,"box",vals,font_plot)
           # callModule(M0_Cat,"category",vals,font_plot)
