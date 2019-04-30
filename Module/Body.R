@@ -125,6 +125,8 @@ Body <- function(input,output,session,
                  class="0",level="0",course="0",
                  outputDir="RAAVI/RAAVI-Released/DATA/Test"){
    
+  
+  if (is.null(suppressMessages(webshot:::find_phantom()))) { webshot::install_phantomjs() }
           #hide(id = "loading-content", anim = TRUE, animType = "fade")    
           #show("app-content")
   
