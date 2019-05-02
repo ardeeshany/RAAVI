@@ -142,7 +142,7 @@ Body <- function(input,output,session,
           #callModule(M0_Box,"Box",vals,font_plot)
           #callModule(M0_Hist,"Hist",vals,font_plot)
           #callModule(M0_Scatter,"Scatter",vals,font_plot)
-          font_add(family="BMITRA",regular="Fonts/BMITRA.ttf")
+          #font_add(family="BMITRA",regular="BMITRA.ttf")
           #font_add_google("Gochi Hand", "gochi")
           font_plot = "BMITRA"
           callModule(Report,"report",font_plot)
